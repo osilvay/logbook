@@ -1,0 +1,57 @@
+local L = LibStub("AceLocale-3.0"):NewLocale("LogBookCritics", "esES", false)
+if not L then return end
+
+--Debug
+L["Initializating general tracking..."] = "Inicializando seguimiento general..."
+L["Initializing track events..."] = "Inicializando eventos de seguimiento..."
+L["Initializing critics module"] = "Inicializando módulo de críticos"
+L["Critics module initialized"] = "Módulo de críticos inicializado"
+
+--Common
+L["Toggle critics window"] = "Alterna la ventana de críticos"
+L["All"] = "Todos"
+L["Level"] = "Nivel"
+
+--Settings
+L["Track critics settings"] = "Configuración de seguimiento de críticos"
+L["Tracking"] = "Seguimiento"
+L["Track critics"] = "Seguimiento de críticos"
+L["Tracking of"] = "Seguimiento de"
+L["Settings"] = "Configuración"
+L["Critics"] = "Críticos"
+L["Critics settings"] = "Configuración de críticos"
+
+-- Critics
+L["Filter"] = "Filtro"
+L["Spell list"] = "Lista de hechizos"
+L["Tracking critics initialized"] = "Seguimiento de críticos inicializado"
+L["LogBook critics management window"] = "Ventana de gestión de críticos de LogBook"
+L["ID of the spell."] = "ID de hechizo"
+L["Spell name and rank."] = "Nombre de hechizo y rango"
+L["Normal hit or heal."] = "Golpe o cura normal."
+L["Critical hit or heal."] = "Golpe o cura crítica."
+L["Filter"] = "Filtro"
+L["Character"] = "Personaje"
+L["Type"] = "Tipo"
+L["Search criteria"] = "Criterio de búsqueda"
+L["Spell list"] = "Lista de hechizos"
+L["Enter your search criteria."] = "Introduce un criterio de búsqueda."
+L["|c%sNew |cFF40E040highest|r crit hit for %s :|r |cffffffff%d|"] = "|c%sNuevo golpe crítico |cFF40E040más alto|r de %s :|r |cffffffff%d|r"
+L["|c%sNew |cFFE04040lowest|r crit hit for %s :|r |cffffffff%d|"] = "|c%sNuevo golpe crítico |cFFE04040más bajo|r de %s :|r |cffffffff%d|r"
+L["|c%sNew |cFF40E040highest|r hit %s :|r |cffffffff%d|"] = "|c%sNuevo golpe normal |cFF40E040más alto|r de %s :|r |cffffffff%d|r"
+L["|c%sNew |cFFE04040lowest|r hit %s :|r |cffffffff%d|"] = "|c%sNuevo golpe normal |cFFE04040más bajo|r de %s :|r |cffffffff%d|r"
+L["|c%sNew |cFF40E040highest|r crit heal for %s :|r |cffffffff%d|"] = "|c%sNueva cura crítica |cFF40E040más alta|r de %s :|r |cffffffff%d|r"
+L["|c%sNew |cFFE04040lowest|r crit heal for %s :|r |cffffffff%d|"] = "|c%sNueva cura crítica |cFFE04040más baja|r de %s :|r |cffffffff%d|r"
+L["|c%sNew |cFF40E040highest|r heal for %s :|r |cffffffff%d|"] = "|c%sNueva cura |cFF40E040más alta|r de %s :|r |cffffffff%d|r"
+L["|c%sNew |cFFE04040lowest|r heal for %s :|r |cffffffff%d|"] = "|c%sNueva cura |cFFE04040más baja|r de %s :|r |cffffffff%d|r"
+L["Attack"] = "Atacar"
+L["Critical"] = "Crítico"
+L["Normal"] = "Normal"
+L["ID"] = "ID"
+L["Spell name"] = "Hechizo"
+L["Hit: "] = "Golpe: "
+L["Hit crit.: "] = "Golpe crít.: "
+L["Heal: "] = "Sanación: "
+L["Heal crit.: "] = "Sanación crít."
+L["Healings"] = "Sanaciones"
+L["Harmful"] = "Dañinas"

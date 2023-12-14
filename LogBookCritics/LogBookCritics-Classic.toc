@@ -1,0 +1,36 @@
+## Interface: 11500
+## Title: |cffffffffLog|r|cff57b6ffBook|r |cfffff757Critics|r |cff57ff68v0.0.1|r
+## Version: 0.0.1
+## Notes: Critics tracker for wow classic
+## Author: osilvay
+## SavedVariables: LogBookCriticsDB
+## OptionalDeps: Ace3, CallbackHandler-1.0, LibStub
+## Dependencies: LogBook
+## DefaultState: enabled
+## LoadOnDemand: 1
+
+embeds.xml
+Locale\Locales.xml
+
+# Modules
+Modules\EventHandler.lua
+Modules\Init.lua
+Modules\VersionCheck.lua
+
+Modules\Settings\SettingsDefaults.lua
+Modules\Settings\CriticsTab\CriticsTab.lua
+
+Modules\Tooltips\CriticsTooltip.lua
+
+Modules\Track\Track.lua
+Modules\Track\TrackCritics.lua
+Modules\Track\TrackEventHandler.lua
+
+Modules\Window\CriticsWindow.lua
+Modules\Window\SplashCriticsWindow.lua
+Modules\Window\Tables\CriticsHeader.lua
+Modules\Window\Tables\CriticsFilter.lua
+Modules\Window\Tables\CriticsBody.lua
+
+# Main
+LogBookCritics.lua

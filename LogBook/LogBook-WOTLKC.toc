@@ -1,0 +1,34 @@
+## Interface: 30403
+## Title: |cffffffffLog|r|cff57b6ffBook|r |cff57ff68v0.0.1|r
+## Version: 0.0.1
+## Notes: Log book for wow classic
+## Author: osilvay
+## SavedVariables: LogBookDB
+## OptionalDeps: Ace3, CallbackHandler-1.0, LibStub
+## DefaultState: enabled
+
+embeds.xml
+Locale\Locales.xml
+
+# ModuleLoader
+Modules\ModuleLoader.lua
+
+# Modules
+Modules\EventHandler.lua
+Modules\Init.lua
+Modules\MinimapIcon.lua
+Modules\SlashCommands.lua
+Modules\VersionCheck.lua
+
+Modules\Settings\Settings.lua
+Modules\Settings\SettingsDefaults.lua
+Modules\Settings\GeneralTab\GeneralTab.lua
+Modules\Settings\AdvancedTab\AdvancedTab.lua
+
+Modules\Custom\CustomFrames.lua
+Modules\Custom\CustomFunctions.lua
+Modules\Custom\CustomColors.lua
+Modules\Custom\CustomSounds.lua
+
+# Main
+LogBook.lua
