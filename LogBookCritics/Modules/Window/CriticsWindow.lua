@@ -105,8 +105,8 @@ function LBC_CriticsWindow:CreateCriticsWindowTable()
 					color = "FFFFCC00",
 				},
 				{
-					text = LogBookCritics:i18n("Critical"),
-					description = LogBookCritics:i18n("Critical hit or heal."),
+					text = LogBookCritics:i18n("Critic"),
+					description = LogBookCritics:i18n("Critic hit or heal."),
 					order = 4,
 					width = 60,
 					height = 60,

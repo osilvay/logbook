@@ -29,7 +29,7 @@ function LB_SlashCommands.HandleCommands(input)
     LB_SlashCommands:CloseAllFrames()
     LBC_CriticsWindow:OpenCriticsWindowFrame()
   else
-    LogBook:Print(LogBook:i18n("Log|cff57b6ffBook|r Available Commands"))
+    LogBook:Print(LogBook:i18n("Log|cff57b6ffBook|r available commands"))
     LogBook:Print("/lb |cfffce060config|r - " .. LogBook:i18n("Shows settings window"))
     if criticsModuleLoaded then
       LogBook:Print("/lb |cfffce060critics|r - " .. LogBook:i18n("Shows critics window"))
