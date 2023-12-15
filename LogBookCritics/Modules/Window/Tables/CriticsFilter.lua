@@ -16,28 +16,60 @@ local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames")
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
 
----Create critics fiter frame
----@param containerTable table
----@param parentFrame AceGUIFrame
-function LBC_CriticsFilter:ContainerFilterFrame(containerTable, parentFrame)
-  -- table
-  local tableData = containerTable.table
+local filterContainer
 
-  -- container
-  ---@type AceGUIInlineGroup
-  local filterContainer = AceGUI:Create("InlineGroup")
-  filterContainer:SetFullWidth(true)
-  filterContainer:SetWidth(460)
-  filterContainer:SetHeight(140)
-  filterContainer:SetTitle("Filter")
-  filterContainer:SetLayout("Flow")
-  filterContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -40)
-  parentFrame:AddChild(filterContainer)
+---Redraw body container
+---@param parentFrame AceGUIFrame
+function LBC_CriticsFilter:RedrawCriticsWindowFilter(parentFrame)
+  filterContainer:ReleaseChildren()
+  LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
+end
+
+---Create critics fiter frame
+---@param parentFrame AceGUIFrame
+function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
+
+  if not filterContainer then
+    -- container
+    ---@type AceGUIInlineGroup
+    filterContainer = AceGUI:Create("InlineGroup")
+    filterContainer:SetFullWidth(true)
+    filterContainer:SetWidth(460)
+    filterContainer:SetHeight(140)
+    filterContainer:SetTitle("Filter")
+    filterContainer:SetLayout("Flow")
+    filterContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -40)
+    parentFrame:AddChild(filterContainer)
+  end
+
+  local selected_realm = LogBookCritics.db.char.general.critics.filter.select_realm
+  --Character dropdown
+  ---@type AceGUIDropdown
+  realmDropdown = AceGUI:Create("Dropdown")
+  realmDropdown:SetRelativeWidth(0.45)
+  realmDropdown:SetText(LogBookCritics:i18n('Realm'))
+  realmDropdown:SetLabel(LogBookCritics:i18n('Realm'))
+  realmDropdown:SetList(LBC_CriticsFilter:CreateRealmDropdown())
+  realmDropdown:SetCallback("OnValueChanged", function(widget, event, value)
+    LogBookCritics.db.char.general.critics.filter.select_realm = value
+    LogBookCritics.db.char.general.critics.filter.select_character = "all"
+    LBC_CriticsFilter:RedrawCriticsWindowFilter(parentFrame)
+    LBC_CriticsWindow:RedrawCriticsWindowFrame()
+  end)
+  realmDropdown:SetValue(selected_realm)
+  filterContainer:AddChild(realmDropdown)
+
+  --Separator
+  ---@type AceGUILabel
+  local separatorH1 = AceGUI:Create("Label")
+  separatorH1:SetRelativeWidth(0.1)
+  separatorH1:SetText("")
+  filterContainer:AddChild(separatorH1)
 
   local selected_character = LogBookCritics.db.char.general.critics.filter.select_character
   --Character dropdown
   ---@type AceGUIDropdown
-  local characterDropdown = AceGUI:Create("Dropdown")
+  characterDropdown = AceGUI:Create("Dropdown")
   characterDropdown:SetRelativeWidth(0.45)
   characterDropdown:SetText(LogBookCritics:i18n('Character'))
   characterDropdown:SetLabel(LogBookCritics:i18n('Character'))
@@ -49,17 +81,10 @@ function LBC_CriticsFilter:ContainerFilterFrame(containerTable, parentFrame)
   characterDropdown:SetValue(selected_character)
   filterContainer:AddChild(characterDropdown)
 
-  --Separator
-  ---@type AceGUILabel
-  local separatorH1 = AceGUI:Create("Label")
-  separatorH1:SetRelativeWidth(0.1)
-  separatorH1:SetText("")
-  filterContainer:AddChild(separatorH1)
-
   local select_type = LogBookCritics.db.char.general.critics.filter.select_type
   --Type dropdown
   ---@type AceGUIDropdown
-  local typeDropdown = AceGUI:Create("Dropdown")
+  typeDropdown = AceGUI:Create("Dropdown")
   typeDropdown:SetRelativeWidth(0.45)
   typeDropdown:SetText(LogBookCritics:i18n('Type'))
   typeDropdown:SetLabel(LogBookCritics:i18n('Type'))
@@ -71,10 +96,17 @@ function LBC_CriticsFilter:ContainerFilterFrame(containerTable, parentFrame)
   typeDropdown:SetValue(select_type)
   filterContainer:AddChild(typeDropdown)
 
+  --Separator
+  ---@type AceGUILabel
+  local separatorH2 = AceGUI:Create("Label")
+  separatorH2:SetRelativeWidth(0.1)
+  separatorH2:SetText("")
+  filterContainer:AddChild(separatorH2)
+
   --Search criteria
   ---@type AceGUIEditBox
   local searchCriteriaInput = AceGUI:Create("EditBox")
-  searchCriteriaInput:SetRelativeWidth(1)
+  searchCriteriaInput:SetRelativeWidth(0.45)
   searchCriteriaInput:DisableButton(true)
   searchCriteriaInput:SetLabel(LogBookCritics:i18n('Search criteria'))
   searchCriteriaInput:SetText(LogBookCritics.db.char.general.critics.filter.search_criteria)
@@ -85,8 +117,8 @@ function LBC_CriticsFilter:ContainerFilterFrame(containerTable, parentFrame)
   filterContainer:AddChild(searchCriteriaInput)
 end
 
----Create character dropdown
-function LBC_CriticsFilter:CreateCharactersDropdown()
+---Create realm dropdown
+function LBC_CriticsFilter:CreateRealmDropdown()
   local r = {
     ["all"] = LogBookCritics:i18n("All"),
   }
@@ -95,10 +127,30 @@ function LBC_CriticsFilter:CreateCharactersDropdown()
     local info = LogBook.db.global.characters[k].info
     if info then
       local realm = LB_CustomColors:GetColoredFaction(info.realm, info.factionName)
-      local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
-      r[k] = string.format("%s - %s", realm, name)
+      r[info.realm] = string.format("%s", realm)
     end
   end
+  return r
+end
+
+---Create character dropdown
+function LBC_CriticsFilter:CreateCharactersDropdown()
+  local select_realm = LogBookCritics.db.char.general.critics.filter.select_realm
+  local r = {
+  }
+  local characters = LogBookCritics.db.global.data.characters
+  for k, v in pairs(characters) do
+    local info = LogBook.db.global.characters[k].info
+    if info then
+      local realm = LB_CustomColors:GetColoredFaction(info.realm, info.factionName)
+      local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
+      if realm ~= nil and ((select_realm ~= "all" and select_realm == info.realm) or (select_realm == "all")) then
+        r[k] = string.format("%s", name)
+      end
+    end
+  end
+  table.sort(r, function(k1, k2) return k1.order < k2.order end)
+  r["all"] = LogBookCritics:i18n("All")
   return r
 end
 
@@ -109,4 +161,8 @@ function LBC_CriticsFilter:CreateTypeDropdown()
     ["hit"] = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIT_NORMAL"), LogBookCritics:i18n("Harmful")),
     ["heal"] = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HEAL_NORMAL"), LogBookCritics:i18n("Healings")),
   }
+end
+
+function LBC_CriticsFilter:RedrawCharactersDropdown()
+  realmDropdown:SetValue("all")
 end

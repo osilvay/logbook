@@ -17,14 +17,13 @@ local bodyContainer
 ---Redraw body container
 ---@param containerTable table
 ---@param parentFrame AceGUIFrame
----@param redraw boolean
-function LBC_CriticsBody:RedrawCriticsWindowBody(containerTable, parentFrame, redraw)
+function LBC_CriticsBody:RedrawCriticsWindowBody(containerTable, parentFrame)
 	bodyContainer:ReleaseChildren()
-	LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame, redraw)
+	LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 end
 
 ---Create critics container body frame
-function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame, redraw)
+function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 	-- table
 	local tableData = containerTable.table
 

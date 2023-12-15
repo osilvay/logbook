@@ -25,7 +25,8 @@ function LBC_SettingsDefaults:Load()
 				critics = {
 					filter = {
 						select_character = "all",
-						select_type = "all"
+						select_type = "all",
+						select_realm = "all"
 					},
 				},
 			},

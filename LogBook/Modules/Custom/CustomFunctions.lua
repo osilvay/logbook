@@ -28,7 +28,7 @@ function LB_CustomFunctions:RemoveDuplicationsInTable(currentTable)
     local res = {}
     for _, v in ipairs(currentTable) do
         if (not hash[v]) then
-            res[#res + 1] = v -- you could print here instead of saving to result table if you wanted
+            res[#res + 1] = v
             hash[v] = true
         end
     end
@@ -127,3 +127,8 @@ function LB_CustomFunctions:GetCustomIcon(customIcon)
     return iconTexture[customIcon]
 end
 
+---Check if empty or nil
+function LB_CustomFunctions:EmptyOrNil(value)
+    if value == nil or value == "" then return true end
+    return false
+end

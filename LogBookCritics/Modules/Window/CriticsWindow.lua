@@ -50,9 +50,9 @@ function LBC_CriticsWindow:Initialize()
 		-- header
 		LBC_CriticsHeader:ContainerHeaderFrame(tableData, criticsWindowFrame)
 		-- filter
-		LBC_CriticsFilter:ContainerFilterFrame(tableData, criticsWindowFrame)
+		LBC_CriticsFilter:ContainerFilterFrame(criticsWindowFrame)
 		-- table
-		LBC_CriticsBody:ContainerBodyFrame(tableData, criticsWindowFrame, false)
+		LBC_CriticsBody:ContainerBodyFrame(tableData, criticsWindowFrame)
 
 		criticsWindowFrame:Hide()
 		CriticsWindowFrame = criticsWindowFrame;
@@ -67,12 +67,16 @@ end
 
 ---Create critics window table data
 function LBC_CriticsWindow:CreateCriticsWindowTable()
-	if LogBookCritics.db.char.general.critics.filter.select_character == nil then
+	if LB_CustomFunctions:EmptyOrNil(LogBookCritics.db.char.general.critics.filter.select_character) then
 		LogBookCritics.db.char.general.critics.filter.select_character = "all"
 	end
-	if LogBookCritics.db.char.general.critics.filter.select_type == nil then
+	if LB_CustomFunctions:EmptyOrNil(LogBookCritics.db.char.general.critics.filter.select_type) then
 		LogBookCritics.db.char.general.critics.filter.select_type = "all"
 	end
+	if LB_CustomFunctions:EmptyOrNil(LogBookCritics.db.char.general.critics.filter.selected_realm) then
+		LogBookCritics.db.char.general.critics.filter.selected_realm = "all"
+	end
+
 	tableData = {
 		table = {
 			header = {
@@ -142,7 +146,7 @@ function LBC_CriticsWindow:RedrawCriticsWindowFrame()
 	if not CriticsWindowFrame then return end
 	if CriticsWindowFrame:IsShown() then
 		tableData.table.data.rows = LBC_CriticsWindow:GenerateSpellList()
-		LBC_CriticsBody:RedrawCriticsWindowBody(tableData, CriticsWindowFrame, true)
+		LBC_CriticsBody:RedrawCriticsWindowBody(tableData, CriticsWindowFrame)
 	end
 end
 

@@ -5,6 +5,9 @@ local _LBC_EventHandler = {}
 ---@type LBC_Init
 local LBC_Init = LB_ModuleLoader:ImportModule("LBC_Init")
 
+---@type LB_CustomFunctions
+local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
+
 function LBC_EventHandler:StartCriticsModuleEvents()
   _LBC_EventHandler:PlayerLogin()
 end
