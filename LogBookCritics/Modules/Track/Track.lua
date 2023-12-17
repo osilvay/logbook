@@ -43,9 +43,9 @@ end
 
 ---Check if tracking experience
 function LBC_Track:IsTrackingCritics()
-  if LogBookCritics.db.char.general.trackCritics == nil then
-    LogBookCritics.db.char.general.trackCritics = false
+  if LogBookCritics.db.char.general.critics.trackingEnabled == nil then
+    LogBookCritics.db.char.general.critics.trackingEnabled = false
     return false
   end
-  return LogBookCritics.db.char.general.trackCritics
+  return LogBookCritics.db.char.general.critics.trackingEnabled
 end

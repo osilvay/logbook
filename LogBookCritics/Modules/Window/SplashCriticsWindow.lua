@@ -34,8 +34,13 @@ local fadeTickerStarted = false
 
 ---Initilize
 function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
+
+	local xOffset = LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset
+	local yOffset = LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset
+	local bgColor = LogBookCritics.db.char.general.critics.textFrameBgColorAlpha
+	
 	baseFrame = CreateFrame("Frame", "LogBook_Critics_Window", UIParent, BackdropTemplateMixin and "BackdropTemplate")
-	baseFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 200)
+	baseFrame:SetPoint("CENTER", UIParent, "CENTER", xOffset, yOffset)
 	baseFrame:SetFrameStrata("MEDIUM")
 	baseFrame:SetFrameLevel(0)
 	baseFrame:SetSize(400, 50)
@@ -44,8 +49,14 @@ function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
 
 	baseFrame:SetScript("OnMouseDown", LBC_SplashCriticsWindow.OnDragStart)
 	baseFrame:SetScript("OnMouseUp", LBC_SplashCriticsWindow.OnDragStop)
-	baseFrame:SetScript("OnEnter", LBC_SplashCriticsWindow.Unfade)
-	baseFrame:SetScript("OnLeave", LBC_SplashCriticsWindow.Fade)
+	baseFrame:SetScript("OnEnter", function() 
+		if not LogBookCritics.db.char.general.critics.unlockTextFrame then return end
+		LBC_SplashCriticsWindow.Unfade()
+	end)
+	baseFrame:SetScript("OnLeave", function()
+		if not LogBookCritics.db.char.general.critics.unlockTextFrame then return end
+		LBC_SplashCriticsWindow.Fade()
+	end)
 
 	baseFrame:SetBackdrop({
 		bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
@@ -53,7 +64,7 @@ function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
 		edgeSize = 2,
 		insets = { left = 4, right = 4, top = 4, bottom = 4 },
 	})
-	baseFrame:SetBackdropColor(0, 0, 0, 0)
+	baseFrame:SetBackdropColor(0, 0, 0, bgColor)
 
 	local text = baseFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 	text:SetPoint("CENTER", baseFrame, "CENTER")
@@ -69,7 +80,28 @@ function LBC_SplashCriticsWindow.ShowNewTextMessage(message)
   end
 	baseFrame.text:SetText(message)
 	baseFrame:Show()
-  C_Timer.After(5, function() baseFrame:Hide() end)
+  C_Timer.After(5, function()
+		if LogBookCritics.db.char.general.critics.unlockTextFrame then
+			baseFrame.text:SetText(LogBookCritics:i18n("Test message"))
+			return
+		end
+		baseFrame:Hide()
+	end)
+end
+
+function LBC_SplashCriticsWindow.UnlockTextMessage(message)
+	if not baseFrame then
+    baseFrame = LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
+  end
+	baseFrame.text:SetText(message)
+	baseFrame:Show()
+	LBC_SplashCriticsWindow.Fade()
+end
+
+function LBC_SplashCriticsWindow.LockTextMessage(message)
+	if baseFrame then
+    C_Timer.After(0.1, function() baseFrame:Hide() end)
+  end
 end
 
 function LBC_SplashCriticsWindow.Unfade()
@@ -89,15 +121,28 @@ function LBC_SplashCriticsWindow.OnDragStart()
 end
 
 function LBC_SplashCriticsWindow.OnDragStop()
+	local frameX = baseFrame:GetCenter()
+	local xLeft, yTop, xRight, yBottom = baseFrame:GetLeft(), baseFrame:GetTop(), baseFrame:GetRight(), baseFrame:GetBottom()
+	local xSize, ySize = baseFrame:GetSize()
+	local screenWidth = GetScreenWidth()
+	local xcreenHeight = GetScreenHeight()
+	local xPositionFromCenter = -((screenWidth/2)-xLeft)+(xSize/2)
+	local yPositionFromCenter = -((xcreenHeight/2)-yTop)-(ySize/2)
+	LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset = tonumber(string.format("%.1f", xPositionFromCenter))
+	LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset = tonumber(string.format("%.1f", yPositionFromCenter))
 	baseFrame:StopMovingOrSizing()
 end
 
 function LBC_SplashCriticsWindow.Fader()
 	if (not fadeTicker) and fadeTickerStarted then
+		if LogBookCritics.db.char.general.critics.unlockTextFrame then
+			fadeTickerValue = LogBookCritics.db.char.general.critics.textFrameBgColorAlpha
+		end
 		fadeTicker = C_Timer.NewTicker(0.01, function()
 			if fadeTickerDirection then
 				-- Un-Fade All
-				if fadeTickerValue < 0.3 then
+				local fadeTo = 0.3
+				if fadeTickerValue < fadeTo then
 					fadeTickerValue = fadeTickerValue + 0.02
 					baseFrame:SetBackdropColor(0, 0, 0, math.min(0.5, fadeTickerValue * 3.3))
 				else
@@ -106,7 +151,11 @@ function LBC_SplashCriticsWindow.Fader()
 				end
 			else
 				-- Fade All
-				if fadeTickerValue >= 0 then
+				local fadeTo = 0
+				if LogBookCritics.db.char.general.critics.unlockTextFrame then
+					fadeTo = LogBookCritics.db.char.general.critics.textFrameBgColorAlpha
+				end
+				if fadeTickerValue >= fadeTo then
 					fadeTickerValue = fadeTickerValue - 0.02
 
 					if fadeTickerValue < 0 then

@@ -82,7 +82,8 @@ function LB_CustomFunctions:GetClassIcon(classFilename)
         ["ROGUE"] = 626005,
         ["SHAMAN"] = 626006,
         ["WARLOCK"] = 626007,
-        ["WARRIOR"] = 626008
+        ["WARRIOR"] = 626008,
+        ["ALL"] = 136235
     }
     if iconTexture[classFilename] == nil then return 134400 end -- question mark
     return iconTexture[classFilename]

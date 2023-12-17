@@ -31,12 +31,12 @@ local tableData = {}
 function LBC_CriticsWindow:Initialize()
 	if not CriticsWindowFrame then
 		LBC_CriticsWindow:CreateCriticsWindowTable()
-		--LogBook:Debug("Creating critics window frame")
 
 		---@type AceGUIFrame, AceGUIFrame
 		local criticsWindowFrame = AceGUI:Create("Frame");
-		criticsWindowFrame:SetWidth(500)
+		criticsWindowFrame:SetWidth(540)
 		criticsWindowFrame:SetHeight(520)
+		criticsWindowFrame:SetPoint("CENTER", 0, 0)
 		criticsWindowFrame:SetLayout("Fill")
 		criticsWindowFrame:SetTitle("|cffffffffLog|r|cff57b6ffBook|r |cfffff757Critics|r |cff57ff68v0.0.1|r")
 		criticsWindowFrame:SetStatusText(LogBookCritics:i18n("LogBook critics management window"))

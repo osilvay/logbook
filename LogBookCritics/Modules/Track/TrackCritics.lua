@@ -189,20 +189,23 @@ function LBC_TrackCritics:StoreNewHit(spellName, amount, critical)
     critColor = LB_CustomColors:CustomColors("ATTACK_CRITICAL")
     color = LB_CustomColors:CustomColors("ATTACK_NORMAL")
   end
+  local spellLink = LogBookCritics.db.global.data.spells[spellName].spellLink
+  local spellID = LogBookCritics.db.global.data.spells[spellName].spellID
+  local _, _, icon = GetSpellInfo(spellID)
+  local spellText = "|T"..icon..":0|t " .. spellLink
 
   if critical then
     if LogBookCriticsData[spellName].highestHitCrit == nil then LogBookCriticsData[spellName].highestHitCrit = 0 end
     if LogBookCriticsData[spellName].highestHitCrit == 0 or amount > LogBookCriticsData[spellName].highestHitCrit then
       LB_CustomSounds:PlayCriticalHit()
       LogBookCriticsData[spellName].highestHitCrit = amount
-      message = string.format(LogBookCritics:i18n("|c%sNew |cFF40E040highest|r crit hit for %s :|r |cffffffff%d|"), critColor, spellName, LogBookCriticsData[spellName].highestHitCrit)
+      message = string.format("%s : " .. LogBookCritics:i18n("|c%sNew |cFF40E040highest|r critical hit:|r |cffffffff%d|r"), spellText, critColor, LogBookCriticsData[spellName].highestHitCrit)
       LBC_TrackCritics:ShowMessage(message)
     end
-
     if LogBookCriticsData[spellName].lowestHitCrit == nil then LogBookCriticsData[spellName].lowestHitCrit = 0 end
     if LogBookCriticsData[spellName].lowestHitCrit == 0 or amount < LogBookCriticsData[spellName].lowestHitCrit then
       LogBookCriticsData[spellName].lowestHitCrit = amount
-      message = string.format(LogBookCritics:i18n("|c%sNew |cFFE04040lowest|r crit hit for %s :|r |cffffffff%d|"), critColor, spellName, LogBookCriticsData[spellName].lowestHitCrit)
+      message = string.format("%s : " .. LogBookCritics:i18n("|c%sNew |cFFE04040lowest|r critical hit:|r |cffffffff%d|r"), spellText, critColor, LogBookCriticsData[spellName].lowestHitCrit)
       LBC_TrackCritics:ShowMessage(message)
     end
   else
@@ -210,14 +213,13 @@ function LBC_TrackCritics:StoreNewHit(spellName, amount, critical)
     if LogBookCriticsData[spellName].highestHit == 0 or amount > LogBookCriticsData[spellName].highestHit then
       LB_CustomSounds:PlayNormalHit()
       LogBookCriticsData[spellName].highestHit = amount
-      message = string.format(LogBookCritics:i18n("|c%sNew |cFF40E040highest|r hit %s :|r |cffffffff%d|"), color, spellName, LogBookCriticsData[spellName].highestHit)
+      message = string.format("%s : " .. LogBookCritics:i18n("|c%sNew |cFF40E040highest|r normal hit:|r |cffffffff%d|r"), spellText, color, LogBookCriticsData[spellName].highestHit)
       LBC_TrackCritics:ShowMessage(message)
     end
-
     if LogBookCriticsData[spellName].lowestHit == nil then LogBookCriticsData[spellName].lowestHit = 0 end
     if LogBookCriticsData[spellName].lowestHit == 0 or amount < LogBookCriticsData[spellName].lowestHit then
       LogBookCriticsData[spellName].lowestHit = amount
-      message = string.format(LogBookCritics:i18n("|c%sNew |cFFE04040lowest|r hit %s :|r |cffffffff%d|"), color, spellName, LogBookCriticsData[spellName].lowestHit)
+      message = string.format("%s : " .. LogBookCritics:i18n("|c%sNew |cFFE04040lowest|r normal hit:|r |cffffffff%d|r"), spellText, color, LogBookCriticsData[spellName].lowestHit)
       LBC_TrackCritics:ShowMessage(message)
     end
   end
@@ -231,18 +233,23 @@ function LBC_TrackCritics:StoreNewHeal(spellName, amount, critical)
   local message = ""
   local critColor = LB_CustomColors:CustomColors("HEAL_CRITICAL")
   local color = LB_CustomColors:CustomColors("HEAL_NORMAL")
+  local spellLink = LogBookCritics.db.global.data.spells[spellName].spellLink
+  local spellID = LogBookCritics.db.global.data.spells[spellName].spellID
+  local _, _, icon = GetSpellInfo(spellID)
+  local spellText = "|T"..icon..":0|t " .. spellLink
+
   if critical then
     if LogBookCriticsData[spellName].highestHealCrit == nil then LogBookCriticsData[spellName].highestHealCrit = 0 end
     if amount > LogBookCriticsData[spellName].highestHealCrit then
       LB_CustomSounds:PlayCriticalHeal()
       LogBookCriticsData[spellName].highestHealCrit = amount
-      message = string.format(LogBookCritics:i18n("|c%sNew |cFF40E040highest|r crit heal for %s :|r |cffffffff%d|"), critColor, spellName, LogBookCriticsData[spellName].highestHealCrit)
+      message = string.format("%s : " .. LogBookCritics:i18n("|c%sNew |cFF40E040highest|r critical heal:|r |cffffffff%d|r"), spellText, critColor, LogBookCriticsData[spellName].highestHealCrit)
       LBC_TrackCritics:ShowMessage(message)
     end
     if LogBookCriticsData[spellName].lowestHealCrit == nil then LogBookCriticsData[spellName].lowestHealCrit = 0 end
     if LogBookCriticsData[spellName].lowestHealCrit == 0 or amount < LogBookCriticsData[spellName].lowestHealCrit then
       LogBookCriticsData[spellName].lowestHealCrit = amount
-      message = string.format(LogBookCritics:i18n("|c%sNew |cFFE04040lowest|r crit heal for %s :|r |cffffffff%d|"), critColor, spellName, LogBookCriticsData[spellName].lowestHealCrit)
+      message = string.format("%s : " .. LogBookCritics:i18n("|c%sNew |cFFE04040lowest|r critical heal:|r |cffffffff%d|r"), spellText, critColor, LogBookCriticsData[spellName].lowestHealCrit)
       LBC_TrackCritics:ShowMessage(message)
     end
   else
@@ -250,13 +257,13 @@ function LBC_TrackCritics:StoreNewHeal(spellName, amount, critical)
     if amount > LogBookCriticsData[spellName].highestHeal then
       LB_CustomSounds:PlayNormalHeal()
       LogBookCriticsData[spellName].highestHeal = amount
-      message = string.format(LogBookCritics:i18n("|c%sNew |cFF40E040highest|r heal for %s :|r |cffffffff%d|"), color, spellName, LogBookCriticsData[spellName].highestHeal)
+      message = string.format("%s : " .. LogBookCritics:i18n("|c%sNew |cFF40E040highest|r normal heal:|r |cffffffff%d|r"), spellText, color, LogBookCriticsData[spellName].highestHeal)
       LBC_TrackCritics:ShowMessage(message)
     end
     if LogBookCriticsData[spellName].lowestHeal == nil then LogBookCriticsData[spellName].lowestHeal = 0 end
     if LogBookCriticsData[spellName].lowestHeal == 0 or amount < LogBookCriticsData[spellName].lowestHeal then
       LogBookCriticsData[spellName].lowestHeal = amount
-      message = string.format(LogBookCritics:i18n("|c%sNew |cFFE04040lowest|r heal for %s :|r |cffffffff%d|"), color, spellName, LogBookCriticsData[spellName].lowestHeal)
+      message = string.format("%s : " .. LogBookCritics:i18n("|c%sNew |cFFE04040lowest|r normal heal:|r |cffffffff%d|r"), spellText, color, LogBookCriticsData[spellName].lowestHeal)
       LBC_TrackCritics:ShowMessage(message)
     end
   end

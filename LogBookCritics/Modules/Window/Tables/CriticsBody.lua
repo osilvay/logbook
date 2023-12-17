@@ -10,6 +10,14 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 ---@type LB_CustomFrames
 local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames")
 
+---@type LBC_CriticsFilter
+local LBC_CriticsFilter = LB_ModuleLoader:ImportModule("LBC_CriticsFilter")
+
+---@type LBC_CriticsWindow
+local LBC_CriticsWindow = LB_ModuleLoader:ImportModule("LBC_CriticsWindow")
+
+
+
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
 local bodyContainer
@@ -32,7 +40,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 		---@type AceGUIInlineGroup
 		bodyContainer = AceGUI:Create("InlineGroup")
 		bodyContainer:SetFullWidth(true)
-		bodyContainer:SetWidth(460)
+		bodyContainer:SetWidth(500)
 		bodyContainer:SetHeight(240)
 		bodyContainer:SetTitle(LogBookCritics:i18n("Spell list"))
 		bodyContainer:SetLayout("Flow")
@@ -73,7 +81,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 	local tableContainer = AceGUI:Create("SimpleGroup")
 	tableContainer:SetFullWidth(true)
 	--tableContainer:SetFullHeight(true)
-	tableContainer:SetWidth(460)
+	tableContainer:SetWidth(500)
 	tableContainer:SetHeight(240)
 	tableContainer:SetLayout("Fill")
 	tableContainer:SetPoint("TOPLEFT", bodyContainer.frame, "TOPLEFT", 0, -60)
@@ -83,7 +91,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 	---@type AceGUIScrollFrame
 	local scrollContainer = AceGUI:Create("ScrollFrame")
 	scrollContainer:SetFullWidth(true)
-	scrollContainer:SetWidth(460)
+	scrollContainer:SetWidth(500)
 	scrollContainer:SetHeight(240)
 	scrollContainer:SetLayout("Flow")
 	scrollContainer:SetPoint("TOPLEFT", tableContainer.frame, "TOPLEFT", 0, -50)
@@ -127,6 +135,34 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 			spellIDLabel:SetColor(224, 224, 224)
 			rowContainer:AddChild(spellIDLabel)
 
+			-- image as class
+			---@type AceGUIIcon
+			local classIcon = AceGUI:Create("Icon")
+			local className = "ALL"
+			local tooltip = LogBookCritics:i18n("Various classes")
+			local classes = spellDetails.class
+			if #classes == 1 then
+				className = classes[1]
+				local classID = LB_CustomFunctions:GetClassInfoByClassFilename(className)
+				local className, _, _ = GetClassInfo(classID)
+				tooltip = className
+			end
+
+			classIcon:SetWidth(16)
+			classIcon:SetHeight(16)
+			classIcon:SetImage(LB_CustomFunctions:GetClassIcon(className))
+			classIcon:SetImageSize(16, 16)
+			classIcon:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 0, -50)
+			classIcon:SetCallback("OnEnter", function()
+				GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR")
+				GameTooltip:SetText(tooltip)
+				GameTooltip:Show()
+			end)
+			classIcon:SetCallback("OnLeave", function()
+				GameTooltip:Hide()
+			end)
+			rowContainer:AddChild(classIcon)
+
 			-- Spell name and icon
 			local name, rank, icon, castTime, minRange, maxRange = GetSpellInfo(spellDetails.spellID)
 			-- image as icon
@@ -156,7 +192,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 
 			---@type AceGUILabel
 			local spellNameLabel = AceGUI:Create("Label")
-			spellNameLabel:SetWidth(200)
+			spellNameLabel:SetWidth(184)
 			spellNameLabel:SetHeight(80)
 			spellNameLabel:SetPoint("LEFT", rowContainer.frame, "LEFT", 0, -50)
 			spellNameLabel:SetText(" " .. rowSpellName)
@@ -239,6 +275,30 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 			criticalLabel:SetText(normalLowestCritValue .. "\n" .. normalHighestCritValue)
 			criticalLabel:SetColor(255, 255, 255)
 			rowContainer:AddChild(criticalLabel)
+
+			if LogBookCritics.db.char.general.critics.filter.select_character ~= "all" then
+				--Options button
+				---@type AceGUIInteractiveLabel
+				local deleteButton = AceGUI:Create("InteractiveLabel")
+				local deleteIcon = "|TInterface\\AddOns\\LogBookCritics\\Images\\delete_a:24:24|t"
+				deleteButton:SetWidth(32)
+				deleteButton:SetPoint("LEFT", rowContainer.frame, "LEFT", 0, -50)
+				deleteButton:SetText(deleteIcon)
+				deleteButton:SetCallback("OnEnter", function(current)
+					current:SetText("|TInterface\\AddOns\\LogBookCritics\\Images\\delete:24:24|t")
+				end)
+				deleteButton:SetCallback("OnLeave", function(current)
+					current:SetText("|TInterface\\AddOns\\LogBookCritics\\Images\\delete_a:24:24|t")
+				end)
+				deleteButton:SetCallback("OnClick", function(current)
+					local _selected_character = LogBookCritics.db.char.general.critics.filter.select_character
+					LogBookCritics.db.global.characters[_selected_character].spells[current.rowIndex] = nil
+					LBC_CriticsFilter:RedrawCriticsWindowFilter(parentFrame)
+					LBC_CriticsWindow:RedrawCriticsWindowFrame()
+				end)
+				deleteButton.rowIndex = rowIndex
+				rowContainer:AddChild(deleteButton)
+			end
 		end
 	end
 end

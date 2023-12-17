@@ -30,7 +30,7 @@ function LBC_CriticsHeader:ContainerHeaderFrame(containerTable, parentFrame)
   ---@type AceGUIInlineGroup
   local headerContainer = AceGUI:Create("SimpleGroup")
   headerContainer:SetFullWidth(true)
-  headerContainer:SetWidth(480)
+  headerContainer:SetWidth(500)
   headerContainer:SetHeight(40)
   headerContainer:SetLayout("Flow")
   headerContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, 0)
@@ -39,12 +39,13 @@ function LBC_CriticsHeader:ContainerHeaderFrame(containerTable, parentFrame)
   --Options button
   ---@type AceGUIButton
   local settingsButton = AceGUI:Create("Button")
+  local icon = "|TInterface\\AddOns\\LogBookCritics\\Images\\settings:16:16|t"
   settingsButton:SetWidth(140)
   settingsButton:SetPoint("TOPRIGHT", parentFrame.frame, "TOPRIGHT", -20, -25)
-  settingsButton:SetText(LogBookCritics:i18n('Settings'))
+  settingsButton:SetText(icon .. " " .. LogBookCritics:i18n('Settings'))
   settingsButton:SetCallback("OnClick", function()
     LB_SlashCommands:CloseAllFrames()
-    LB_Settings:OpenSettingsFrame("tab_critics")
+    LB_Settings:OpenSettingsFrame()
   end)
   parentFrame:AddChild(settingsButton)
 
@@ -84,7 +85,7 @@ function LBC_CriticsHeader:ContainerHeaderFrame(containerTable, parentFrame)
 		spellIcon:SetHeight(16)
 		spellIcon:SetImage(LB_CustomFunctions:GetClassIcon("DRUID"))
 		spellIcon:SetImageSize(16, 16)
-		spellIcon:SetPoint("TOPLEFT", criticsWindowFrame.frame, "TOPLEFT", -20, -10)
+		spellIcon:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", -20, -10)
 		spellIcon:SetCallback("OnEnter", function()
 			GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR")
 			GameTooltip:SetText("Druid")
@@ -93,5 +94,6 @@ function LBC_CriticsHeader:ContainerHeaderFrame(containerTable, parentFrame)
 		spellIcon:SetCallback("OnLeave", function()
 			GameTooltip:Hide()
 		end)
-		criticsWindowFrame:AddChild(spellIcon)]]
+		parentFrame:AddChild(spellIcon)
+    ]]
 end

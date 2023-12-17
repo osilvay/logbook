@@ -36,6 +36,7 @@ function LB_Settings:Initialize()
 		logBookSettingsFrame:SetTitle("|cffffffffLog|r|cff57b6ffBook|r |cff57ff68v0.0.1|r")
 		logBookSettingsFrame:SetLayout("Fill")
 		logBookSettingsFrame:EnableResize(false)
+		logBookSettingsFrame:SetStatusText(LogBook:i18n("LogBook settings window"))
 		logBookSettingsFrame:Hide()
 		logBookSettingsFrame:SetCallback("OnClose", function(widget)
 			PlaySound(840)
@@ -117,14 +118,12 @@ function LB_Settings:HideSettingsFrame()
 end
 
 -- Open the configuration window
-function LB_Settings:OpenSettingsFrame(tab_target)
+function LB_Settings:OpenSettingsFrame()
 	if not LogBookSettingsFrame then return end
 	if not LogBookSettingsFrame:IsShown() then
 		PlaySound(882)
 		--LogBook:Debug("Show Config frame")
 		LogBookSettingsFrame:Show()
-		if tab_target ~= "" then
-		end
 	else
 		--LogBook:Debug("Hide Config frame")
 		LogBookSettingsFrame:Hide()

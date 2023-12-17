@@ -34,7 +34,7 @@ function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
     ---@type AceGUIInlineGroup
     filterContainer = AceGUI:Create("InlineGroup")
     filterContainer:SetFullWidth(true)
-    filterContainer:SetWidth(460)
+    filterContainer:SetWidth(500)
     filterContainer:SetHeight(140)
     filterContainer:SetTitle("Filter")
     filterContainer:SetLayout("Flow")

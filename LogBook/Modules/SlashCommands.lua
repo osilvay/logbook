@@ -22,11 +22,13 @@ function LB_SlashCommands.HandleCommands(input)
   local command = string.lower(input) or "help"
   if command == "config" then
     --LogBook:Debug(LogBook:i18n("Opening settings window"))
-    LB_SlashCommands:CloseAllFrames()
-    LB_Settings:OpenSettingsFrame("general_tab")
+    --LB_SlashCommands:CloseAllFrames()
+    LBC_CriticsWindow:HideCriticsWindowFrame()
+    LB_Settings:OpenSettingsFrame()
   elseif command == "critics" and criticsModuleLoaded then
     --LogBook:Debug(LogBook:i18n("Opening critics window"))
-    LB_SlashCommands:CloseAllFrames()
+    --LB_SlashCommands:CloseAllFrames()
+    LB_Settings:HideSettingsFrame()
     LBC_CriticsWindow:OpenCriticsWindowFrame()
   else
     LogBook:Print(LogBook:i18n("Log|cff57b6ffBook|r available commands"))
