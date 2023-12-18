@@ -7,6 +7,8 @@ function LB_SettingsDefaults:Load()
 			data = {
 				characters = {
 				},
+				locale = {
+				}
 			},
 			characters = {
 				char = {

@@ -44,7 +44,7 @@ function _LB_EventHandler:PlayerLogin()
       locale = locale
     }
     LogBook.db.global.data.characters[key] = true
-
+    LogBook.db.global.data.locale = {}
     if LogBook.db.global.characters[LogBook.key] == nil then
       LogBook.db.global.characters[LogBook.key] = {
         info = info,

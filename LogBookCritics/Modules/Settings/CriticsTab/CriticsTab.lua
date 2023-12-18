@@ -35,7 +35,7 @@ function LBC_Settings:Initialize()
                         order = 1,
                         name = LogBookCritics:i18n("Enable tracking"),
                         desc = LogBookCritics:i18n("Toggles tracking hits and heals."),
-                        width = 1.5,
+                        width = 1.2,
                         disabled = false,
                         get = function() return LogBookCritics.db.char.general.critics.trackingEnabled end,
                         set = function(info, value)
@@ -55,7 +55,7 @@ function LBC_Settings:Initialize()
                         order = 2,
                         name = LogBookCritics:i18n("Unlock text frame"),
                         desc = LogBookCritics:i18n("Toggle text frame lock."),
-                        width = 1.5,
+                        width = 1.2,
                         get = function() return LogBookCritics.db.char.general.critics.unlockTextFrame end,
                         set = function(info, value)
                             LogBookCritics.db.char.general.critics.unlockTextFrame = value
@@ -73,7 +73,7 @@ function LBC_Settings:Initialize()
                         order = 3,
                         name = LogBookCritics:i18n("Tracking heals"),
                         desc = LogBookCritics:i18n("Toggle tracking heals."),
-                        width = 1.5,
+                        width = 1.2,
                         disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
                         get = function() return LogBookCritics.db.char.general.critics.trackHeals end,
                         set = function(info, value)
@@ -86,7 +86,7 @@ function LBC_Settings:Initialize()
                         order = 4,
                         name = LogBookCritics:i18n("Tracking hits"),
                         desc = LogBookCritics:i18n("Toggle tracking hits."),
-                        width = 1.5,
+                        width = 1.2,
                         disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
                         get = function() return LogBookCritics.db.char.general.critics.trackHits end,
                         set = function(info, value)
@@ -98,7 +98,7 @@ function LBC_Settings:Initialize()
                         order = 4,
                         name = LogBookCritics:i18n("Tracking swings"),
                         desc = LogBookCritics:i18n("Toggle tracking swings."),
-                        width = 1.5,
+                        width = 1.2,
                         disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
                         get = function() return LogBookCritics.db.char.general.critics.trackSwings end,
                         set = function(info, value)
@@ -133,34 +133,21 @@ function LBC_Settings._HealTab()
             trackNormalHeals = {
                 type = "toggle",
                 order = 1,
-                name = LogBookCritics:i18n("Track normal heals"),
+                name = LogBookCritics:i18n("Normal heals"),
                 desc = LogBookCritics:i18n("Toggle tracking normal heals."),
-                width = 1.4,
+                width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackNormalHeals end,
                 set = function(info, value)
                     LogBookCritics.db.char.general.critics.trackNormalHeals = value
                 end,
             },
-            trackCriticalHeals = {
-                type = "toggle",
-                order = 2,
-                name = LogBookCritics:i18n("Track critical heals"),
-                desc = LogBookCritics:i18n("Toggle tracking critical heals."),
-                width = 1.4,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackCriticHeals end,
-                set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackCriticHeals = value
-                end,
-            },
-            --------------------------------------------------------------------------------------------------
             healNormalColor = {
                 type = "color",
-                order = 3,
-                name = LogBookCritics:i18n("Normal heals text color"),
+                order = 2,
+                name = LogBookCritics:i18n("Color"),
                 desc = LogBookCritics:i18n("Change color of normal heals text."),
-                width = 1.4,
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 hasAlpha = true,
                 get = function()
@@ -177,12 +164,25 @@ function LBC_Settings._HealTab()
                     LogBookCritics.db.char.general.critics.healNormalColor.alpha = alpha
                 end
             },
+            --------------------------------------------------------------------------------------------------
+            trackCriticalHeals = {
+                type = "toggle",
+                order = 3,
+                name = LogBookCritics:i18n("Critical heals"),
+                desc = LogBookCritics:i18n("Toggle tracking critical heals."),
+                width = 1,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackCriticHeals end,
+                set = function(info, value)
+                    LogBookCritics.db.char.general.critics.trackCriticHeals = value
+                end,
+            },
             healCriticalColor = {
                 type = "color",
                 order = 4,
-                name = LogBookCritics:i18n("Critical heals text color"),
+                name = LogBookCritics:i18n("Color"),
                 desc = LogBookCritics:i18n("Change color of critical heals text."),
-                width = 1.4,
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 hasAlpha = true,
                 get = function()
@@ -203,34 +203,21 @@ function LBC_Settings._HealTab()
             trackHighestHeals = {
                 type = "toggle",
                 order = 5,
-                name = LogBookCritics:i18n("Track highest values"),
-                desc = LogBookCritics:i18n("Toggles traking |cFF40E040highest|r healing values."),
-                width = 1.4,
+                name = LogBookCritics:i18n("Highest values"),
+                desc = LogBookCritics:i18n("Toggles traking highest healing values."),
+                width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackHighestHeals end,
                 set = function(info, value)
                     LogBookCritics.db.char.general.critics.trackHighestHeals = value
                 end,
             },
-            trackLowestHeals = {
-                type = "toggle",
-                order = 6,
-                name = LogBookCritics:i18n("Track lowest values"),
-                desc = LogBookCritics:i18n("Toggles traking |cFFE04040lowest|r healing values."),
-                width = 1.4,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackLowestHeals end,
-                set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackLowestHeals = value
-                end,
-            },
-            --------------------------------------------------------------------------------------------------
             highestHealColor = {
                 type = "color",
-                order = 7,
-                name = LogBookCritics:i18n("Highest values color"),
-                desc = LogBookCritics:i18n("Change color of |cFF40E040highest|r values."),
-                width = 1.4,
+                order = 6,
+                name = LogBookCritics:i18n("Color"),
+                desc = LogBookCritics:i18n("Change color of highest values."),
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 hasAlpha = true,
                 get = function()
@@ -247,12 +234,25 @@ function LBC_Settings._HealTab()
                     LogBookCritics.db.char.general.critics.highestHealColor.alpha = alpha
                 end
             },
+            --------------------------------------------------------------------------------------------------
+            trackLowestHeals = {
+                type = "toggle",
+                order = 7,
+                name = LogBookCritics:i18n("Lowest values"),
+                desc = LogBookCritics:i18n("Toggles traking lowest healing values."),
+                width = 1,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackLowestHeals end,
+                set = function(info, value)
+                    LogBookCritics.db.char.general.critics.trackLowestHeals = value
+                end,
+            },
             lowestHealColor = {
                 type = "color",
                 order = 8,
-                name = LogBookCritics:i18n("Lowest values color"),
-                desc = LogBookCritics:i18n("Change color of |cFFE04040lowest|r values."),
-                width = 1.4,
+                name = LogBookCritics:i18n("Color"),
+                desc = LogBookCritics:i18n("Change color of lowest values."),
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 hasAlpha = true,
                 get = function()
@@ -283,34 +283,21 @@ function LBC_Settings._HitTab()
             trackNormalHits = {
                 type = "toggle",
                 order = 1,
-                name = LogBookCritics:i18n("Track normal hits"),
+                name = LogBookCritics:i18n("Normal hits"),
                 desc = LogBookCritics:i18n("Toggle tracking normal hits."),
-                width = 1.4,
+                width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackNormalHits end,
                 set = function(info, value)
                     LogBookCritics.db.char.general.critics.trackNormalHits = value
                 end,
             },
-            trackCriticalHits = {
-                type = "toggle",
-                order = 2,
-                name = LogBookCritics:i18n("Track critical hits"),
-                desc = LogBookCritics:i18n("Toggle tracking critical hits."),
-                width = 1.4,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackCriticalHits end,
-                set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackCriticalHits = value
-                end,
-            },
-            --------------------------------------------------------------------------------------------------
             hitNormalColor = {
                 type = "color",
-                order = 3,
-                name = LogBookCritics:i18n("Normal hits text color"),
+                order = 2,
+                name = LogBookCritics:i18n("Color"),
                 desc = LogBookCritics:i18n("Change color of normal hits text."),
-                width = 1.4,
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 hasAlpha = true,
                 get = function()
@@ -327,12 +314,25 @@ function LBC_Settings._HitTab()
                     LogBookCritics.db.char.general.critics.hitNormalColor.alpha = alpha
                 end
             },
+            --------------------------------------------------------------------------------------------------
+            trackCriticalHits = {
+                type = "toggle",
+                order = 3,
+                name = LogBookCritics:i18n("Critical hits"),
+                desc = LogBookCritics:i18n("Toggle tracking critical hits."),
+                width = 1,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackCriticalHits end,
+                set = function(info, value)
+                    LogBookCritics.db.char.general.critics.trackCriticalHits = value
+                end,
+            },
             hitCriticalColor = {
                 type = "color",
                 order = 4,
-                name = LogBookCritics:i18n("Critical hits text color"),
+                name = LogBookCritics:i18n("Color"),
                 desc = LogBookCritics:i18n("Change color of critical hits text."),
-                width = 1.4,
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 hasAlpha = true,
                 get = function()
@@ -353,34 +353,21 @@ function LBC_Settings._HitTab()
             trackHighestHits = {
                 type = "toggle",
                 order = 5,
-                name = LogBookCritics:i18n("Track highest values"),
-                desc = LogBookCritics:i18n("Toggles traking |cFF40E040highest|r hit values."),
-                width = 1.4,
+                name = LogBookCritics:i18n("Highest values"),
+                desc = LogBookCritics:i18n("Toggles traking highest hit values."),
+                width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackHighestHits end,
                 set = function(info, value)
                     LogBookCritics.db.char.general.critics.trackHighestHits = value
                 end,
             },
-            trackLowestHits = {
-                type = "toggle",
-                order = 6,
-                name = LogBookCritics:i18n("Track lowest values"),
-                desc = LogBookCritics:i18n("Toggles traking |cFFE04040lowest|r hit values."),
-                width = 1.4,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackLowestHits end,
-                set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackLowestHits = value
-                end,
-            },
-            --------------------------------------------------------------------------------------------------
             highestHitColor = {
                 type = "color",
-                order = 7,
-                name = LogBookCritics:i18n("Highest values color"),
-                desc = LogBookCritics:i18n("Change color of |cFF40E040highest|r values."),
-                width = 1.4,
+                order = 6,
+                name = LogBookCritics:i18n("Color"),
+                desc = LogBookCritics:i18n("Change color of highest values."),
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 hasAlpha = true,
                 get = function()
@@ -397,12 +384,25 @@ function LBC_Settings._HitTab()
                     LogBookCritics.db.char.general.critics.highestHitColor.alpha = alpha
                 end
             },
+            --------------------------------------------------------------------------------------------------
+            trackLowestHits = {
+                type = "toggle",
+                order = 7,
+                name = LogBookCritics:i18n("Lowest values"),
+                desc = LogBookCritics:i18n("Toggles traking lowest hit values."),
+                width = 1,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackLowestHits end,
+                set = function(info, value)
+                    LogBookCritics.db.char.general.critics.trackLowestHits = value
+                end,
+            },
             lowestHitColor = {
                 type = "color",
                 order = 8,
-                name = LogBookCritics:i18n("Lowest values color"),
-                desc = LogBookCritics:i18n("Change color of |cFFE04040lowest|r values."),
-                width = 1.4,
+                name = LogBookCritics:i18n("Color"),
+                desc = LogBookCritics:i18n("Change color of lowest values."),
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 hasAlpha = true,
                 get = function()
@@ -427,40 +427,27 @@ function LBC_Settings._SwingTab()
     return {
         type = "group",
         order = 4,
-        name = LogBookCritics:i18n("Weapon swings"),
+        name = LogBookCritics:i18n("Normal swings"),
         disabled =  function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
         args = {
             trackNormalSwings = {
                 type = "toggle",
                 order = 1,
-                name = LogBookCritics:i18n("Track normal swings"),
+                name = LogBookCritics:i18n("Normal swings"),
                 desc = LogBookCritics:i18n("Toggle tracking normal swings."),
-                width = 1.4,
+                width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackNormalSwings end,
                 set = function(info, value)
                     LogBookCritics.db.char.general.critics.trackNormalSwings = value
                 end,
             },
-            trackCriticalSwings = {
-                type = "toggle",
-                order = 2,
-                name = LogBookCritics:i18n("Track critical swings"),
-                desc = LogBookCritics:i18n("Toggle tracking critical swings."),
-                width = 1.4,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackCriticalSwings end,
-                set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackCriticalSwings = value
-                end,
-            },
-            --------------------------------------------------------------------------------------------------
             swingNormalColor = {
                 type = "color",
-                order = 3,
-                name = LogBookCritics:i18n("Normal swings text color"),
+                order = 2,
+                name = LogBookCritics:i18n("Color"),
                 desc = LogBookCritics:i18n("Change color of normal swings text."),
-                width = 1.4,
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
                 hasAlpha = true,
                 get = function()
@@ -477,12 +464,25 @@ function LBC_Settings._SwingTab()
                     LogBookCritics.db.char.general.critics.swingNormalColor.alpha = alpha
                 end
             },
+            --------------------------------------------------------------------------------------------------
+            trackCriticalSwings = {
+                type = "toggle",
+                order = 3,
+                name = LogBookCritics:i18n("Critical swings"),
+                desc = LogBookCritics:i18n("Toggle tracking critical swings."),
+                width = 1,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackCriticalSwings end,
+                set = function(info, value)
+                    LogBookCritics.db.char.general.critics.trackCriticalSwings = value
+                end,
+            },
             swingCriticalColor = {
                 type = "color",
                 order = 4,
-                name = LogBookCritics:i18n("Critical swings text color"),
+                name = LogBookCritics:i18n("Color"),
                 desc = LogBookCritics:i18n("Change color of critical swings text."),
-                width = 1.4,
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
                 hasAlpha = true,
                 get = function()
@@ -503,34 +503,21 @@ function LBC_Settings._SwingTab()
             trackHighestSwing = {
                 type = "toggle",
                 order = 5,
-                name = LogBookCritics:i18n("Track highest values"),
-                desc = LogBookCritics:i18n("Toggles traking |cFF40E040highest|r hit values."),
-                width = 1.4,
+                name = LogBookCritics:i18n("Highest values"),
+                desc = LogBookCritics:i18n("Toggles traking highest swing values."),
+                width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackHighestSwing end,
                 set = function(info, value)
                     LogBookCritics.db.char.general.critics.trackHighestSwing = value
                 end,
             },
-            trackLowestSwing = {
-                type = "toggle",
-                order = 6,
-                name = LogBookCritics:i18n("Track lowest values"),
-                desc = LogBookCritics:i18n("Toggles traking |cFFE04040lowest|r hit values."),
-                width = 1.4,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackLowestSwing end,
-                set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackLowestSwing = value
-                end,
-            },
-            --------------------------------------------------------------------------------------------------
             highestSwingColor = {
                 type = "color",
-                order = 7,
-                name = LogBookCritics:i18n("Highest values color"),
-                desc = LogBookCritics:i18n("Change color of |cFF40E040highest|r values."),
-                width = 1.4,
+                order = 6,
+                name = LogBookCritics:i18n("Color"),
+                desc = LogBookCritics:i18n("Change color of highest values."),
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
                 hasAlpha = true,
                 get = function()
@@ -547,12 +534,25 @@ function LBC_Settings._SwingTab()
                     LogBookCritics.db.char.general.critics.highestSwingColor.alpha = alpha
                 end
             },
+            --------------------------------------------------------------------------------------------------
+            trackLowestSwing = {
+                type = "toggle",
+                order = 7,
+                name = LogBookCritics:i18n("Lowest values"),
+                desc = LogBookCritics:i18n("Toggles traking lowest swing values."),
+                width = 1,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackLowestSwing end,
+                set = function(info, value)
+                    LogBookCritics.db.char.general.critics.trackLowestSwing = value
+                end,
+            },
             lowestSwingColor = {
                 type = "color",
                 order = 8,
-                name = LogBookCritics:i18n("Lowest values color"),
-                desc = LogBookCritics:i18n("Change color of |cFFE04040lowest|r values."),
-                width = 1.4,
+                name = LogBookCritics:i18n("Color"),
+                desc = LogBookCritics:i18n("Change color of lowest values."),
+                width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
                 hasAlpha = true,
                 get = function()

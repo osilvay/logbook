@@ -8,6 +8,8 @@ function LBC_SettingsDefaults:Load()
 				characters = {
 				},
 				spells = { -- all spells
+				},
+				locale = {
 				}
 			},
 			characters = {
@@ -22,24 +24,25 @@ function LBC_SettingsDefaults:Load()
 		char = {
 			general = {
 				critics = {
-					trackingEnabled = false,
-					trackHits = false,
-					trackHeals = false,
+					trackingEnabled = true,
+					trackHits = true,
+					trackHeals = true,
+					trackSwings = true,
 					
-					trackNormalHeals = false,
-					trackCriticHeals = false,
-					trackLowestHeals = false,
-					trackHighestHeals = false,
+					trackNormalHeals = true,
+					trackCriticHeals = true,
+					trackLowestHeals = true,
+					trackHighestHeals = true,
 
-					trackCriticalHits = false,
-					trackNormalHits = false,
-					trackLowestHits = false,
-					trackHighestHits = false,
+					trackCriticalHits = true,
+					trackNormalHits = true,
+					trackLowestHits = true,
+					trackHighestHits = true,
 
-					trackCriticalSwings = false,
-					trackNormalSwings = false,
-					trackLowestSwings = false,
-					trackHighestSwings = false,
+					trackCriticalSwings = true,
+					trackNormalSwings = true,
+					trackLowestSwings = true,
+					trackHighestSwings = true,
 
 					unlockTextFrame = false,
 					textFrameBgColorAlpha = 0,

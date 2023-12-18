@@ -81,6 +81,7 @@ end
 ---@param message string
 ---@return string string
 function LogBook:i18n(message)
+	LogBook.db.global.data.locale[message] = message
 	if L[message] ~= nil then
 		return tostring(L[message])
 	end

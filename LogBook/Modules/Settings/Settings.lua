@@ -31,7 +31,7 @@ function LB_Settings:Initialize()
 		---@type AceGUIFrame, AceGUIFrame
 		local logBookSettingsFrame = AceGUI:Create("Frame");
 		logBookSettingsFrame:Hide()
-		AceConfigDialog:SetDefaultSize("LogBook", 600, 520)
+		AceConfigDialog:SetDefaultSize("LogBook", 520, 520)
 		AceConfigDialog:Open("LogBook", logBookSettingsFrame) -- load the options into configFrame
 		logBookSettingsFrame:SetTitle("|cffffffffLog|r|cff57b6ffBook|r |cff57ff68v0.0.1|r")
 		logBookSettingsFrame:SetLayout("Fill")

@@ -36,7 +36,7 @@ function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
     filterContainer:SetFullWidth(true)
     filterContainer:SetWidth(500)
     filterContainer:SetHeight(140)
-    filterContainer:SetTitle("Filter")
+    filterContainer:SetTitle(LogBookCritics:i18n("Filter"))
     filterContainer:SetLayout("Flow")
     filterContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -40)
     parentFrame:AddChild(filterContainer)
@@ -62,7 +62,7 @@ function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
   --Separator
   ---@type AceGUILabel
   local separatorH1 = AceGUI:Create("Label")
-  separatorH1:SetRelativeWidth(0.1)
+  separatorH1:SetRelativeWidth(0.08)
   separatorH1:SetText("")
   filterContainer:AddChild(separatorH1)
 
@@ -99,7 +99,7 @@ function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
   --Separator
   ---@type AceGUILabel
   local separatorH2 = AceGUI:Create("Label")
-  separatorH2:SetRelativeWidth(0.1)
+  separatorH2:SetRelativeWidth(0.08)
   separatorH2:SetText("")
   filterContainer:AddChild(separatorH2)
 
