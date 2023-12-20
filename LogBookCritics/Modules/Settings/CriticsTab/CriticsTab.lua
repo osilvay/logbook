@@ -157,7 +157,12 @@ function LBC_Settings._HealTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HEAL_NORMAL"), true)
-                    LogBookCritics.db.char.general.critics.healNormalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.healNormalColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -190,7 +195,12 @@ function LBC_Settings._HealTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HEAL_CRITICAL"), true)
-                    LogBookCritics.db.char.general.critics.healCriticalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.healCriticalColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -223,7 +233,12 @@ function LBC_Settings._HealTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIGHEST_HEAL"), true)
-                    LogBookCritics.db.char.general.critics.highestHealColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.highestHealColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -256,7 +271,12 @@ function LBC_Settings._HealTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("LOWEST_HEAL"), true)
-                    LogBookCritics.db.char.general.critics.lowestHealColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.lowestHealColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -299,7 +319,12 @@ function LBC_Settings._HitTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIT_NORMAL"), true)
-                    LogBookCritics.db.char.general.critics.hitNormalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.hitNormalColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -332,7 +357,12 @@ function LBC_Settings._HitTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIT_CRITICAL"), true)
-                    LogBookCritics.db.char.general.critics.hitCriticalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.hitCriticalColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -365,7 +395,12 @@ function LBC_Settings._HitTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIGHEST_HIT"), true)
-                    LogBookCritics.db.char.general.critics.highestHitColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.highestHitColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -398,7 +433,12 @@ function LBC_Settings._HitTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("LOWEST_HIT"), true)
-                    LogBookCritics.db.char.general.critics.lowestHitColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.lowestHitColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -441,7 +481,12 @@ function LBC_Settings._AttackTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("ATTACK_NORMAL"), true)
-                    LogBookCritics.db.char.general.critics.attackNormalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.attackNormalColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -474,7 +519,12 @@ function LBC_Settings._AttackTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("ATTACK_CRITICAL"), true)
-                    LogBookCritics.db.char.general.critics.attackCriticalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.attackCriticalColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -507,7 +557,12 @@ function LBC_Settings._AttackTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIGHEST_ATTACK"), true)
-                    LogBookCritics.db.char.general.critics.highestAttackColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.highestAttackColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
@@ -540,7 +595,12 @@ function LBC_Settings._AttackTab()
                 hasAlpha = true,
                 get = function()
                     local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("LOWEST_ATTACK"), true)
-                    LogBookCritics.db.char.general.critics.lowestAttackColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    LogBookCritics.db.char.general.critics.lowestAttackColor = {
+                        red = rgb.r,
+                        green = rgb.g,
+                        blue = rgb.b,
+                        alpha = rgb.a
+                    }
                     return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
