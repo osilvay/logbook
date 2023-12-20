@@ -21,7 +21,6 @@ function _LBC_EventHandler:PlayerLogin()
   end
 
   do
-    LogBookCritics.db.global.data.locale = {}
     LogBookCritics.db.global.data.characters[LogBookCritics.key] = true
     if LogBookCritics.db.global.characters[LogBookCritics.key] == nil then
       LogBookCritics.db.global.characters[LogBookCritics.key] = {

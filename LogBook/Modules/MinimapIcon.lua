@@ -80,8 +80,8 @@ function _LB_MinimapIcon:CreateDataBrokerObject()
 
         OnTooltipShow = function(tooltip)
             tooltip:AddLine("|cffffffffLog|r|cff57b6ffBook|r")
-            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED_COLOR"), LogBook:i18n("Left Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open settings window")));
-            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED_COLOR"), LogBook:i18n("Right Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open critics window")));
+            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:i18n("Left Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open settings window")));
+            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:i18n("Right Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open critics window")));
         end,
     });
 

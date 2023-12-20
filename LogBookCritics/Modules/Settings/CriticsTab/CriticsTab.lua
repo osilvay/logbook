@@ -7,6 +7,9 @@ local LBC_SettingsDefaults = LB_ModuleLoader:ImportModule("LBC_SettingsDefaults"
 ---@type LB_CustomFrames
 local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames");
 
+---@type LB_CustomColors
+local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors");
+
 ---@type LBC_SplashCriticsWindow
 local LBC_SplashCriticsWindow = LB_ModuleLoader:ImportModule("LBC_SplashCriticsWindow");
 
@@ -34,7 +37,7 @@ function LBC_Settings:Initialize()
                         type = "toggle",
                         order = 1,
                         name = LogBookCritics:i18n("Enable tracking"),
-                        desc = LogBookCritics:i18n("Toggles tracking hits and heals."),
+                        desc = LogBookCritics:i18n("Toggle tracking hits and heals."),
                         width = 1.2,
                         disabled = false,
                         get = function() return LogBookCritics.db.char.general.critics.trackingEnabled end,
@@ -43,9 +46,11 @@ function LBC_Settings:Initialize()
                             if not value then
                                 LogBookCritics.db.char.general.critics.trackHeals = false
                                 LogBookCritics.db.char.general.critics.trackHits = false
+                                LogBookCritics.db.char.general.critics.trackAttacks = false
                             else
                                 LogBookCritics.db.char.general.critics.trackHeals = true
                                 LogBookCritics.db.char.general.critics.trackHits = true
+                                LogBookCritics.db.char.general.critics.trackAttacks = true
                             end
                         end,
                     },
@@ -93,16 +98,16 @@ function LBC_Settings:Initialize()
                             LogBookCritics.db.char.general.critics.trackHits = value
                         end,
                     },
-                    trackSwings = {
+                    trackAttacks = {
                         type = "toggle",
                         order = 4,
-                        name = LogBookCritics:i18n("Tracking swings"),
-                        desc = LogBookCritics:i18n("Toggle tracking swings."),
+                        name = LogBookCritics:i18n("Tracking attacks"),
+                        desc = LogBookCritics:i18n("Toggle tracking attacks."),
                         width = 1.2,
                         disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
-                        get = function() return LogBookCritics.db.char.general.critics.trackSwings end,
+                        get = function() return LogBookCritics.db.char.general.critics.trackAttacks end,
                         set = function(info, value)
-                            LogBookCritics.db.char.general.critics.trackSwings = value
+                            LogBookCritics.db.char.general.critics.trackAttacks = value
                         end,
                     },
 
@@ -115,7 +120,7 @@ function LBC_Settings:Initialize()
                 args = {
                     hit_tab = LBC_Settings._HitTab(),
                     heal_tab = LBC_Settings._HealTab(),
-                    swing_tab = LBC_Settings._SwingTab()
+                    attack_tab = LBC_Settings._AttackTab()
                 }
             },
         },
@@ -151,17 +156,15 @@ function LBC_Settings._HealTab()
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.healNormalColor.red
-                    local green = LogBookCritics.db.char.general.critics.healNormalColor.green
-                    local blue = LogBookCritics.db.char.general.critics.healNormalColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.healNormalColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HEAL_NORMAL"), true)
+                    LogBookCritics.db.char.general.critics.healNormalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.healNormalColor.red = red
-                    LogBookCritics.db.char.general.critics.healNormalColor.green = green
-                    LogBookCritics.db.char.general.critics.healNormalColor.blue = blue
-                    LogBookCritics.db.char.general.critics.healNormalColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.healNormalColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.healNormalColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.healNormalColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.healNormalColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
             --------------------------------------------------------------------------------------------------
@@ -186,17 +189,15 @@ function LBC_Settings._HealTab()
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.healCriticalColor.red
-                    local green = LogBookCritics.db.char.general.critics.healCriticalColor.green
-                    local blue = LogBookCritics.db.char.general.critics.healCriticalColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.healCriticalColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HEAL_CRITICAL"), true)
+                    LogBookCritics.db.char.general.critics.healCriticalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.healCriticalColor.red = red
-                    LogBookCritics.db.char.general.critics.healCriticalColor.green = green
-                    LogBookCritics.db.char.general.critics.healCriticalColor.blue = blue
-                    LogBookCritics.db.char.general.critics.healCriticalColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.healCriticalColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.healCriticalColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.healCriticalColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.healCriticalColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
             --------------------------------------------------------------------------------------------------
@@ -204,7 +205,7 @@ function LBC_Settings._HealTab()
                 type = "toggle",
                 order = 5,
                 name = LogBookCritics:i18n("Highest values"),
-                desc = LogBookCritics:i18n("Toggles traking highest healing values."),
+                desc = LogBookCritics:i18n("Toggle traking highest healing values."),
                 width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackHighestHeals end,
@@ -216,22 +217,20 @@ function LBC_Settings._HealTab()
                 type = "color",
                 order = 6,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of highest values."),
+                desc = LogBookCritics:i18n("Change color of highest healing values."),
                 width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.highestHealColor.red
-                    local green = LogBookCritics.db.char.general.critics.highestHealColor.green
-                    local blue = LogBookCritics.db.char.general.critics.highestHealColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.highestHealColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIGHEST_HEAL"), true)
+                    LogBookCritics.db.char.general.critics.highestHealColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.highestHealColor.red = red
-                    LogBookCritics.db.char.general.critics.highestHealColor.green = green
-                    LogBookCritics.db.char.general.critics.highestHealColor.blue = blue
-                    LogBookCritics.db.char.general.critics.highestHealColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.highestHealColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.highestHealColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.highestHealColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.highestHealColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
             --------------------------------------------------------------------------------------------------
@@ -239,7 +238,7 @@ function LBC_Settings._HealTab()
                 type = "toggle",
                 order = 7,
                 name = LogBookCritics:i18n("Lowest values"),
-                desc = LogBookCritics:i18n("Toggles traking lowest healing values."),
+                desc = LogBookCritics:i18n("Toggle traking lowest healing values."),
                 width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackLowestHeals end,
@@ -251,22 +250,20 @@ function LBC_Settings._HealTab()
                 type = "color",
                 order = 8,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of lowest values."),
+                desc = LogBookCritics:i18n("Change color of lowest healing values."),
                 width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.lowestHealColor.red
-                    local green = LogBookCritics.db.char.general.critics.lowestHealColor.green
-                    local blue = LogBookCritics.db.char.general.critics.lowestHealColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.lowestHealColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("LOWEST_HEAL"), true)
+                    LogBookCritics.db.char.general.critics.lowestHealColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.lowestHealColor.red = red
-                    LogBookCritics.db.char.general.critics.lowestHealColor.green = green
-                    LogBookCritics.db.char.general.critics.lowestHealColor.blue = blue
-                    LogBookCritics.db.char.general.critics.lowestHealColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.lowestHealColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.lowestHealColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.lowestHealColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.lowestHealColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
         },
@@ -283,8 +280,8 @@ function LBC_Settings._HitTab()
             trackNormalHits = {
                 type = "toggle",
                 order = 1,
-                name = LogBookCritics:i18n("Normal hits"),
-                desc = LogBookCritics:i18n("Toggle tracking normal hits."),
+                name = LogBookCritics:i18n("Normal damage"),
+                desc = LogBookCritics:i18n("Toggle tracking normal damage."),
                 width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackNormalHits end,
@@ -296,30 +293,28 @@ function LBC_Settings._HitTab()
                 type = "color",
                 order = 2,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of normal hits text."),
+                desc = LogBookCritics:i18n("Change color of normal damage text."),
                 width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.hitNormalColor.red
-                    local green = LogBookCritics.db.char.general.critics.hitNormalColor.green
-                    local blue = LogBookCritics.db.char.general.critics.hitNormalColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.hitNormalColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIT_NORMAL"), true)
+                    LogBookCritics.db.char.general.critics.hitNormalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.hitNormalColor.red = red
-                    LogBookCritics.db.char.general.critics.hitNormalColor.green = green
-                    LogBookCritics.db.char.general.critics.hitNormalColor.blue = blue
-                    LogBookCritics.db.char.general.critics.hitNormalColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.hitNormalColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.hitNormalColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.hitNormalColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.hitNormalColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
             --------------------------------------------------------------------------------------------------
             trackCriticalHits = {
                 type = "toggle",
                 order = 3,
-                name = LogBookCritics:i18n("Critical hits"),
-                desc = LogBookCritics:i18n("Toggle tracking critical hits."),
+                name = LogBookCritics:i18n("Critical damage"),
+                desc = LogBookCritics:i18n("Toggle tracking critical damage."),
                 width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackCriticalHits end,
@@ -331,22 +326,20 @@ function LBC_Settings._HitTab()
                 type = "color",
                 order = 4,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of critical hits text."),
+                desc = LogBookCritics:i18n("Change color of critical damage text."),
                 width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.hitCriticalColor.red
-                    local green = LogBookCritics.db.char.general.critics.hitCriticalColor.green
-                    local blue = LogBookCritics.db.char.general.critics.hitCriticalColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.hitCriticalColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIT_CRITICAL"), true)
+                    LogBookCritics.db.char.general.critics.hitCriticalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.hitCriticalColor.red = red
-                    LogBookCritics.db.char.general.critics.hitCriticalColor.green = green
-                    LogBookCritics.db.char.general.critics.hitCriticalColor.blue = blue
-                    LogBookCritics.db.char.general.critics.hitCriticalColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.hitCriticalColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.hitCriticalColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.hitCriticalColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.hitCriticalColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
             --------------------------------------------------------------------------------------------------
@@ -354,7 +347,7 @@ function LBC_Settings._HitTab()
                 type = "toggle",
                 order = 5,
                 name = LogBookCritics:i18n("Highest values"),
-                desc = LogBookCritics:i18n("Toggles traking highest hit values."),
+                desc = LogBookCritics:i18n("Toggle traking highest damage values."),
                 width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackHighestHits end,
@@ -366,22 +359,20 @@ function LBC_Settings._HitTab()
                 type = "color",
                 order = 6,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of highest values."),
+                desc = LogBookCritics:i18n("Change color of highest damage values."),
                 width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.highestHitColor.red
-                    local green = LogBookCritics.db.char.general.critics.highestHitColor.green
-                    local blue = LogBookCritics.db.char.general.critics.highestHitColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.highestHitColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIGHEST_HIT"), true)
+                    LogBookCritics.db.char.general.critics.highestHitColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.highestHitColor.red = red
-                    LogBookCritics.db.char.general.critics.highestHitColor.green = green
-                    LogBookCritics.db.char.general.critics.highestHitColor.blue = blue
-                    LogBookCritics.db.char.general.critics.highestHitColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.highestHitColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.highestHitColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.highestHitColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.highestHitColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
             --------------------------------------------------------------------------------------------------
@@ -389,7 +380,7 @@ function LBC_Settings._HitTab()
                 type = "toggle",
                 order = 7,
                 name = LogBookCritics:i18n("Lowest values"),
-                desc = LogBookCritics:i18n("Toggles traking lowest hit values."),
+                desc = LogBookCritics:i18n("Toggle traking lowest damage values."),
                 width = 1,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 get = function() return LogBookCritics.db.char.general.critics.trackLowestHits end,
@@ -401,172 +392,162 @@ function LBC_Settings._HitTab()
                 type = "color",
                 order = 8,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of lowest values."),
+                desc = LogBookCritics:i18n("Change color of lowest damage values."),
                 width = 0.5,
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.lowestHitColor.red
-                    local green = LogBookCritics.db.char.general.critics.lowestHitColor.green
-                    local blue = LogBookCritics.db.char.general.critics.lowestHitColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.lowestHitColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("LOWEST_HIT"), true)
+                    LogBookCritics.db.char.general.critics.lowestHitColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.lowestHitColor.red = red
-                    LogBookCritics.db.char.general.critics.lowestHitColor.green = green
-                    LogBookCritics.db.char.general.critics.lowestHitColor.blue = blue
-                    LogBookCritics.db.char.general.critics.lowestHitColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.lowestHitColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.lowestHitColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.lowestHitColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.lowestHitColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
         },
     }
 end
 
-function LBC_Settings._SwingTab()
+function LBC_Settings._AttackTab()
     return {
         type = "group",
         order = 4,
-        name = LogBookCritics:i18n("Normal swings"),
-        disabled =  function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
+        name = LogBookCritics:i18n("White hits"),
+        disabled =  function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
         args = {
-            trackNormalSwings = {
+            trackNormalAttacks = {
                 type = "toggle",
                 order = 1,
-                name = LogBookCritics:i18n("Normal swings"),
-                desc = LogBookCritics:i18n("Toggle tracking normal swings."),
+                name = LogBookCritics:i18n("Normal white hits"),
+                desc = LogBookCritics:i18n("Toggle tracking normal white hits."),
                 width = 1,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackNormalSwings end,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackNormalAttacks end,
                 set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackNormalSwings = value
+                    LogBookCritics.db.char.general.critics.trackNormalAttacks = value
                 end,
             },
-            swingNormalColor = {
+            attackNormalColor = {
                 type = "color",
                 order = 2,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of normal swings text."),
+                desc = LogBookCritics:i18n("Change color of normal white hits text."),
                 width = 0.5,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.swingNormalColor.red
-                    local green = LogBookCritics.db.char.general.critics.swingNormalColor.green
-                    local blue = LogBookCritics.db.char.general.critics.swingNormalColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.swingNormalColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("ATTACK_NORMAL"), true)
+                    LogBookCritics.db.char.general.critics.attackNormalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.swingNormalColor.red = red
-                    LogBookCritics.db.char.general.critics.swingNormalColor.green = green
-                    LogBookCritics.db.char.general.critics.swingNormalColor.blue = blue
-                    LogBookCritics.db.char.general.critics.swingNormalColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.attackNormalColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.attackNormalColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.attackNormalColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.attackNormalColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
             --------------------------------------------------------------------------------------------------
-            trackCriticalSwings = {
+            trackCriticalAttacks = {
                 type = "toggle",
                 order = 3,
-                name = LogBookCritics:i18n("Critical swings"),
-                desc = LogBookCritics:i18n("Toggle tracking critical swings."),
+                name = LogBookCritics:i18n("Critical white hits"),
+                desc = LogBookCritics:i18n("Toggle tracking critical white hits."),
                 width = 1,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackCriticalSwings end,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackCriticalAttacks end,
                 set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackCriticalSwings = value
+                    LogBookCritics.db.char.general.critics.trackCriticalAttacks = value
                 end,
             },
-            swingCriticalColor = {
+            attackCriticalColor = {
                 type = "color",
                 order = 4,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of critical swings text."),
+                desc = LogBookCritics:i18n("Change color of critical white hits text."),
                 width = 0.5,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.swingCriticalColor.red
-                    local green = LogBookCritics.db.char.general.critics.swingCriticalColor.green
-                    local blue = LogBookCritics.db.char.general.critics.swingCriticalColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.swingCriticalColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("ATTACK_CRITICAL"), true)
+                    LogBookCritics.db.char.general.critics.attackCriticalColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.swingCriticalColor.red = red
-                    LogBookCritics.db.char.general.critics.swingCriticalColor.green = green
-                    LogBookCritics.db.char.general.critics.swingCriticalColor.blue = blue
-                    LogBookCritics.db.char.general.critics.swingCriticalColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.attackCriticalColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.attackCriticalColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.attackCriticalColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.attackCriticalColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
             --------------------------------------------------------------------------------------------------
-            trackHighestSwing = {
+            trackHighestAttacks = {
                 type = "toggle",
                 order = 5,
                 name = LogBookCritics:i18n("Highest values"),
-                desc = LogBookCritics:i18n("Toggles traking highest swing values."),
+                desc = LogBookCritics:i18n("Toggle traking highest white hits values."),
                 width = 1,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackHighestSwing end,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackHighestAttacks end,
                 set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackHighestSwing = value
+                    LogBookCritics.db.char.general.critics.trackHighestAttacks = value
                 end,
             },
-            highestSwingColor = {
+            highestAttackColor = {
                 type = "color",
                 order = 6,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of highest values."),
+                desc = LogBookCritics:i18n("Change color of highest white hits values."),
                 width = 0.5,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.highestSwingColor.red
-                    local green = LogBookCritics.db.char.general.critics.highestSwingColor.green
-                    local blue = LogBookCritics.db.char.general.critics.highestSwingColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.highestSwingColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("HIGHEST_ATTACK"), true)
+                    LogBookCritics.db.char.general.critics.highestAttackColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.highestSwingColor.red = red
-                    LogBookCritics.db.char.general.critics.highestSwingColor.green = green
-                    LogBookCritics.db.char.general.critics.highestSwingColor.blue = blue
-                    LogBookCritics.db.char.general.critics.highestSwingColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.highestAttackColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.highestAttackColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.highestAttackColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.highestAttackColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
             --------------------------------------------------------------------------------------------------
-            trackLowestSwing = {
+            trackLowestAttacks = {
                 type = "toggle",
                 order = 7,
                 name = LogBookCritics:i18n("Lowest values"),
-                desc = LogBookCritics:i18n("Toggles traking lowest swing values."),
+                desc = LogBookCritics:i18n("Toggle traking lowest white hits values."),
                 width = 1,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
-                get = function() return LogBookCritics.db.char.general.critics.trackLowestSwing end,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
+                get = function() return LogBookCritics.db.char.general.critics.trackLowestAttacks end,
                 set = function(info, value)
-                    LogBookCritics.db.char.general.critics.trackLowestSwing = value
+                    LogBookCritics.db.char.general.critics.trackLowestAttacks = value
                 end,
             },
-            lowestSwingColor = {
+            lowestAttackColor = {
                 type = "color",
                 order = 8,
                 name = LogBookCritics:i18n("Color"),
-                desc = LogBookCritics:i18n("Change color of lowest values."),
+                desc = LogBookCritics:i18n("Change color of lowest white hits values."),
                 width = 0.5,
-                disabled = function() return (not LogBookCritics.db.char.general.critics.trackSwings); end,
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
                 hasAlpha = true,
                 get = function()
-                    local red = LogBookCritics.db.char.general.critics.lowestSwingColor.red
-                    local green = LogBookCritics.db.char.general.critics.lowestSwingColor.green
-                    local blue = LogBookCritics.db.char.general.critics.lowestSwingColor.blue
-                    local alpha = LogBookCritics.db.char.general.critics.lowestSwingColor.alpha
-                    return red, green, blue, alpha
+                    local rgb = LB_CustomColors:HexToRgb(LB_CustomColors:CustomColors("LOWEST_ATTACK"), true)
+                    LogBookCritics.db.char.general.critics.lowestAttackColor = {rgb.r, rgb.g, rgb.b, rgb.a}
+                    return rgb.r, rgb.g, rgb.b, rgb.a
                 end,
                 set = function(_, red, green, blue, alpha)
-                    LogBookCritics.db.char.general.critics.lowestSwingColor.red = red
-                    LogBookCritics.db.char.general.critics.lowestSwingColor.green = green
-                    LogBookCritics.db.char.general.critics.lowestSwingColor.blue = blue
-                    LogBookCritics.db.char.general.critics.lowestSwingColor.alpha = alpha
+                    LogBookCritics.db.char.general.critics.lowestAttackColor.red = tonumber(string.format("%.3f", red))
+                    LogBookCritics.db.char.general.critics.lowestAttackColor.green = tonumber(string.format("%.3f", green))
+                    LogBookCritics.db.char.general.critics.lowestAttackColor.blue = tonumber(string.format("%.3f", blue))
+                    LogBookCritics.db.char.general.critics.lowestAttackColor.alpha = tonumber(string.format("%.3f", alpha))
                 end
             },
         },

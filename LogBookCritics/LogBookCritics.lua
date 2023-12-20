@@ -12,18 +12,47 @@ local L = LibStub("AceLocale-3.0"):GetLocale("LogBookCritics")
 function LogBookCritics:OnInitialize()
 	--LogBook:Debug(LogBookCritics:i18n("Initializing critics module"))
 	LogBookCritics.db = LibStub("AceDB-3.0"):New("LogBookCriticsDB", LBC_SettingsDefaults:Load(), true)
-	LogBookCritics.key = UnitName("player").." - "..GetRealmName()
+	LogBookCritics.key = UnitName("player") .. " - " .. GetRealmName()
+	LogBookCritics.db.global.data.locale["esUS"] = nil
 	LBC_EventHandler:StartCriticsModuleEvents()
 end
 
 ---@param message string
 ---@return string string
 function LogBookCritics:i18n(message)
-	if not LB_CustomFunctions:TableHasValue(L, message) then
-		LogBookCritics.db.global.data.locale[message] = message
+	local locale = GetLocale()
+	if LogBookCritics.db.global.data.locale[locale] == nil then
+		LogBookCritics.db.global.data.locale[locale] = {
+			old = {
+			},
+			new = {
+			}
+		}
 	end
-	if L[message] ~= nil then
-		return tostring(L[message])
+	if LogBookCritics.db.global.data.locale["esUS"] == nil then
+		LogBookCritics.db.global.data.locale["esUS"] = {
+			all = {
+			},
+		}
 	end
-	return message
+	
+	LogBookCritics.db.global.data.locale[locale].old = L
+	local oldLocales = LogBookCritics.db.global.data.locale[locale].old
+	table.sort(oldLocales, function(a, b)
+		return a:lower() < b:lower()
+	end)
+
+	LogBookCritics.db.global.data.locale[locale].old = oldLocales
+	LogBookCritics.db.global.data.locale["esUS"].all[message] = true
+
+	if not LB_CustomFunctions:TableHasKey(L, message) then
+		LogBookCritics.db.global.data.locale[locale].new[message] = message
+	end
+
+	local newLocales = LB_CustomFunctions:SyncTableEntries(LogBookCritics.db.global.data.locale[locale].new,
+		LogBookCritics.db.global.data.locale[locale].old)
+
+	table.sort(newLocales, function(v1, v2) return v1 < v2 end)
+	LogBookCritics.db.global.data.locale[locale].new = newLocales
+	return tostring(L[message])
 end

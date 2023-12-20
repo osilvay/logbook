@@ -149,7 +149,7 @@ function LBC_CriticsFilter:CreateCharactersDropdown()
       end
     end
   end
-  table.sort(r, function(k1, k2) return k1.order < k2.order end)
+  --table.sort(r, function(k1, k2) return k1.order > k2.order end)
   r["all"] = LogBookCritics:i18n("All")
   return r
 end

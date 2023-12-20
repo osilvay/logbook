@@ -32,6 +32,7 @@
     "AddonCompartmentFrame",
     "class",
     "message",
-    "ADDON_LOAD_FAILED"
+    "ADDON_LOAD_FAILED",
+    "ATTACK"
   ]
 }

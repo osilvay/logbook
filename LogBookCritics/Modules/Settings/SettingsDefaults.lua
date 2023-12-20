@@ -9,8 +9,6 @@ function LBC_SettingsDefaults:Load()
 				},
 				spells = { -- all spells
 				},
-				locale = {
-				}
 			},
 			characters = {
 				char = {
@@ -27,23 +25,19 @@ function LBC_SettingsDefaults:Load()
 					trackingEnabled = true,
 					trackHits = true,
 					trackHeals = true,
-					trackSwings = true,
-					
+					trackAttacks = true,
 					trackNormalHeals = true,
 					trackCriticHeals = true,
 					trackLowestHeals = true,
 					trackHighestHeals = true,
-
 					trackCriticalHits = true,
 					trackNormalHits = true,
 					trackLowestHits = true,
 					trackHighestHits = true,
-
-					trackCriticalSwings = true,
-					trackNormalSwings = true,
-					trackLowestSwings = true,
-					trackHighestSwings = true,
-
+					trackCriticalAttacks = true,
+					trackNormalAttacks = true,
+					trackLowestAttacks = true,
+					trackHighestAttacks = true,
 					unlockTextFrame = false,
 					textFrameBgColorAlpha = 0,
 					splashFrameOffset = {
@@ -51,81 +45,29 @@ function LBC_SettingsDefaults:Load()
 						yOffset = 200
 					},
 					lowestHitColor = {
-						red = 0.886,
-						green = 0.250,
-						blue = 0.250,
-						alpha = 1,
 					},
 					highestHitColor = {
-						red = 0.250,
-						green = 0.886,
-						blue = 0.337,
-						alpha = 1,
 					},
 					lowestHealColor = {
-						red = 0.886,
-						green = 0.250,
-						blue = 0.250,
-						alpha = 1,
 					},
 					highestHealColor = {
-						red = 0.250,
-						green = 0.886,
-						blue = 0.337,
-						alpha = 1,
 					},
-
-					lowestSwingColor = {
-						red = 0.886,
-						green = 0.250,
-						blue = 0.250,
-						alpha = 1,
+					lowestAttackColor = {
 					},
-					highestSwingColor = {
-						red = 0.250,
-						green = 0.886,
-						blue = 0.337,
-						alpha = 1,
+					highestAttackColor = {
 					},
-
 					hitCriticalColor = {
-						red = 0.960,
-						green = 0.913,
-						blue = 0.121,
-						alpha = 1,
 					},
 					hitNormalColor = {
-						red = 1,
-						green = 0.960,
-						blue = 0.600,
-						alpha = 1,
 					},
 					healCriticalColor = {
-						red = 0.313,
-						green = 0.941,
-						blue = 0.121,
-						alpha = 1,
 					},
 					healNormalColor = {
-						red = 0.694,
-						green = 1,
-						blue = 0.6,
-						alpha = 1,
 					},
-
-					swingCriticalColor = {
-						red = 0.760,
-						green = 0.760,
-						blue = 0.860,
-						alpha = 1,
+					attackCriticalColor = {
 					},
-					swingNormalColor = {
-						red = 0.560,
-						green = 0.560,
-						blue = 0.660,
-						alpha = 1,
+					attackNormalColor = {
 					},
-
 					filter = {
 						search_criteria = "",
 						select_character = "all",

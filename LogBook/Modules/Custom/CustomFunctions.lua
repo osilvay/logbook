@@ -36,16 +36,58 @@ function LB_CustomFunctions:RemoveDuplicationsInTable(currentTable)
 end
 
 ---Check if table contains value
----@param tab table
----@param val string
+---@param table table
+---@param value string
 ---@return boolean
-function LB_CustomFunctions:TableHasValue(tab, val)
-    for _, value in ipairs(tab) do
-        if value == val then
-            return true
+function LB_CustomFunctions:TableHasValue(table, value)
+    local f = false
+    for k, v in pairs(table) do
+        if table[k] == value then
+            f = true
+            break
         end
     end
-    return false
+    return f
+end
+
+---Check if table contains key
+---@param table table
+---@param key string
+---@return boolean
+function LB_CustomFunctions:TableHasKey(table, key)
+    local f = false
+    for k, _ in pairs(table) do
+        if k == key then
+            f = true
+            break
+        end
+    end
+    return f
+end
+
+---Count table entries
+---@param table table
+---@return number
+function LB_CustomFunctions:CountTableEntries(table)
+    local f = 0
+    for _, v in pairs(table) do
+        f = f + 1
+    end
+    return f
+end
+
+---Synchronize two tables
+---@param table1 table
+---@param table2 table
+---@return table
+function LB_CustomFunctions:SyncTableEntries(table1, table2)
+    local r = {}
+    for k, v in pairs(table1) do
+		if not LB_CustomFunctions:TableHasKey(table2, k) then
+			r[k] = v
+		end
+	end
+    return r
 end
 
 local _optionsTimer = nil;

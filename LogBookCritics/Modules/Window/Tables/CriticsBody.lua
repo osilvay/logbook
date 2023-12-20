@@ -16,8 +16,6 @@ local LBC_CriticsFilter = LB_ModuleLoader:ImportModule("LBC_CriticsFilter")
 ---@type LBC_CriticsWindow
 local LBC_CriticsWindow = LB_ModuleLoader:ImportModule("LBC_CriticsWindow")
 
-
-
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
 local bodyContainer
@@ -58,7 +56,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 			label:SetWidth(header.width)
 			label:SetHeight(header.height)
 			label:SetText(header.text)
-			local rgb = LB_CustomColors:HexToRgb(header.color)
+			local rgb = LB_CustomColors:HexToRgb(header.color, false)
 			label:SetColor(rgb.r, rgb.g, rgb.b)
 			label:SetPoint("LEFT", bodyContainer.frame, "LEFT", currentPositionX, 0)
 			label:SetCallback("OnEnter", function()
@@ -131,7 +129,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 			spellIDLabel:SetWidth(60)
 			spellIDLabel:SetHeight(80)
 			spellIDLabel:SetPoint("LEFT", rowContainer.frame, "LEFT", 0, -50)
-			spellIDLabel:SetText(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("SPELLID_COLOR"), spellDetails.spellID))
+			spellIDLabel:SetText(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("SPELLID"), spellDetails.spellID))
 			spellIDLabel:SetColor(224, 224, 224)
 			rowContainer:AddChild(spellIDLabel)
 
@@ -202,29 +200,22 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 			-- normal
 			local normalLowestValue, normalHighestValue = "", ""
 			if spellValues.isHeal then
-				normalLowestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("LOWEST_COLOR"), spellValues
-					.lowestHeal)
-				normalHighestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHEST_COLOR"),
-					spellValues.highestHeal)
+				normalLowestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("LOWEST_HEAL"), spellValues.lowestHeal)
+				normalHighestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHEST_HEAL"), spellValues.highestHeal)
 				if spellValues.lowestHeal == 0 then
-					normalLowestValue = LB_CustomColors:Colorize(
-						LB_CustomColors:CustomColors("UNDEFINED_COLOR"), "-")
+					normalLowestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED"), "-")
 				end
 				if spellValues.highestHeal == 0 then
-					normalHighestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED_COLOR"),
-						"-")
+					normalHighestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED"), "-")
 				end
 			else
-				normalLowestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("LOWEST_COLOR"), spellValues.lowestHit)
-				normalHighestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHEST_COLOR"),
-					spellValues.highestHit)
+				normalLowestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("LOWEST_HEAL"), spellValues.lowestHit)
+				normalHighestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHEST_HEAL"), spellValues.highestHit)
 				if spellValues.lowestHit == 0 then
-					normalLowestValue = LB_CustomColors:Colorize(
-						LB_CustomColors:CustomColors("UNDEFINED_COLOR"), "-")
+					normalLowestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED"), "-")
 				end
 				if spellValues.highestHit == 0 then
-					normalHighestValue = LB_CustomColors:Colorize(
-						LB_CustomColors:CustomColors("UNDEFINED_COLOR"), "-")
+					normalHighestValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED"), "-")
 				end
 			end
 
@@ -240,30 +231,22 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 			-- critical
 			local normalLowestCritValue, normalHighestCritValue = "", ""
 			if spellValues.isHeal then
-				normalLowestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("LOWEST_COLOR"),
-					spellValues.lowestHealCrit)
-				normalHighestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHEST_COLOR"),
-					spellValues.highestHealCrit)
+				normalLowestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("LOWEST_HIT"), spellValues.lowestHealCrit)
+				normalHighestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHEST_HIT"), spellValues.highestHealCrit)
 				if spellValues.lowestHealCrit == 0 then
-					normalLowestCritValue = LB_CustomColors:Colorize(
-						LB_CustomColors:CustomColors("UNDEFINED_COLOR"), "-")
+					normalLowestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED"), "-")
 				end
 				if spellValues.highestHealCrit == 0 then
-					normalHighestCritValue = LB_CustomColors:Colorize(
-						LB_CustomColors:CustomColors("UNDEFINED_COLOR"), "-")
+					normalHighestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED"), "-")
 				end
 			else
-				normalLowestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("LOWEST_COLOR"),
-					spellValues.lowestHitCrit)
-				normalHighestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHEST_COLOR"),
-					spellValues.highestHitCrit)
+				normalLowestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("LOWEST_HEAL"), spellValues.lowestHitCrit)
+				normalHighestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHEST_HEAL"), spellValues.highestHitCrit)
 				if spellValues.lowestHitCrit == 0 then
-					normalLowestCritValue = LB_CustomColors:Colorize(
-						LB_CustomColors:CustomColors("UNDEFINED_COLOR"), "-")
+					normalLowestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED"), "-")
 				end
 				if spellValues.highestHitCrit == 0 then
-					normalHighestCritValue = LB_CustomColors:Colorize(
-						LB_CustomColors:CustomColors("UNDEFINED_COLOR"), "-")
+					normalHighestCritValue = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED"), "-")
 				end
 			end
 

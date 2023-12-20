@@ -1,0 +1,408 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: LogBookCritics\n"
+"POT-Creation-Date: 2023-12-20 16:43+0100\n"
+"PO-Revision-Date: 2023-12-20 16:58+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.3.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: Modules/Init.lua:19 Modules/Settings/CriticsTab/CriticsTab.lua:69
+#: Modules/Settings/CriticsTab/CriticsTab.lua:72
+#: Modules/Window/SplashCriticsWindow.lua:85
+msgid "Test message"
+msgstr "Mensaje de prueba"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:21
+msgid "Critics"
+msgstr "Críticos"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:28
+msgid "Critics settings"
+msgstr "Configuración de criticos"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:34
+msgid "Tracking"
+msgstr "Seguimiento"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:39
+msgid "Enable tracking"
+msgstr "Habilitar seguimiento"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:40
+msgid "Toggle tracking hits and heals."
+msgstr "Alterna el seguimiento de daños y sanaciones."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:61
+msgid "Unlock text frame"
+msgstr "Desbloquear marco de texto"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:62
+msgid "Toggle text frame lock."
+msgstr "Alterna el bloqueo del marco de texto."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:79
+msgid "Tracking heals"
+msgstr "Seguimiento de sanaciones"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:80
+msgid "Toggle tracking heals."
+msgstr "Alterna el seguimiento de sanaciones."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:92
+msgid "Tracking hits"
+msgstr "Seguimiento de daños"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:93
+msgid "Toggle tracking hits."
+msgstr "Alterna el seguimiento de daños."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:104
+msgid "Tracking attacks"
+msgstr "Seguimientos de golpes blancos"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:105
+msgid "Toggle tracking attacks."
+msgstr "Alterna el seguimiento de golpes blancos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:117
+msgid "Tracking groups"
+msgstr "Grupos de seguimiento"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:134
+#: Modules/Window/Tables/CriticsFilter.lua:162
+msgid "Healings"
+msgstr "Sanaciones"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:141
+msgid "Normal heals"
+msgstr "Sanaciones normales"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:142
+msgid "Toggle tracking normal heals."
+msgstr "Alterna el seguimiento de sanaciones normales."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:153
+#: Modules/Settings/CriticsTab/CriticsTab.lua:186
+#: Modules/Settings/CriticsTab/CriticsTab.lua:219
+#: Modules/Settings/CriticsTab/CriticsTab.lua:252
+#: Modules/Settings/CriticsTab/CriticsTab.lua:295
+#: Modules/Settings/CriticsTab/CriticsTab.lua:328
+#: Modules/Settings/CriticsTab/CriticsTab.lua:361
+#: Modules/Settings/CriticsTab/CriticsTab.lua:394
+#: Modules/Settings/CriticsTab/CriticsTab.lua:437
+#: Modules/Settings/CriticsTab/CriticsTab.lua:470
+#: Modules/Settings/CriticsTab/CriticsTab.lua:503
+#: Modules/Settings/CriticsTab/CriticsTab.lua:536
+msgid "Color"
+msgstr "Color"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:154
+msgid "Change color of normal heals text."
+msgstr "Cambia el color de texto de las sanaciones normales."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:174
+msgid "Critical heals"
+msgstr "Sanaciones críticas"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:175
+msgid "Toggle tracking critical heals."
+msgstr "Alterna el seguimiento de las sanaciones críticas."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:187
+msgid "Change color of critical heals text."
+msgstr "Cambia el color de texto de las sanaciones críticas."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:207
+#: Modules/Settings/CriticsTab/CriticsTab.lua:349
+#: Modules/Settings/CriticsTab/CriticsTab.lua:491
+msgid "Highest values"
+msgstr "Valores más altos"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:208
+msgid "Toggle traking highest healing values."
+msgstr "Alternar el seguimiento de los valores de sanación más altos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:220
+msgid "Change color of highest healing values."
+msgstr "Cambia el color de los valores más altos de sanación."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:240
+#: Modules/Settings/CriticsTab/CriticsTab.lua:382
+#: Modules/Settings/CriticsTab/CriticsTab.lua:524
+msgid "Lowest values"
+msgstr "Valores más bajos"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:241
+msgid "Toggle traking lowest healing values."
+msgstr "Alterna el seguimiento de los valores de sanación mas bajos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:253
+msgid "Change color of lowest healing values."
+msgstr "Cambia el color de los valores más bajos de sanación."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:277
+#: Modules/Window/Tables/CriticsFilter.lua:161
+msgid "Harmful"
+msgstr "Dañinos"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:283
+msgid "Normal damage"
+msgstr "Daño normal"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:284
+msgid "Toggle tracking normal damage."
+msgstr "Alterna el seguimiento de daño normal."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:296
+msgid "Change color of normal damage text."
+msgstr "Cambia el color de texto del daño normal."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:316
+msgid "Critical damage"
+msgstr "Daño crítico"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:317
+msgid "Toggle tracking critical damage."
+msgstr "Alterna el seguimiento de daño crítico."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:329
+msgid "Change color of critical damage text."
+msgstr "Cambiar el color del texto de daño crítico."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:350
+msgid "Toggle traking highest damage values."
+msgstr "Alterna el seguimiento de los valores de daño más altos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:362
+msgid "Change color of highest damage values."
+msgstr "Cambia el color de los valores de daño más altos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:383
+msgid "Toggle traking lowest damage values."
+msgstr "Alterna el seguimiento de los valores de daño más bajos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:395
+msgid "Change color of lowest damage values."
+msgstr "Cambia el color de los valores de daño más bajos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:419
+msgid "White hits"
+msgstr "Golpes blancos"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:425
+msgid "Normal white hits"
+msgstr "Golpes blancos normales"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:426
+msgid "Toggle tracking normal white hits."
+msgstr "Alterna el seguimiento de los golpes blancos normales."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:438
+msgid "Change color of normal white hits text."
+msgstr "Cambia el color de texto de los golpes blancos normales."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:458
+msgid "Critical white hits"
+msgstr "Golpes blancos críticos"
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:459
+msgid "Toggle tracking critical white hits."
+msgstr "Alterna el seguimiento de los golpes blancos críticos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:471
+msgid "Change color of critical white hits text."
+msgstr "Cambia el color de texto de los golpes blancos críticos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:492
+msgid "Toggle traking highest white hits values."
+msgstr "Alterna el seguimiento de los valores de golpes blancos más altos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:504
+msgid "Change color of highest white hits values."
+msgstr "Cambia el color de los valores de golpes blancos más altos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:525
+msgid "Toggle traking lowest white hits values."
+msgstr "Alterna el seguimiento de los valores de golpes blancos más bajos."
+
+#: Modules/Settings/CriticsTab/CriticsTab.lua:537
+msgid "Change color of lowest white hits values."
+msgstr "Cambia el color de los valores de golpes blancos más bajos."
+
+#: Modules/Tooltips/CriticsTooltip.lua:15
+msgid "Hit:"
+msgstr "Daño normal:"
+
+#: Modules/Tooltips/CriticsTooltip.lua:16
+msgid "Hit crit.:"
+msgstr "Daño crítico:"
+
+#: Modules/Tooltips/CriticsTooltip.lua:18
+msgid "Heal:"
+msgstr "Sanación:"
+
+#: Modules/Tooltips/CriticsTooltip.lua:19
+msgid "Heal crit.:"
+msgstr "Sanación crítica:"
+
+#: Modules/Track/Track.lua:32
+msgid "Level"
+msgstr "Nivel"
+
+#: Modules/Track/Track.lua:37
+msgid "Tracking of"
+msgstr "Seguimiento de"
+
+#: Modules/Track/TrackCritics.lua:34
+msgid "Tracking critics initialized"
+msgstr "Seguimiento de críticos inicializado"
+
+#: Modules/Track/TrackCritics.lua:51 Modules/Track/TrackCritics.lua:195
+msgid "Attack"
+msgstr "Atacar"
+
+#: Modules/Track/TrackCritics.lua:212
+#, lua-format
+msgid "New |c%shighest|r and |c%slowest|r critical hit:"
+msgstr "Nuevo daño crítico |c%smás alto|r y |c%smás bajo|r:"
+
+#: Modules/Track/TrackCritics.lua:223
+#, lua-format
+msgid "New |c%shighest|r critical hit:"
+msgstr "Nuevo daño crítico |c%smás alto|r:"
+
+#: Modules/Track/TrackCritics.lua:233
+#, lua-format
+msgid "New |c%slowest|r critical hit:"
+msgstr "Nuevo daño crítico |c%smás bajo|r:"
+
+#: Modules/Track/TrackCritics.lua:245
+#, lua-format
+msgid "New |c%shighest|r and |c%slowest|r normal hit:"
+msgstr "Nuevo daño normal |c%smás alto|r y |c%smás bajo|r:"
+
+#: Modules/Track/TrackCritics.lua:256
+#, lua-format
+msgid "New |c%shighest|r normal hit:"
+msgstr "Nuevo daño normal |c%smás alto|r:"
+
+#: Modules/Track/TrackCritics.lua:266
+#, lua-format
+msgid "New |c%slowest|r normal hit:"
+msgstr "Nuevo daño normal |c%smás bajo|r:"
+
+#: Modules/Track/TrackCritics.lua:298
+#, lua-format
+msgid "New |c%shighest|r and |c%slowest|r critical heal:"
+msgstr "Nueva sanación crítica |c%smás alta|r y |c%smás baja|r:"
+
+#: Modules/Track/TrackCritics.lua:309
+#, lua-format
+msgid "New |c%shighest|r critical heal:"
+msgstr "Nueva sanación crítica |c%smás alta|r:"
+
+#: Modules/Track/TrackCritics.lua:317
+#, lua-format
+msgid "New |c%slowest|r critical heal:"
+msgstr "Nueva sanación crítica |c%smás baja|r:"
+
+#: Modules/Track/TrackCritics.lua:328
+#, lua-format
+msgid "New |c%shighest|r and |c%slowest|r normal heal:"
+msgstr "Nueva sanación normal |c%smás alta|r y |c%smás baja|r:"
+
+#: Modules/Track/TrackCritics.lua:339
+#, lua-format
+msgid "New |c%shighest|r normal heal:"
+msgstr "Nueva sanación normal |c%smás alta|r:"
+
+#: Modules/Track/TrackCritics.lua:347
+#, lua-format
+msgid "New |c%slowest|r normal heal:"
+msgstr "Nueva sanación normal |c%smás baja|r:"
+
+#: Modules/Window/CriticsWindow.lua:42
+msgid "LogBook critics management window"
+msgstr "Ventana de gestión de críticos de LogBook"
+
+#: Modules/Window/CriticsWindow.lua:84
+msgid "ID"
+msgstr "ID"
+
+#: Modules/Window/CriticsWindow.lua:85
+msgid "ID of the spell."
+msgstr "ID hechizo"
+
+#: Modules/Window/CriticsWindow.lua:92
+msgid "Spell name"
+msgstr "Hechizo"
+
+#: Modules/Window/CriticsWindow.lua:93
+msgid "Spell name and rank."
+msgstr "Hechizo y rango"
+
+#: Modules/Window/CriticsWindow.lua:100
+msgid "Normal"
+msgstr "Normal"
+
+#: Modules/Window/CriticsWindow.lua:101
+msgid "Normal hit or heal."
+msgstr "Daño o sanación normal."
+
+#: Modules/Window/CriticsWindow.lua:108
+msgid "Critic"
+msgstr "Crítico"
+
+#: Modules/Window/CriticsWindow.lua:109
+msgid "Critic hit or heal."
+msgstr "Daño o sanación crítica."
+
+#: Modules/Window/Tables/CriticsBody.lua:43
+msgid "Spell list"
+msgstr "Lista de hechizos"
+
+#: Modules/Window/Tables/CriticsBody.lua:140
+msgid "Various classes"
+msgstr "Varias clases"
+
+#: Modules/Window/Tables/CriticsFilter.lua:39
+msgid "Filter"
+msgstr "Filtro"
+
+#: Modules/Window/Tables/CriticsFilter.lua:50
+#: Modules/Window/Tables/CriticsFilter.lua:51
+msgid "Realm"
+msgstr "Reino"
+
+#: Modules/Window/Tables/CriticsFilter.lua:74
+#: Modules/Window/Tables/CriticsFilter.lua:75
+msgid "Character"
+msgstr "Personaje"
+
+#: Modules/Window/Tables/CriticsFilter.lua:89
+#: Modules/Window/Tables/CriticsFilter.lua:90
+msgid "Type"
+msgstr "Tipo"
+
+#: Modules/Window/Tables/CriticsFilter.lua:111
+msgid "Search criteria"
+msgstr "Criterio de búsqueda"
+
+#: Modules/Window/Tables/CriticsFilter.lua:123
+#: Modules/Window/Tables/CriticsFilter.lua:153
+#: Modules/Window/Tables/CriticsFilter.lua:160
+msgid "All"
+msgstr "Todos"
+
+#: Modules/Window/Tables/CriticsHeader.lua:45
+msgid "Settings"
+msgstr "Configuración"

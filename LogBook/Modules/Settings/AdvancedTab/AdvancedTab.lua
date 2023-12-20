@@ -28,7 +28,7 @@ function LB_Settings.tabs.advanced:Initialize()
                         type = "toggle",
                         order = 2,
                         name = LogBook:i18n("Enable debug"),
-                        desc = "Toggles the debug mode",
+                        desc = "Toggle the debug mode",
                         width = 1.5,
                         get = function() return LogBook.db.global.debug; end,
                         set = function(info, value)
