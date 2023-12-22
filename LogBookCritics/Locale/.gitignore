@@ -1,4 +1,4 @@
-#*.html
-#*.xls
-#*.po
-#*.mo
+*.html
+*.xls
+*.po
+*.mo
