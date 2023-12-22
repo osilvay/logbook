@@ -41,6 +41,7 @@ function LB_Settings:Initialize()
 		logBookSettingsFrame:SetCallback("OnClose", function(widget)
 			PlaySound(840)
 		end)
+
 		--[[
 		-- spellID
 		---@type AceGUILabel
@@ -78,12 +79,8 @@ function LB_Settings:Initialize()
 		logBookSettingsFrame:Hide()
 		LogBookSettingsFrame = logBookSettingsFrame;
 
-		-- Add the frame as a global variable under the name `MyGlobalFrameName`
 		_G["LogBookSettingsFrame"] = LogBookSettingsFrame.frame
-		-- Register the global variable `MyGlobalFrameName` as a "special frame"
-		-- so that it is closed when the escape key is pressed.
 		table.insert(UISpecialFrames, "LogBookSettingsFrame");
-	else
 	end
 end
 
