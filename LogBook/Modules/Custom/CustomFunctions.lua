@@ -68,12 +68,26 @@ end
 ---Count table entries
 ---@param table table
 ---@return number
-function LB_CustomFunctions:CountTableEntries(table)
+function LB_CustomFunctions:CountTableEntries(currentTable)
     local f = 0
-    for _, v in pairs(table) do
+    for _, v in pairs(currentTable) do
         f = f + 1
     end
     return f
+end
+
+function LB_CustomFunctions:RemoveIndexFromTable(currentTable, currentIndex)
+    local resultTable = {}
+    --LogBook:Debug("Removing from table : " .. tostring(currentIndex))
+    --LogBook:Dump(currentTable)
+    for k, v in pairs(currentTable) do
+        if k ~= currentIndex then
+            table.insert(resultTable, k, v)
+        end
+    end
+    --LogBook:Debug("Removed from table : " .. tostring(currentIndex))
+    --LogBook:Dump(resultTable)
+    return resultTable
 end
 
 ---Synchronize two tables

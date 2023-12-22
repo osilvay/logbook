@@ -9,6 +9,8 @@ function LBC_SettingsDefaults:Load()
 				},
 				spells = { -- all spells
 				},
+				locale = {
+				}
 			},
 			characters = {
 				char = {

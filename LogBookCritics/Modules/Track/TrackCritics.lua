@@ -322,12 +322,12 @@ function LBC_TrackCritics:StoreNewHeal(spellName, amount, critical)
   else
 
     if LogBookCriticsData[spellName].highestHeal == 0 and LogBookCriticsData[spellName].lowestHeal == 0 then
-      LB_CustomSounds:PlayCriticalHit()
+      LB_CustomSounds:PlayNormalHeal()
       LogBookCriticsData[spellName].highestHeal = amount
       LogBookCriticsData[spellName].lowestHeal = amount
       local messageText = string.format(LogBookCritics:i18n("New |c%shighest|r and |c%slowest|r normal heal:"), highestColor, lowestColor)
       local messageValue = string.format("|cffffffff%d|r", amount)
-      message = string.format("%s |c%s%s|r  %s ", spellText, critColor, messageText, messageValue)
+      message = string.format("%s |c%s%s|r  %s ", spellText, normalColor, messageText, messageValue)
       LBC_TrackCritics:ShowMessage(message)
       return
     end
@@ -355,5 +355,5 @@ end
 function LBC_TrackCritics:ShowMessage(message)
   if message == "" then return end
   LogBookCritics:Print(message)
-  LBC_SplashCriticsWindow.ShowNewTextMessage(message)
+  LBC_SplashCriticsWindow.AddMessageToQueue(message)
 end

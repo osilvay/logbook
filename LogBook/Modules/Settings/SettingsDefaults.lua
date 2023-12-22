@@ -8,8 +8,6 @@ function LB_SettingsDefaults:Load()
 				characters = {
 				},
 				locale = {
-					old = {},
-					new = {}
 				}
 			},
 			characters = {

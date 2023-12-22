@@ -32,13 +32,17 @@ local fadeTickerDirection
 local fadeTickerValue = 0
 local fadeTickerStarted = false
 
+local showTextFrame
+local messageQueue = {}
+local processingQueue = false
+local showingMessage = false
+
 ---Initilize
 function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
-
 	local xOffset = LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset
 	local yOffset = LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset
 	local bgColor = LogBookCritics.db.char.general.critics.textFrameBgColorAlpha
-	
+
 	baseFrame = CreateFrame("Frame", "LogBook_Critics_Window", UIParent, BackdropTemplateMixin and "BackdropTemplate")
 	baseFrame:SetPoint("CENTER", UIParent, "CENTER", xOffset, yOffset)
 	baseFrame:SetFrameStrata("MEDIUM")
@@ -49,7 +53,7 @@ function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
 
 	baseFrame:SetScript("OnMouseDown", LBC_SplashCriticsWindow.OnDragStart)
 	baseFrame:SetScript("OnMouseUp", LBC_SplashCriticsWindow.OnDragStop)
-	baseFrame:SetScript("OnEnter", function() 
+	baseFrame:SetScript("OnEnter", function()
 		if not LogBookCritics.db.char.general.critics.unlockTextFrame then return end
 		LBC_SplashCriticsWindow.Unfade()
 	end)
@@ -74,25 +78,76 @@ function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
 	return baseFrame
 end
 
+function LBC_SplashCriticsWindow.AddMessageToQueue(message)
+	
+	table.insert(messageQueue, message)
+	local numMessagesInQueue = LB_CustomFunctions:CountTableEntries(messageQueue)
+
+	if numMessagesInQueue >= 1 and not processingQueue then
+		--LogBook:Debug("Messages to process : " .. tostring(numMessagesInQueue))
+		LBC_SplashCriticsWindow.ProcessMessageQueue()
+	end
+end
+
+function LBC_SplashCriticsWindow.ProcessMessageQueue()
+	processingQueue = true
+	local numMessagesInQueue = LB_CustomFunctions:CountTableEntries(messageQueue)
+	if numMessagesInQueue == 0 then return end
+
+	showTextFrame = C_Timer.NewTicker(0.5, function()
+
+		for currentIndex, currentMessage in pairs(messageQueue) do
+			--LogBook:Debug("Current index = " .. tostring(currentIndex) .. " - " .. currentMessage)
+			--LogBook:Debug("Messages in queue before: " .. tostring(numMessagesInQueue))
+			--LogBook:Dump(messageQueue)
+			if not showingMessage then
+				--LogBookCritics:Print(currentMessage)
+				LBC_SplashCriticsWindow.ShowNewTextMessage(currentMessage)
+				messageQueue = LB_CustomFunctions:RemoveIndexFromTable(messageQueue, currentIndex)
+				--LogBook:Debug("Messages in queue after: " .. tostring(numMessagesInQueue))
+				--LogBook:Dump(messageQueue)
+			end
+			break
+		end
+		
+		numMessagesInQueue = LB_CustomFunctions:CountTableEntries(messageQueue)
+		--LogBook:Print(numMessagesInQueue)
+		if numMessagesInQueue == 0 then
+			if showTextFrame ~= nil then
+				showTextFrame:Cancel()
+			end
+			showTextFrame = nil
+		end
+	end)
+
+
+
+	processingQueue = false
+end
+
 function LBC_SplashCriticsWindow.ShowNewTextMessage(message)
 	if not baseFrame then
-    baseFrame = LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
-  end
+		baseFrame = LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
+	end
+	showingMessage = true
 	baseFrame.text:SetText(message)
 	baseFrame:Show()
-  C_Timer.After(5, function()
+	C_Timer.After(5, function()
 		if LogBookCritics.db.char.general.critics.unlockTextFrame then
 			baseFrame.text:SetText(LogBookCritics:i18n("Test message"))
 			return
 		end
 		baseFrame:Hide()
+		C_Timer.After(0.5, function()
+			showingMessage = false
+		end)
 	end)
 end
 
 function LBC_SplashCriticsWindow.UnlockTextMessage(message)
 	if not baseFrame then
-    baseFrame = LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
-  end
+		baseFrame = LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
+	end
 	baseFrame.text:SetText(message)
 	baseFrame:Show()
 	LBC_SplashCriticsWindow.Fade()
@@ -100,8 +155,8 @@ end
 
 function LBC_SplashCriticsWindow.LockTextMessage(message)
 	if baseFrame then
-    C_Timer.After(0.1, function() baseFrame:Hide() end)
-  end
+		C_Timer.After(0.1, function() baseFrame:Hide() end)
+	end
 end
 
 function LBC_SplashCriticsWindow.Unfade()
@@ -126,8 +181,8 @@ function LBC_SplashCriticsWindow.OnDragStop()
 	local xSize, ySize = baseFrame:GetSize()
 	local screenWidth = GetScreenWidth()
 	local xcreenHeight = GetScreenHeight()
-	local xPositionFromCenter = -((screenWidth/2)-xLeft)+(xSize/2)
-	local yPositionFromCenter = -((xcreenHeight/2)-yTop)-(ySize/2)
+	local xPositionFromCenter = -((screenWidth / 2) - xLeft) + (xSize / 2)
+	local yPositionFromCenter = -((xcreenHeight / 2) - yTop) - (ySize / 2)
 	LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset = tonumber(string.format("%.1f", xPositionFromCenter))
 	LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset = tonumber(string.format("%.1f", yPositionFromCenter))
 	baseFrame:StopMovingOrSizing()

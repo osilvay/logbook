@@ -133,8 +133,8 @@ function LBC_CriticsWindow:OpenCriticsWindowFrame()
 	if not CriticsWindowFrame:IsShown() then
 		PlaySound(882)
 		--LogBook:Debug("Show CriticsWindow frame")
-		LBC_CriticsWindow:GenerateSpellList()
 		CriticsWindowFrame:Show()
+		LBC_CriticsWindow:RedrawCriticsWindowFrame()
 	else
 		--LogBook:Debug("Hide CriticsWindow frame")
 		CriticsWindowFrame:Hide()
@@ -144,6 +144,7 @@ end
 ---Redraw critics window frame
 function LBC_CriticsWindow:RedrawCriticsWindowFrame()
 	if not CriticsWindowFrame then return end
+	--LogBook:Debug("Redraw CriticsWindowFrame frame")
 	if CriticsWindowFrame:IsShown() then
 		tableData.table.data.rows = LBC_CriticsWindow:GenerateSpellList()
 		LBC_CriticsBody:RedrawCriticsWindowBody(tableData, CriticsWindowFrame)
