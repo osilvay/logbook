@@ -4,6 +4,9 @@ local LB_SlashCommands = LB_ModuleLoader:CreateModule("LB_SlashCommands")
 ---@type LB_Settings
 local LB_Settings = LB_ModuleLoader:ImportModule("LB_Settings")
 
+---@type LB_WelcomeWindow
+local LB_WelcomeWindow = LB_ModuleLoader:ImportModule("LB_WelcomeWindow")
+
 ---@type LBC_CriticsWindow
 local LBC_CriticsWindow = LB_ModuleLoader:ImportModule("LBC_CriticsWindow")
 
@@ -13,7 +16,6 @@ function LB_SlashCommands.RegisterSlashCommands()
 end
 
 function LB_SlashCommands.HandleCommands(input)
-  
   local criticsModuleLoaded = false
   if CriticsWindowFrame ~= nil then
     criticsModuleLoaded = true
@@ -21,20 +23,17 @@ function LB_SlashCommands.HandleCommands(input)
 
   local command = string.lower(input) or "help"
   if command == "config" then
-    --LogBook:Debug(LogBook:i18n("Opening settings window"))
-    --LB_SlashCommands:CloseAllFrames()
-    LBC_CriticsWindow:HideCriticsWindowFrame()
-    LB_Settings:OpenSettingsFrame()
+    LB_SlashCommands:OpenSettingsWindow()
+  elseif command == "main" then
+    LB_SlashCommands:OpenWelcomeWindow()
   elseif command == "critics" and criticsModuleLoaded then
-    --LogBook:Debug(LogBook:i18n("Opening critics window"))
-    --LB_SlashCommands:CloseAllFrames()
-    LB_Settings:HideSettingsFrame()
-    LBC_CriticsWindow:OpenCriticsWindowFrame()
+    LB_SlashCommands:OpenCriticsWindow()
   else
     LogBook:Print(LogBook:i18n("Log|cff57b6ffBook|r available commands"))
-    LogBook:Print("/lb |cfffce060config|r - " .. LogBook:i18n("Shows settings window"))
+    LogBook:Print("/lb |cfffce060config|r - " .. LogBook:i18n("Open settings window"))
+    LogBook:Print("/lb |cfffce060main|r - " .. LogBook:i18n("Open main window"))
     if criticsModuleLoaded then
-      LogBook:Print("/lb |cfffce060critics|r - " .. LogBook:i18n("Shows critics window"))
+      LogBook:Print("/lb |cfffce060critics|r - " .. LogBook:i18n("Open critics window"))
     end
   end
 end
@@ -42,4 +41,22 @@ end
 function LB_SlashCommands:CloseAllFrames()
   LB_Settings:HideSettingsFrame()
   LBC_CriticsWindow:HideCriticsWindowFrame()
+end
+
+function LB_SlashCommands:OpenSettingsWindow()
+  LB_WelcomeWindow:HideWelcomeWindowFrame()
+  LBC_CriticsWindow:HideCriticsWindowFrame()
+  LB_Settings:OpenSettingsFrame()
+end
+
+function LB_SlashCommands:OpenCriticsWindow()
+  LB_Settings:HideSettingsFrame()
+  LB_WelcomeWindow:HideWelcomeWindowFrame()
+  LBC_CriticsWindow:OpenCriticsWindowFrame()
+end
+
+function LB_SlashCommands:OpenWelcomeWindow()
+  LBC_CriticsWindow:HideCriticsWindowFrame()
+  LB_Settings:HideSettingsFrame()
+  LB_WelcomeWindow:OpenWelcomeWindowFrame()
 end

@@ -36,64 +36,27 @@ function LBC_CriticsHeader:ContainerHeaderFrame(containerTable, parentFrame)
   headerContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, 0)
   parentFrame:AddChild(headerContainer)
 
+  --Back button
+  ---@type AceGUIButton
+  local backButton = AceGUI:Create("Button")
+  local backIcon = "|TInterface\\AddOns\\LogBookCritics\\Images\\back:16:16|t"
+  backButton:SetWidth(140)
+  backButton:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -15)
+  backButton:SetText(backIcon .. " " .. LogBookCritics:i18n('Back'))
+  backButton:SetCallback("OnClick", function()
+    LB_SlashCommands:OpenWelcomeWindow()
+  end)
+  parentFrame:AddChild(backButton)
+
   --Options button
   ---@type AceGUIButton
   local settingsButton = AceGUI:Create("Button")
-  local icon = "|TInterface\\AddOns\\LogBookCritics\\Images\\settings:16:16|t"
+  local settingsIcon = "|TInterface\\AddOns\\LogBookCritics\\Images\\settings:16:16|t"
   settingsButton:SetWidth(140)
-  settingsButton:SetPoint("TOPRIGHT", parentFrame.frame, "TOPRIGHT", -20, -25)
-  settingsButton:SetText(icon .. " " .. LogBookCritics:i18n('Settings'))
+  settingsButton:SetPoint("TOPRIGHT", parentFrame.frame, "TOPRIGHT", -20, -15)
+  settingsButton:SetText(settingsIcon .. " " .. LogBookCritics:i18n('Settings'))
   settingsButton:SetCallback("OnClick", function()
-    LB_SlashCommands:CloseAllFrames()
-    LB_Settings:OpenSettingsFrame()
+    LB_SlashCommands:OpenSettingsWindow()
   end)
   parentFrame:AddChild(settingsButton)
-
-  --[[
-  -- spellID
-  ---@type AceGUILabel
-  local bookIconLabel = AceGUI:Create("Label")
-  bookIconLabel:SetWidth(40)
-  bookIconLabel:SetHeight(40)
-  bookIconLabel:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -25)
-  bookIconLabel:SetText("")
-  bookIconLabel:SetImage(LB_CustomFunctions:GetCustomIcon("BOOK_5"))
-  bookIconLabel:SetImageSize(40, 40)
-  bookIconLabel:SetColor(224, 224, 224)
-  parentFrame:AddChild(bookIconLabel)
-
-  local frame = CreateFrame("Frame")
-		frame.class_id = "class id"
-		frame.class_name = "Title"
-		--frame:SetParent(criticsWindowFrame)
-		frame:SetPoint("TOPLEFT", criticsWindowFrame.frame, "TOPLEFT", 0, 0)
-		frame:SetWidth(60)
-		frame:SetHeight(20)
-		frame:Hide()
-		frame.instance_texture = frame:CreateTexture(nil, "OVERLAY")
-		frame.instance_texture:SetDrawLayer("OVERLAY", 7)
-		frame.instance_texture:SetVertexColor(1, 1, 1, 1)
-		frame.instance_texture:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
-		frame.instance_texture:SetParent(frame)
-		frame.instance_texture:SetDesaturated(true)
-		--frame.instance_texture:Hide()
-
-		-- image as icon
-		---@type AceGUIIcon
-		local spellIcon = AceGUI:Create("Icon")
-		spellIcon:SetWidth(16)
-		spellIcon:SetHeight(16)
-		spellIcon:SetImage(LB_CustomFunctions:GetClassIcon("DRUID"))
-		spellIcon:SetImageSize(16, 16)
-		spellIcon:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", -20, -10)
-		spellIcon:SetCallback("OnEnter", function()
-			GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR")
-			GameTooltip:SetText("Druid")
-			GameTooltip:Show()
-		end)
-		spellIcon:SetCallback("OnLeave", function()
-			GameTooltip:Hide()
-		end)
-		parentFrame:AddChild(spellIcon)
-    ]]
 end

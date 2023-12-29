@@ -8,8 +8,8 @@ local LB_Settings = LB_ModuleLoader:ImportModule("LB_Settings")
 ---@type LB_SlashCommands
 local LB_SlashCommands = LB_ModuleLoader:ImportModule("LB_SlashCommands")
 
----@type LBC_CriticsWindow
-local LBC_CriticsWindow = LB_ModuleLoader:ImportModule("LBC_CriticsWindow")
+---@type LB_WelcomeWindow
+local LB_WelcomeWindow = LB_ModuleLoader:ImportModule("LB_WelcomeWindow")
 
 ---@type LB_CustomColors
 local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
@@ -32,10 +32,10 @@ function _LB_MinimapIcon:CreateDataBrokerObject()
 
             if button == "LeftButton" then
                 LB_SlashCommands:CloseAllFrames()
-                LB_Settings:OpenSettingsFrame("general_tab")
+                LB_WelcomeWindow:OpenWelcomeWindowFrame()
             elseif button == "RightButton" then
                 LB_SlashCommands:CloseAllFrames()
-                LBC_CriticsWindow:OpenCriticsWindowFrame()
+                LB_Settings:OpenSettingsFrame()
             end
             --[[
             if button == "LeftButton" then
@@ -80,8 +80,8 @@ function _LB_MinimapIcon:CreateDataBrokerObject()
 
         OnTooltipShow = function(tooltip)
             tooltip:AddLine("|cffffffffLog|r|cff57b6ffBook|r")
-            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:i18n("Left Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open settings window")));
-            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:i18n("Right Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open critics window")));
+            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:i18n("Left Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open main window")));
+            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:i18n("Right Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open settings window")));
         end,
     });
 

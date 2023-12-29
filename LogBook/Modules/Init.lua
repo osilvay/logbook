@@ -13,10 +13,14 @@ local LB_SlashCommands = LB_ModuleLoader:ImportModule("LB_SlashCommands")
 ---@type LB_MinimapIcon
 local LB_MinimapIcon = LB_ModuleLoader:ImportModule("LB_MinimapIcon")
 
+---@type LB_WelcomeWindow
+local LB_WelcomeWindow = LB_ModuleLoader:ImportModule("LB_WelcomeWindow")
+
 -- called by the PLAYER_LOGIN event handler
 function LB_Init:Initialize()
     LB_MinimapIcon:Initialize()
     LB_SlashCommands.RegisterSlashCommands()
+    LB_WelcomeWindow:Initialize()
     LogBook:Info(LogBook:i18n("LogBook initialized"))
     LB_CustomFunctions:Delay(0.1, LB_Init.LoadAddons, "")
 end

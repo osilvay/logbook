@@ -90,4 +90,5 @@ L["Character"] = true
 L["Type"] = true
 L["Search criteria"] = true
 L["All"] = true
+L["Back"] = true
 L["Settings"] = true
