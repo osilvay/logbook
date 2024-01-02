@@ -35,7 +35,7 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 		-- container
 		---@type AceGUIInlineGroup
 		bodyContainer = AceGUI:Create("InlineGroup")
-		bodyContainer:SetWidth(500)
+		bodyContainer:SetWidth(520)
 		bodyContainer:SetHeight(240)
 		bodyContainer:SetTitle(LogBook:i18n("Main plugins"))
 		bodyContainer:SetLayout("Flow")
@@ -43,6 +43,49 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 		parentFrame:AddChild(bodyContainer)
 	end
 
+	-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	-- loot container
+	---@type AceGUIInlineGroup
+	local lootContainer = AceGUI:Create("InlineGroup")
+	lootContainer:SetWidth(150)
+	lootContainer:SetHeight(200)
+	lootContainer:SetAutoAdjustHeight(false)
+	lootContainer:SetLayout("Flow")
+	lootContainer:SetTitle(string.format("|cff00e5ff%s|r", LogBook:i18n("Loot")))
+	lootContainer:SetPoint("TOPLEFT", bodyContainer.frame, "TOPLEFT", 0, 0)
+	bodyContainer:AddChild(lootContainer)
+
+	--Options button
+	---@type AceGUIInteractiveLabel
+	local lootButton = AceGUI:Create("InteractiveLabel")
+	local lootIcon_a = "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red_a:92:92|t"
+	local lootIcon = "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red:92:92|t"
+	local lootText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track loot and items crafted with trading skills."))
+	local lootformatted = "%s\n\n%s\n"
+	lootButton:SetWidth(140)
+	lootButton:SetHeight(200)
+	lootButton:SetPoint("TOPLEFT", lootContainer.frame, "TOPLEFT", 50, 0)
+	lootButton:SetText(string.format(lootformatted, lootIcon_a, lootText))
+	lootButton:SetCallback("OnEnter", function(current)
+		lootButton:SetText(string.format(lootformatted, lootIcon, lootText))
+	end)
+	lootButton:SetCallback("OnLeave", function(current)
+		lootButton:SetText(string.format(lootformatted, lootIcon_a, lootText))
+	end)
+	lootButton:SetCallback("OnClick", function(current)
+		LB_SlashCommands:OpenLootWindow()
+	end)
+	lootContainer:AddChild(lootButton)
+
+	-- separator
+	---@type AceGUIInlineGroup
+	local lootSeparator = AceGUI:Create("SimpleGroup")
+	lootSeparator:SetWidth(10)
+	lootSeparator:SetHeight(170)
+	lootSeparator:SetLayout("Fill")
+	bodyContainer:AddChild(lootSeparator)
+
+	-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	-- fishing container
 	---@type AceGUIInlineGroup
 	local fishingContainer = AceGUI:Create("InlineGroup")
@@ -50,11 +93,10 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 	fishingContainer:SetHeight(200)
 	fishingContainer:SetAutoAdjustHeight(false)
 	fishingContainer:SetLayout("Flow")
-	fishingContainer:SetTitle(string.format("|cffffffff%s|r", LogBook:i18n("Fishing")))
+	fishingContainer:SetTitle(string.format("|cff00e5ff%s|r", LogBook:i18n("Fishing")))
 	fishingContainer:SetPoint("TOPLEFT", bodyContainer.frame, "TOPLEFT", 0, 0)
 	bodyContainer:AddChild(fishingContainer)
 
-	--[[
 	--Options button
 	---@type AceGUIInteractiveLabel
 	local fishingButton = AceGUI:Create("InteractiveLabel")
@@ -78,13 +120,13 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 
 	-- separator
 	---@type AceGUIInlineGroup
-	local separator1 = AceGUI:Create("SimpleGroup")
-	separator1:SetWidth(25)
-	separator1:SetHeight(170)
-	separator1:SetLayout("Fill")
-	bodyContainer:AddChild(separator1)
-	]]
-	
+	local fishingSeparator = AceGUI:Create("SimpleGroup")
+	fishingSeparator:SetWidth(10)
+	fishingSeparator:SetHeight(170)
+	fishingSeparator:SetLayout("Fill")
+	bodyContainer:AddChild(fishingSeparator)
+
+	-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	-- critics container
 	---@type AceGUIInlineGroup
 	local criticsContainer = AceGUI:Create("InlineGroup")
@@ -92,7 +134,7 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 	criticsContainer:SetHeight(200)
 	criticsContainer:SetAutoAdjustHeight(false)
 	criticsContainer:SetLayout("Flow")
-	criticsContainer:SetTitle(string.format("|cffffffff%s|r", LogBook:i18n("Critics")))
+	criticsContainer:SetTitle(string.format("|cff00e5ff%s|r", LogBook:i18n("Critics")))
 	criticsContainer:SetPoint("TOPLEFT", bodyContainer.frame, "TOPLEFT", 0, 0)
 	bodyContainer:AddChild(criticsContainer)
 

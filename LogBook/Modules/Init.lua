@@ -26,7 +26,7 @@ function LB_Init:Initialize()
 end
 
 function LB_Init.LoadAddons()
-    local addons_to_load = { "LogBookCritics" }
+    local addons_to_load = { "LogBookCritics", "LogBookLoot" }
     for _, addon in ipairs(addons_to_load) do
         local loaded, reason = C_AddOns.LoadAddOn(addon)
         -- reload settings

@@ -16,8 +16,14 @@ L["General settings"] = true
 L["LogBook settings window"] = true
 L["Log|cff57b6ffBook|r available commands"] = true
 L["Open critics window"] = true
+L["Open loot window"] = true
 L["Main plugins"] = true
+L["Loot"] = true
+L["Allows you to track loot and items crafted with trading skills."] = true
+L["Fishing"] = true
+L["Allows you to track fish from pools and wreckages."] = true
+L["Critics"] = true
+L["Allows you to track hits or healing, both normal and critical."] = true
 L["LogBook welcome window"] = true
-L["Main plugins"] = true
-L["LogBook welcome window"] = true
+
 

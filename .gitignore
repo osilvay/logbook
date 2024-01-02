@@ -151,6 +151,3 @@ luac.out
 # Ignore all local history of files
 .history
 .ionide
-
-# End of https://www.toptal.com/developers/gitignore/api/lua,visualstudiocode,jetbrains+all
-LogBookCritics/Locale/.~lock.Locale.xlsx#

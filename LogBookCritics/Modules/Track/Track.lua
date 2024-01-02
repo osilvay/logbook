@@ -34,7 +34,7 @@ function LBC_Track.StartTracking()
   local colored_faction = LB_CustomColors:GetColoredFaction(faction, factionName)
 
   local message         = colored_name .. ", " .. colored_class .. " " .. colored_faction .. " " .. colored_level
-  LogBookCritics:Print(LogBookCritics:i18n("Tracking of") .. " " .. message)
+  LogBookCritics:Print(LogBookCritics:i18n("Tracking critics of") .. " " .. message)
   LBC_TrackEventHandler:Initialize()
   if LBC_Track:IsTrackingCritics() then
     LBC_TrackCritics:Initialize()

@@ -1,0 +1,33 @@
+## Interface: 30403
+## Title: |cffffffffLog|r|cff57b6ffBook|r |cffe38d4fLoot|r |cff57ff68v0.0.1|r
+## Version: 0.0.1
+## Notes: Loot tracker for wow classic
+## Author: osilvay
+## SavedVariables: LogBookLootDB
+## OptionalDeps: Ace3, CallbackHandler-1.0, LibStub
+## Dependencies: LogBook
+## DefaultState: enabled
+## LoadOnDemand: 1
+
+embeds.xml
+Locale\Locales.xml
+
+# Modules
+Modules\EventHandler.lua
+Modules\Init.lua
+Modules\VersionCheck.lua
+
+Modules\Settings\SettingsDefaults.lua
+Modules\Settings\LootTab\LootTab.lua
+
+Modules\Track\Track.lua
+Modules\Track\TrackLoot.lua
+Modules\Track\TrackEventHandler.lua
+
+Modules\Window\LootWindow.lua
+Modules\Window\Tables\LootHeader.lua
+Modules\Window\Tables\LootFilter.lua
+Modules\Window\Tables\LootBody.lua
+
+# Main
+LogBookLoot.lua
