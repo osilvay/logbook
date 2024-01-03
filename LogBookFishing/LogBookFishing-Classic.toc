@@ -1,0 +1,33 @@
+## Interface: 11500
+## Title: |cffffffffLog|r|cff57b6ffBook|r |cffa27be0Fishing|r |cffc1c1c1v|r|cff9191a10.0.1|r
+## Version: 0.0.1
+## Notes: Fishing tracker for wow classic
+## Author: osilvay
+## SavedVariables: LogBookFishingDB
+## OptionalDeps: Ace3, CallbackHandler-1.0, LibStub
+## Dependencies: LogBook
+## DefaultState: enabled
+## LoadOnDemand: 4
+
+embeds.xml
+Locale\Locales.xml
+
+# Modules
+Modules\FishingEventHandler.lua
+Modules\Init.lua
+Modules\VersionCheck.lua
+
+Modules\Settings\SettingsDefaults.lua
+Modules\Settings\FishingTab\FishingTab.lua
+
+Modules\Track\Track.lua
+Modules\Track\TrackFishing.lua
+Modules\Track\TrackEventHandler.lua
+
+Modules\Window\FishingWindow.lua
+Modules\Window\Tables\FishingHeader.lua
+Modules\Window\Tables\FishingFilter.lua
+Modules\Window\Tables\FishingBody.lua
+
+# Main
+LogBookFishing.lua

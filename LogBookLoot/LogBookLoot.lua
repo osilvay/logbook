@@ -9,11 +9,13 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions");
 
 local L = LibStub("AceLocale-3.0"):GetLocale("LogBookLoot")
 
-function LogBookLoot:OnInitialize()
-	--LogBook:Debug(LogBookLoot:i18n("Initializing loot module"))
+function LogBookLoot:OnInitialize() 
 	LogBookLoot.db = LibStub("AceDB-3.0"):New("LogBookLootDB", LBL_SettingsDefaults:Load(), true)
 	LogBookLoot.key = UnitName("player") .. " - " .. GetRealmName()
 	LogBookLoot.db.global.data.locale["esUS"] = nil
+end
+
+function LogBookLoot:Initialize()
 	LBL_EventHandler:StartLootModuleEvents()
 end
 

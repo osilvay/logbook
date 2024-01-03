@@ -21,24 +21,15 @@ end
 
 ---Start tracking
 function LBC_Track.StartTracking()
-  local level           = LogBook.db.global.characters[LogBookCritics.key].info.level
-  local name            = LogBook.db.global.characters[LogBookCritics.key].info.name
-  local faction         = LogBook.db.global.characters[LogBookCritics.key].info.faction
-  local factionName     = LogBook.db.global.characters[LogBookCritics.key].info.factionName
-  local className       = LogBook.db.global.characters[LogBookCritics.key].info.className
-  local classFilename   = LogBook.db.global.characters[LogBookCritics.key].info.classFilename
-
-  local colored_name    = LB_CustomColors:GetColoredName(name)
-  local colored_level   = LB_CustomColors:GetColoredLevel(LogBookCritics:i18n("Level") .. " " .. level)
-  local colored_class   = LB_CustomColors:GetColoredClass(className, classFilename)
-  local colored_faction = LB_CustomColors:GetColoredFaction(faction, factionName)
-
-  local message         = colored_name .. ", " .. colored_class .. " " .. colored_faction .. " " .. colored_level
-  LogBookCritics:Print(LogBookCritics:i18n("Tracking critics of") .. " " .. message)
+  local statusColor = "ffe04040"
+  local statusText = LogBookCritics:i18n("Disabled")
   LBC_TrackEventHandler:Initialize()
   if LBC_Track:IsTrackingCritics() then
     LBC_TrackCritics:Initialize()
+    statusColor = "ff40e068"
+    statusText = LogBookCritics:i18n("Enabled")
   end
+  LogBookCritics:Print(string.format(LogBookCritics:i18n("|c%s%s|r critics tracking"), statusColor, statusText))
 end
 
 ---Check if tracking experience

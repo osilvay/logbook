@@ -13,6 +13,12 @@ local LBC_CriticsWindow = LB_ModuleLoader:ImportModule("LBC_CriticsWindow")
 ---@type LBL_LootWindow
 local LBL_LootWindow = LB_ModuleLoader:ImportModule("LBL_LootWindow")
 
+---@type LBZ_ZonesWindow
+local LBZ_ZonesWindow = LB_ModuleLoader:ImportModule("LBZ_ZonesWindow")
+
+---@type LBF_FishingWindow
+local LBF_FishingWindow = LB_ModuleLoader:ImportModule("LBF_FishingWindow")
+
 function LB_SlashCommands.RegisterSlashCommands()
   LogBook:RegisterChatCommand("logbook", LB_SlashCommands.HandleCommands)
   LogBook:RegisterChatCommand("lb", LB_SlashCommands.HandleCommands)
@@ -20,12 +26,23 @@ end
 
 function LB_SlashCommands.HandleCommands(input)
   local criticsModuleLoaded = false
-  local lootModuleLoaded = false
   if CriticsWindowFrame ~= nil then
     criticsModuleLoaded = true
   end
+
+  local lootModuleLoaded = false
   if LootWindowFrame ~= nil then
     lootModuleLoaded = true
+  end
+
+  local zonesModuleLoaded = false
+  if ZonesWindowFrame ~= nil then
+    zonesModuleLoaded = true
+  end
+
+  local fishingModuleLoaded = false
+  if FishingWindowFrame ~= nil then
+    fishingModuleLoaded = true
   end
 
   local command = string.lower(input) or "help"
@@ -35,17 +52,27 @@ function LB_SlashCommands.HandleCommands(input)
     LB_SlashCommands:OpenWelcomeWindow()
   elseif command == "critics" and criticsModuleLoaded then
     LB_SlashCommands:OpenCriticsWindow()
-  elseif command == "loot" and criticsModuleLoaded then
+  elseif command == "loot" and lootModuleLoaded then
     LB_SlashCommands:OpenLootWindow()
+  elseif command == "zones" and zonesModuleLoaded then
+    LB_SlashCommands:OpenZonesWindow()
+  elseif command == "zones" and zonesModuleLoaded then
+    LB_SlashCommands:OpenFishingWindow()
   else
     LogBook:Print(LogBook:i18n("Log|cff57b6ffBook|r available commands"))
-    LogBook:Print("/lb |cfffce060config|r - " .. LogBook:i18n("Open settings window"))
-    LogBook:Print("/lb |cfffce060main|r - " .. LogBook:i18n("Open main window"))
+    LogBook:Print("/lb |cffc1c1c1config|r - " .. LogBook:i18n("Open settings window"))
+    LogBook:Print("/lb |cffc1c1c1main|r - " .. LogBook:i18n("Open main window"))
     if criticsModuleLoaded then
-      LogBook:Print("/lb |cfffce060critics|r - " .. LogBook:i18n("Open critics window"))
+      LogBook:Print("/lb |cfffff757critics|r - " .. LogBook:i18n("Open critics window"))
     end
     if lootModuleLoaded then
-      LogBook:Print("/lb |cffe38d4fLoot|r - " .. LogBook:i18n("Open loot window"))
+      LogBook:Print("/lb |cffe38d4floot|r - " .. LogBook:i18n("Open loot window"))
+    end
+    if zonesModuleLoaded then
+      LogBook:Print("/lb |cff4fe388zones|r - " .. LogBook:i18n("Open zones window"))
+    end
+    if fishingModuleLoaded then
+      LogBook:Print("/lb |cffa27be0fishing|r - " .. LogBook:i18n("Open fishing window"))
     end
   end
 end
@@ -55,32 +82,48 @@ function LB_SlashCommands:CloseAllFrames()
   LB_WelcomeWindow:HideWelcomeWindowFrame()
   LBC_CriticsWindow:HideCriticsWindowFrame()
   LBL_LootWindow:HideLootWindowFrame()
+  LBZ_ZonesWindow:HideZonesWindowFrame()
+  LBF_FishingWindow:HideFishingWindowFrame()
 end
 
 function LB_SlashCommands:OpenSettingsWindow()
-  LB_WelcomeWindow:HideWelcomeWindowFrame()
-  LBC_CriticsWindow:HideCriticsWindowFrame()
-  LBL_LootWindow:HideLootWindowFrame()
-  LB_Settings:OpenSettingsFrame()
+  LB_SlashCommands:CloseAllFrames()
+  C_Timer.After(0.2, function()
+    LB_Settings:OpenSettingsFrame()
+  end)
 end
 
 function LB_SlashCommands:OpenCriticsWindow()
-  LB_Settings:HideSettingsFrame()
-  LB_WelcomeWindow:HideWelcomeWindowFrame()
-  LBL_LootWindow:HideLootWindowFrame()
-  LBC_CriticsWindow:OpenCriticsWindowFrame()
+  LB_SlashCommands:CloseAllFrames()
+  C_Timer.After(0.2, function()
+    LBC_CriticsWindow:OpenCriticsWindowFrame()
+  end)
 end
 
 function LB_SlashCommands:OpenWelcomeWindow()
-  LBC_CriticsWindow:HideCriticsWindowFrame()
-  LBL_LootWindow:HideLootWindowFrame()
-  LB_Settings:HideSettingsFrame()
-  LB_WelcomeWindow:OpenWelcomeWindowFrame()
+  LB_SlashCommands:CloseAllFrames()
+  C_Timer.After(0.2, function()
+    LB_WelcomeWindow:OpenWelcomeWindowFrame()
+  end)
 end
 
 function LB_SlashCommands:OpenLootWindow()
-  LB_Settings:HideSettingsFrame()
-  LB_WelcomeWindow:HideWelcomeWindowFrame()
-  LBC_CriticsWindow:HideCriticsWindowFrame()
-  LBL_LootWindow:OpenLootWindowFrame()
+  LB_SlashCommands:CloseAllFrames()
+  C_Timer.After(0.2, function()
+    LBL_LootWindow:OpenLootWindowFrame()
+  end)
+end
+
+function LB_SlashCommands:OpenZonesWindow()
+  LB_SlashCommands:CloseAllFrames()
+  C_Timer.After(0.2, function()
+    LBZ_ZonesWindow:OpenZonesWindowFrame()
+  end)
+end
+
+function LB_SlashCommands:OpenFishingWindow()
+  LB_SlashCommands:CloseAllFrames()
+  C_Timer.After(0.2, function()
+    LBF_FishingWindow:OpenFishingWindowFrame()
+  end)
 end

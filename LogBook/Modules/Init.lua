@@ -26,7 +26,7 @@ function LB_Init:Initialize()
 end
 
 function LB_Init.LoadAddons()
-    local addons_to_load = { "LogBookCritics", "LogBookLoot" }
+    local addons_to_load = { "LogBookCritics", "LogBookLoot", "LogBookZones", "LogBookFishing" }
     for _, addon in ipairs(addons_to_load) do
         local loaded, reason = C_AddOns.LoadAddOn(addon)
         -- reload settings
@@ -36,6 +36,32 @@ function LB_Init.LoadAddons()
             LogBook:Info(string.format(LogBook:i18n("Module |cffffcc00%s|r loaded"), addon))
         end
     end
-    LB_Settings:Initialize()
+
+    if C_AddOns.IsAddOnLoaded("LogBookCritics") then
+        C_Timer.After(0.1, function()
+            LogBookCritics:Initialize()
+        end)
+    end
+    if C_AddOns.IsAddOnLoaded("LogBookLoot") then
+        C_Timer.After(0.2, function()
+            LogBookLoot:Initialize()
+        end)
+    end
+    if C_AddOns.IsAddOnLoaded("LogBookZones") then
+        C_Timer.After(0.3, function()
+            LogBookZones:Initialize()
+        end)
+    end
+
+    if C_AddOns.IsAddOnLoaded("LogBookFishing") then
+        C_Timer.After(0.4, function()
+            LogBookFishing:Initialize()
+        end)
+    end
+
+    C_Timer.After(1, function()
+        LB_Settings:Initialize()
+    end)
+
     LogBook.started = true
 end

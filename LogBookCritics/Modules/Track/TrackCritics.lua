@@ -31,7 +31,6 @@ function LBC_TrackCritics:Initialize()
   -- tooltip hook
   hooksecurefunc(GameTooltip, "SetAction", LBC_CriticsTooltip.AddHighestHitsToTooltip)
   LogBookCriticsData = LBC_TrackCritics:GetPersonalSpells()
-  LogBook:Info(LogBookCritics:i18n("Tracking critics initialized"))
 end
 
 ---Process combat log event unfiltered

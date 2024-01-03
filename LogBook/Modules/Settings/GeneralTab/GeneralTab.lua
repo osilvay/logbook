@@ -19,7 +19,7 @@ function LB_Settings.tabs.general:Initialize()
             header = {
                 type = "header",
                 order = 1,
-                name = LogBook:i18n("General settings"),
+                name = "|cffc1c1f1" .. LogBook:i18n("General settings") .. "|r",
             },
         },
     }

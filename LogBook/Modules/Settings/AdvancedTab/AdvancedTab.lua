@@ -16,7 +16,7 @@ function LB_Settings.tabs.advanced:Initialize()
             advanced_header = {
                 type = "header",
                 order = 1,
-                name = LogBook:i18n("Advanced settings"),
+                name = "|cffc1c1f1" .. LogBook:i18n("Advanced settings") .. "|r",
             },
             debug = {
                 type = "group",

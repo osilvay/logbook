@@ -4,6 +4,15 @@ local LB_Settings = LB_ModuleLoader:CreateModule("LB_Settings")
 ---@type LBC_Settings
 local LBC_Settings = LB_ModuleLoader:ImportModule("LBC_Settings")
 
+---@type LBL_Settings
+local LBL_Settings = LB_ModuleLoader:ImportModule("LBL_Settings")
+
+---@type LBZ_Settings
+local LBZ_Settings = LB_ModuleLoader:ImportModule("LBZ_Settings")
+
+---@type LBF_Settings
+local LBF_Settings = LB_ModuleLoader:ImportModule("LBF_Settings")
+
 ---@type LB_CustomFunctions
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 
@@ -33,7 +42,7 @@ function LB_Settings:Initialize()
 		logBookSettingsFrame:Hide()
 		AceConfigDialog:SetDefaultSize("LogBook", 520, 520)
 		AceConfigDialog:Open("LogBook", logBookSettingsFrame) -- load the options into configFrame
-		logBookSettingsFrame:SetTitle("|cffffffffLog|r|cff57b6ffBook|r |cff57ff68v0.0.1|r")
+		logBookSettingsFrame:SetTitle("|cffffffffLog|r|cff57b6ffBook|r |cffc1c1c1v|r|cff9191a10.0.1|r")
 		logBookSettingsFrame:SetLayout("Fill")
 		logBookSettingsFrame:EnableResize(false)
 		logBookSettingsFrame:SetStatusText(LogBook:i18n("LogBook settings window"))
@@ -41,40 +50,6 @@ function LB_Settings:Initialize()
 		logBookSettingsFrame:SetCallback("OnClose", function(widget)
 			PlaySound(840)
 		end)
-
-		--[[
-		-- spellID
-		---@type AceGUILabel
-		local spellIDLabel = AceGUI:Create("Label")
-		spellIDLabel:SetWidth(40)
-		spellIDLabel:SetHeight(40)
-		spellIDLabel:SetPoint("TOPRIGHT", logBookSettingsFrame.frame, "TOPRIGHT", -20, -10)
-		spellIDLabel:SetText("")
-		spellIDLabel:SetImage(LB_CustomFunctions:GetCustomIcon("BOOK_5"))
-		spellIDLabel:SetImageSize(40, 40)
-		spellIDLabel:SetColor(224, 224, 224)
-		logBookSettingsFrame:AddChild(spellIDLabel)
-]]
-
-		--[[
-		-- image as icon
-		---@type AceGUIIcon
-		local logBookIcon = AceGUI:Create("Icon")
-		logBookIcon:SetWidth(32)
-		logBookIcon:SetHeight(32)
-		logBookIcon:SetImage(LB_CustomFunctions:GetCustomIcon("BOOK_5"))
-		logBookIcon:SetImageSize(32, 32)
-		logBookIcon:SetPoint("TOPRIGHT", logBookSettingsFrame.frame, "TOPRIGHT", -20, -10)
-		logBookIcon:SetCallback("OnEnter", function()
-			GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR")
-			GameTooltip:SetText("LogBook")
-			GameTooltip:Show()
-		end)
-		logBookIcon:SetCallback("OnLeave", function()
-			GameTooltip:Hide()
-		end)
-		logBookSettingsFrame:AddChild(logBookIcon)
-		]]
 
 		logBookSettingsFrame:Hide()
 		LogBookSettingsFrame = logBookSettingsFrame;
@@ -88,19 +63,37 @@ end
 _CreateSettingsTable = function()
 	local general_tab = LB_Settings.tabs.general:Initialize()
 	local advanced_tab = LB_Settings.tabs.advanced:Initialize()
+
 	local critics_tab = nil
 	if CriticsWindowFrame ~= nil then
 		critics_tab = LBC_Settings:Initialize()
 	end
+	local loot_tab = nil
+	if LootWindowFrame ~= nil then
+		loot_tab = LBL_Settings:Initialize()
+	end
+	
+	local zones_tab = nil
+	if ZonesWindowFrame ~= nil then
+		zones_tab = LBZ_Settings:Initialize()
+	end
 
+	local fishing_tab = nil
+	if FishingWindowFrame ~= nil then
+		fishing_tab = LBF_Settings:Initialize()
+	end
+	
 	return {
 		name = "LogBook",
 		handler = LogBook,
 		type = "group",
-		childGroups = "tab",
+		childGroups = "tree",
 		args = {
 			general_tab = general_tab,
+			loot_tab = loot_tab,
 			critics_tab = critics_tab,
+			zones_tab = zones_tab,
+			fishing_tab = fishing_tab,
 			advanced_tab = advanced_tab,
 			profiles_tab = LibStub("AceDBOptions-3.0"):GetOptionsTable(LogBook.db)
 		}

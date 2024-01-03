@@ -22,7 +22,7 @@ function LBL_Settings:Initialize()
             loot_header = {
                 type = "header",
                 order = 1,
-                name = LogBookLoot:i18n("Loot settings"),
+                name = "|cffc1c1f1" .. LogBookLoot:i18n("Loot settings") .. "|r",
             },
             tracking = {
                 type = "group",
@@ -40,15 +40,6 @@ function LBL_Settings:Initialize()
                         get = function() return LogBookLoot.db.char.general.loot.trackingEnabled end,
                         set = function(info, value)
                             LogBookLoot.db.char.general.loot.trackingEnabled = value
-                            if not value then
-                                LogBookLoot.db.char.general.loot.trackHeals = false
-                                LogBookLoot.db.char.general.loot.trackHits = false
-                                LogBookLoot.db.char.general.loot.trackAttacks = false
-                            else
-                                LogBookLoot.db.char.general.loot.trackHeals = true
-                                LogBookLoot.db.char.general.loot.trackHits = true
-                                LogBookLoot.db.char.general.loot.trackAttacks = true
-                            end
                         end,
                     },
                 },

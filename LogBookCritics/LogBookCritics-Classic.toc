@@ -1,5 +1,5 @@
 ## Interface: 11500
-## Title: |cffffffffLog|r|cff57b6ffBook|r |cfffff757Critics|r |cff57ff68v0.0.1|r
+## Title: |cffffffffLog|r|cff57b6ffBook|r |cfffff757Critics|r |cffc1c1c1v|r|cff9191a10.0.1|r
 ## Version: 0.0.1
 ## Notes: Critics tracker for wow classic
 ## Author: osilvay
@@ -13,7 +13,7 @@ embeds.xml
 Locale\Locales.xml
 
 # Modules
-Modules\EventHandler.lua
+Modules\CriticsEventHandler.lua
 Modules\Init.lua
 Modules\VersionCheck.lua
 

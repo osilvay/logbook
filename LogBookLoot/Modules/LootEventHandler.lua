@@ -24,7 +24,7 @@ function _LBL_EventHandler:PlayerLogin()
     LogBookLoot.db.global.data.characters[LogBookLoot.key] = true
     if LogBookLoot.db.global.characters[LogBookLoot.key] == nil then
       LogBookLoot.db.global.characters[LogBookLoot.key] = {
-        spells = {
+        loot = {
         },
       }
     end

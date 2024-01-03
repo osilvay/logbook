@@ -1,0 +1,33 @@
+## Interface: 11500
+## Title: |cffffffffLog|r|cff57b6ffBook|r |cff4fe388Zones|r |cffc1c1c1v|r|cff9191a10.0.1|r
+## Version: 0.0.1
+## Notes: Zones tracker for wow classic
+## Author: osilvay
+## SavedVariables: LogBookZonesDB
+## OptionalDeps: Ace3, CallbackHandler-1.0, LibStub
+## Dependencies: LogBook
+## DefaultState: enabled
+## LoadOnDemand: 3
+
+embeds.xml
+Locale\Locales.xml
+
+# Modules
+Modules\ZonesEventHandler.lua
+Modules\Init.lua
+Modules\VersionCheck.lua
+
+Modules\Settings\SettingsDefaults.lua
+Modules\Settings\ZonesTab\ZonesTab.lua
+
+Modules\Track\Track.lua
+Modules\Track\TrackZones.lua
+Modules\Track\TrackEventHandler.lua
+
+Modules\Window\ZonesWindow.lua
+Modules\Window\Tables\ZonesHeader.lua
+Modules\Window\Tables\ZonesFilter.lua
+Modules\Window\Tables\ZonesBody.lua
+
+# Main
+LogBookZones.lua

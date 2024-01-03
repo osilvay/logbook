@@ -21,24 +21,15 @@ end
 
 ---Start tracking
 function LBL_Track.StartTracking()
-  local level           = LogBook.db.global.characters[LogBookLoot.key].info.level
-  local name            = LogBook.db.global.characters[LogBookLoot.key].info.name
-  local faction         = LogBook.db.global.characters[LogBookLoot.key].info.faction
-  local factionName     = LogBook.db.global.characters[LogBookLoot.key].info.factionName
-  local className       = LogBook.db.global.characters[LogBookLoot.key].info.className
-  local classFilename   = LogBook.db.global.characters[LogBookLoot.key].info.classFilename
-
-  local colored_name    = LB_CustomColors:GetColoredName(name)
-  local colored_level   = LB_CustomColors:GetColoredLevel(LogBookLoot:i18n("Level") .. " " .. level)
-  local colored_class   = LB_CustomColors:GetColoredClass(className, classFilename)
-  local colored_faction = LB_CustomColors:GetColoredFaction(faction, factionName)
-
-  local message         = colored_name .. ", " .. colored_class .. " " .. colored_faction .. " " .. colored_level
-  LogBookLoot:Print(LogBookLoot:i18n("Tracking loot of") .. " " .. message)
+  local statusColor = "ffe04040"
+  local statusText = LogBookLoot:i18n("Disabled")
   LBL_TrackEventHandler:Initialize()
   if LBL_Track:IsTrackingLoot() then
-    LBL_TrackLoot:Initialize()
+    LBL_TrackEventHandler:Initialize()
+    statusColor = "ff40e068"
+    statusText = LogBookLoot:i18n("Enabled")
   end
+  LogBookLoot:Print(string.format(LogBookLoot:i18n("|c%s%s|r loot tracking"), statusColor, statusText))
 end
 
 ---Check if tracking experience

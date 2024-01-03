@@ -13,5 +13,4 @@ local LB_CustomSounds = LB_ModuleLoader:ImportModule("LB_CustomSounds")
 ---initialize track crit
 function LBL_TrackLoot:Initialize()
   -- tooltip hook
-  LogBook:Info(LogBookLoot:i18n("Tracking loot initialized"))
 end
