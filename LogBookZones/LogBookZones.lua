@@ -23,38 +23,15 @@ end
 ---@return string string
 function LogBookZones:i18n(message)
 	local locale = GetLocale()
-	if LogBookZones.db.global.data.locale[locale] == nil then
-		LogBookZones.db.global.data.locale[locale] = {
-			old = {
-			},
-			new = {
-			}
+	LogBookZones.db.global.data.locale[locale] = {
+		old = {
+		},
+		new = {
 		}
-	end
-	if LogBookZones.db.global.data.locale["esUS"] == nil then
-		LogBookZones.db.global.data.locale["esUS"] = {
-			all = {
-			},
-		}
-	end
-	
-	LogBookZones.db.global.data.locale[locale].old = L
-	local oldLocales = LogBookZones.db.global.data.locale[locale].old
-	table.sort(oldLocales, function(a, b)
-		return a:lower() < b:lower()
-	end)
-
-	LogBookZones.db.global.data.locale[locale].old = oldLocales
-	LogBookZones.db.global.data.locale["esUS"].all[message] = true
-
-	if not LB_CustomFunctions:TableHasKey(L, message) then
-		LogBookZones.db.global.data.locale[locale].new[message] = message
-	end
-
-	local newLocales = LB_CustomFunctions:SyncTableEntries(LogBookZones.db.global.data.locale[locale].new,
-		LogBookZones.db.global.data.locale[locale].old)
-
-	table.sort(newLocales, function(v1, v2) return v1 < v2 end)
-	LogBookZones.db.global.data.locale[locale].new = newLocales
+	}
 	return tostring(L[message])
+end
+
+function LogBookZones:Print(message)
+	print("|cffffffffLog|r|cff57b6ffBook|r|cff4fe388Zones|r: " .. message)
 end

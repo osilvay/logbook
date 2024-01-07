@@ -28,3 +28,6 @@ L["Allows you to track hits or healing, both normal and critical."] = true
 L["Zones"] = true
 L["Allows you to track zones."] = true
 L["LogBook welcome window"] = true
+L["Accept"] = true
+L["Cancel"] = true
+L["Settings"] = true

@@ -25,43 +25,60 @@ function LB_Init:Initialize()
     LB_CustomFunctions:Delay(0.1, LB_Init.LoadAddons, "")
 end
 
+local addons_to_load = { "LogBookCritics", "LogBookLoot", "LogBookZones", "LogBookFishing" }
 function LB_Init.LoadAddons()
-    local addons_to_load = { "LogBookCritics", "LogBookLoot", "LogBookZones", "LogBookFishing" }
     for _, addon in ipairs(addons_to_load) do
         local loaded, reason = C_AddOns.LoadAddOn(addon)
-        -- reload settings
         if not loaded then
             LogBook:Warning(ADDON_LOAD_FAILED:format(C_AddOns.GetAddOnInfo(addon), _G["ADDON_" .. reason]))
         else
             LogBook:Info(string.format(LogBook:i18n("Module |cffffcc00%s|r loaded"), addon))
         end
     end
-
-    if C_AddOns.IsAddOnLoaded("LogBookCritics") then
-        C_Timer.After(0.1, function()
-            LogBookCritics:Initialize()
-        end)
-    end
-    if C_AddOns.IsAddOnLoaded("LogBookLoot") then
-        C_Timer.After(0.2, function()
-            LogBookLoot:Initialize()
-        end)
-    end
-    if C_AddOns.IsAddOnLoaded("LogBookZones") then
-        C_Timer.After(0.3, function()
-            LogBookZones:Initialize()
-        end)
-    end
-
-    if C_AddOns.IsAddOnLoaded("LogBookFishing") then
-        C_Timer.After(0.4, function()
-            LogBookFishing:Initialize()
-        end)
-    end
-
-    C_Timer.After(1, function()
-        LB_Settings:Initialize()
+    C_Timer.After(0.5, function()
+        LB_Init.InitializeAddons()
     end)
-
     LogBook.started = true
+end
+
+local initializeTicker
+function LB_Init.InitializeAddons()
+    local numAddons = #addons_to_load
+    local currentAddonsProccesed = 0
+    local addonsProcessed = {}
+
+    if (not initializeTicker) then
+        initializeTicker = C_Timer.NewTicker(0.2, function()
+            if currentAddonsProccesed >= numAddons then
+                initializeTicker:Cancel()
+                initializeTicker = nil
+                LB_Settings:Initialize()
+            end
+            for _, addon in ipairs(addons_to_load) do
+                if addonsProcessed[addon] == nil and C_AddOns.IsAddOnLoaded(addon) then
+                    if addon == "LogBookCritics" then
+                        LogBookCritics:Initialize()
+                        addonsProcessed[addon] = true
+                        currentAddonsProccesed = currentAddonsProccesed + 1
+                        break
+                    elseif addon == "LogBookLoot" then
+                        LogBookLoot:Initialize()
+                        addonsProcessed[addon] = true
+                        currentAddonsProccesed = currentAddonsProccesed + 1
+                        break
+                    elseif addon == "LogBookZones" then
+                        LogBookZones:Initialize()
+                        addonsProcessed[addon] = true
+                        currentAddonsProccesed = currentAddonsProccesed + 1
+                        break
+                    elseif addon == "LogBookFishing" then
+                        LogBookFishing:Initialize()
+                        addonsProcessed[addon] = true
+                        currentAddonsProccesed = currentAddonsProccesed + 1
+                        break
+                    end
+                end
+            end
+        end)
+    end
 end

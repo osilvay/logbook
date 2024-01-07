@@ -3,8 +3,8 @@ local L = LibStub("AceLocale-3.0"):NewLocale("LogBookCritics", "enUS", true)
 if not L then return end
 
 L["Test message"] = true
-L["Critics"] = true
-L["Critics settings"] = true
+L["Critics"] = "Criticals"
+L["Critics settings"] = "Critical settings"
 L["Tracking"] = true
 L["Enable tracking"] = true
 L["Toggle tracking hits and heals."] = true
@@ -92,3 +92,5 @@ L["Search criteria"] = true
 L["All"] = true
 L["Back"] = true
 L["Settings"] = true
+L["Delete entry"] = true
+L["Are you sure you want to delete this entry?"] = true

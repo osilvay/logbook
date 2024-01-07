@@ -7,7 +7,7 @@ function LBZ_SettingsDefaults:Load()
 			data = {
 				characters = {
 				},
-				spells = { -- all spells
+				zones = { -- all zones
 				},
 				locale = {
 				}
@@ -16,7 +16,7 @@ function LBZ_SettingsDefaults:Load()
 				char = {
 					info = {
 					},
-					zones = { -- personal spells
+					zones = { -- personal zones
 					},
 				},
 			},
@@ -24,8 +24,13 @@ function LBZ_SettingsDefaults:Load()
 		char = {
 			general = {
 				zones = {
+					trackingEnabled = true,
+					trackInFlight = false,
+					showZoneChanges = false,
+					showZoneMessages = false,
 				},
 			},
 		},
 	}
 end
+ 

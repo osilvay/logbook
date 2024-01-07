@@ -78,8 +78,9 @@ function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
 	return baseFrame
 end
 
+---Add message to queue
+---@param message string
 function LBC_SplashCriticsWindow.AddMessageToQueue(message)
-	
 	table.insert(messageQueue, message)
 	local numMessagesInQueue = LB_CustomFunctions:CountTableEntries(messageQueue)
 
@@ -89,13 +90,13 @@ function LBC_SplashCriticsWindow.AddMessageToQueue(message)
 	end
 end
 
+---Process message queue
 function LBC_SplashCriticsWindow.ProcessMessageQueue()
 	processingQueue = true
 	local numMessagesInQueue = LB_CustomFunctions:CountTableEntries(messageQueue)
 	if numMessagesInQueue == 0 then return end
 
 	showTextFrame = C_Timer.NewTicker(0.5, function()
-
 		for currentIndex, currentMessage in pairs(messageQueue) do
 			--LogBook:Debug("Current index = " .. tostring(currentIndex) .. " - " .. currentMessage)
 			--LogBook:Debug("Messages in queue before: " .. tostring(numMessagesInQueue))
@@ -109,7 +110,7 @@ function LBC_SplashCriticsWindow.ProcessMessageQueue()
 			end
 			break
 		end
-		
+
 		numMessagesInQueue = LB_CustomFunctions:CountTableEntries(messageQueue)
 		--LogBook:Print(numMessagesInQueue)
 		if numMessagesInQueue == 0 then
@@ -119,12 +120,11 @@ function LBC_SplashCriticsWindow.ProcessMessageQueue()
 			showTextFrame = nil
 		end
 	end)
-
-
-
 	processingQueue = false
 end
 
+---Show text message
+---@param message string
 function LBC_SplashCriticsWindow.ShowNewTextMessage(message)
 	if not baseFrame then
 		baseFrame = LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
@@ -132,7 +132,7 @@ function LBC_SplashCriticsWindow.ShowNewTextMessage(message)
 	showingMessage = true
 	baseFrame.text:SetText(message)
 	baseFrame:Show()
-	C_Timer.After(5, function()
+	C_Timer.After(4, function()
 		if LogBookCritics.db.char.general.critics.unlockTextFrame then
 			baseFrame.text:SetText(LogBookCritics:i18n("Test message"))
 			return
@@ -144,6 +144,8 @@ function LBC_SplashCriticsWindow.ShowNewTextMessage(message)
 	end)
 end
 
+---Unlock text message
+---@param message string
 function LBC_SplashCriticsWindow.UnlockTextMessage(message)
 	if not baseFrame then
 		baseFrame = LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
@@ -153,28 +155,34 @@ function LBC_SplashCriticsWindow.UnlockTextMessage(message)
 	LBC_SplashCriticsWindow.Fade()
 end
 
+---Lock text message
+---@param message string
 function LBC_SplashCriticsWindow.LockTextMessage(message)
 	if baseFrame then
 		C_Timer.After(0.1, function() baseFrame:Hide() end)
 	end
 end
 
+---Fade off
 function LBC_SplashCriticsWindow.Unfade()
 	fadeTickerStarted = true
 	fadeTickerDirection = true
 	LBC_SplashCriticsWindow.Fader()
 end
 
+---Fade on
 function LBC_SplashCriticsWindow.Fade()
 	fadeTickerStarted = true
 	fadeTickerDirection = false
 	LBC_SplashCriticsWindow.Fader()
 end
 
+---Drag start
 function LBC_SplashCriticsWindow.OnDragStart()
 	baseFrame:StartMoving()
 end
 
+---Drag stop
 function LBC_SplashCriticsWindow.OnDragStop()
 	local frameX = baseFrame:GetCenter()
 	local xLeft, yTop, xRight, yBottom = baseFrame:GetLeft(), baseFrame:GetTop(), baseFrame:GetRight(), baseFrame:GetBottom()

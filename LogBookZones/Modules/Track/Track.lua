@@ -13,6 +13,9 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 ---@type LB_CustomColors
 local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 
+---@type LB_CustomPopup
+local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
+
 ---Initialize track
 function LBZ_Track:Initialize()
   --LogBook:Debug(LogBookZones:i18n("Initializating general tracking..."))

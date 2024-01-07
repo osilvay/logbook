@@ -10,6 +10,9 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 ---@type LB_CustomFrames
 local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames")
 
+---@type LB_CustomPopup
+local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
+
 ---@type LBC_CriticsFilter
 local LBC_CriticsFilter = LB_ModuleLoader:ImportModule("LBC_CriticsFilter")
 
@@ -274,10 +277,11 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 					current:SetText("|TInterface\\AddOns\\LogBookCritics\\Images\\delete_a:24:24|t")
 				end)
 				deleteButton:SetCallback("OnClick", function(current)
-					local _selected_character = LogBookCritics.db.char.general.critics.filter.select_character
-					LogBookCritics.db.global.characters[_selected_character].spells[current.rowIndex] = nil
-					LBC_CriticsFilter:RedrawCriticsWindowFilter(parentFrame)
-					LBC_CriticsWindow:RedrawCriticsWindowFrame()
+					--local _selected_character = LogBookCritics.db.char.general.critics.filter.select_character
+					--LogBookCritics.db.global.characters[_selected_character].spells[current.rowIndex] = nil
+					--LBC_CriticsFilter:RedrawCriticsWindowFilter(parentFrame)
+					--LBC_CriticsWindow:RedrawCriticsWindowFrame()
+					LB_CustomPopup:CreatePopup(LogBookCritics:i18n("Delete entry"), LogBookCritics:i18n("Are you sure you want to delete this entry?"), function() LogBook:Debug("Popuped!") end)
 				end)
 				deleteButton.rowIndex = rowIndex
 				rowContainer:AddChild(deleteButton)

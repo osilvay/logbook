@@ -7,7 +7,7 @@ function LBF_SettingsDefaults:Load()
 			data = {
 				characters = {
 				},
-				spells = { -- all spells
+				fishing = { -- all fishing
 				},
 				locale = {
 				}
@@ -16,7 +16,7 @@ function LBF_SettingsDefaults:Load()
 				char = {
 					info = {
 					},
-					fishing = { -- personal spells
+					fishing = { -- personal fishing
 					},
 				},
 			},
@@ -24,6 +24,7 @@ function LBF_SettingsDefaults:Load()
 		char = {
 			general = {
 				fishing = {
+					trackingEnabled = true,
 				},
 			},
 		},

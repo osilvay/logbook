@@ -7,7 +7,7 @@ function LBL_SettingsDefaults:Load()
 			data = {
 				characters = {
 				},
-				spells = { -- all spells
+				loot = { -- all loot
 				},
 				locale = {
 				}
@@ -16,7 +16,7 @@ function LBL_SettingsDefaults:Load()
 				char = {
 					info = {
 					},
-					loot = { -- personal spells
+					loot = { -- personal loot
 					},
 				},
 			},
@@ -24,6 +24,7 @@ function LBL_SettingsDefaults:Load()
 		char = {
 			general = {
 				loot = {
+					trackingEnabled = true,
 				},
 			},
 		},

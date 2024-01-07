@@ -36,11 +36,11 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 		-- container
 		---@type AceGUIInlineGroup
 		bodyContainer = AceGUI:Create("InlineGroup")
-		bodyContainer:SetWidth(520)
+		bodyContainer:SetWidth(495)
 		bodyContainer:SetHeight(240)
 		bodyContainer:SetTitle(LogBook:i18n("Main plugins"))
 		bodyContainer:SetLayout("Flow")
-		bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 0, -20)
+		bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 10, -40)
 		parentFrame:AddChild(bodyContainer)
 	end
 
@@ -59,8 +59,8 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 	--Options button
 	---@type AceGUIInteractiveLabel
 	local lootButton = AceGUI:Create("InteractiveLabel")
-	local lootIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red_a:75:75|t"
-	local lootIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red:75:75|t"
+	local lootIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red_a:64:64|t"
+	local lootIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red:64:64|t"
 	local lootText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track loot and items crafted with trading skills."))
 	local lootformatted = "%s\n\n%s\n"
 	lootButton:SetWidth(135)
@@ -101,8 +101,8 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 	--Options button
 	---@type AceGUIInteractiveLabel
 	local fishingButton = AceGUI:Create("InteractiveLabel")
-	local fishingIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02_a:75:75|t"
-	local fishingIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02:75:75|t"
+	local fishingIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02_a:64:64|t"
+	local fishingIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02:64:64|t"
 	local fishingText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track fish from pools and wreckages."))
 	local Fishingformatted = "%s\n\n%s\n"
 	fishingButton:SetWidth(135)
@@ -143,8 +143,8 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 	--Options button
 	---@type AceGUIInteractiveLabel
 	local criticsButton = AceGUI:Create("InteractiveLabel")
-	local criticsIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap_a:75:75|t"
-	local criticsIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap:75:75|t"
+	local criticsIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap_a:64:64|t"
+	local criticsIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap:64:64|t"
 	local criticsText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track hits or healing, both normal and critical."))
 	local Fishingformatted = "%s\n\n%s\n"
 	criticsButton:SetWidth(135)
@@ -185,8 +185,8 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 	--Options button
 	---@type AceGUIInteractiveLabel
 	local zonesButton = AceGUI:Create("InteractiveLabel")
-	local zonesIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01_a:75:75|t"
-	local zonesIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01:75:75|t"
+	local zonesIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01_a:64:64|t"
+	local zonesIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01:64:64|t"
 	local zonesText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track zones."))
 	local zonesFormatted = "%s\n\n%s\n"
 	zonesButton:SetWidth(135)

@@ -23,38 +23,15 @@ end
 ---@return string string
 function LogBookLoot:i18n(message)
 	local locale = GetLocale()
-	if LogBookLoot.db.global.data.locale[locale] == nil then
-		LogBookLoot.db.global.data.locale[locale] = {
-			old = {
-			},
-			new = {
-			}
+	LogBookLoot.db.global.data.locale[locale] = {
+		old = {
+		},
+		new = {
 		}
-	end
-	if LogBookLoot.db.global.data.locale["esUS"] == nil then
-		LogBookLoot.db.global.data.locale["esUS"] = {
-			all = {
-			},
-		}
-	end
-	
-	LogBookLoot.db.global.data.locale[locale].old = L
-	local oldLocales = LogBookLoot.db.global.data.locale[locale].old
-	table.sort(oldLocales, function(a, b)
-		return a:lower() < b:lower()
-	end)
-
-	LogBookLoot.db.global.data.locale[locale].old = oldLocales
-	LogBookLoot.db.global.data.locale["esUS"].all[message] = true
-
-	if not LB_CustomFunctions:TableHasKey(L, message) then
-		LogBookLoot.db.global.data.locale[locale].new[message] = message
-	end
-
-	local newLocales = LB_CustomFunctions:SyncTableEntries(LogBookLoot.db.global.data.locale[locale].new,
-		LogBookLoot.db.global.data.locale[locale].old)
-
-	table.sort(newLocales, function(v1, v2) return v1 < v2 end)
-	LogBookLoot.db.global.data.locale[locale].new = newLocales
+	}
 	return tostring(L[message])
+end
+
+function LogBookLoot:Print(message)
+	print("|cffffffffLog|r|cff57b6ffBook|r|cffe38d4fLoot|r: " .. message)
 end

@@ -13,6 +13,9 @@ local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames")
 ---@type LB_WelcomeBody
 local LB_WelcomeBody = LB_ModuleLoader:ImportModule("LB_WelcomeBody")
 
+---@type LB_WelcomeHeader
+local LB_WelcomeHeader = LB_ModuleLoader:ImportModule("LB_WelcomeHeader")
+
 -- Forward declaration
 WelcomeWindowFrame = nil
 
@@ -28,8 +31,8 @@ function LB_WelcomeWindow:Initialize()
 
 		---@type AceGUIFrame, AceGUIFrame
 		local welcomeWindowFrame = AceGUI:Create("Frame");
-		welcomeWindowFrame:SetWidth(540)
-		welcomeWindowFrame:SetHeight(520)
+		welcomeWindowFrame:SetWidth(515)
+		welcomeWindowFrame:SetHeight(535)
 		welcomeWindowFrame:SetPoint("CENTER", 0, 0)
 		welcomeWindowFrame:SetLayout("Fill")
 		welcomeWindowFrame:SetTitle("|cffffffffLog|r|cff57b6ffBook|r |cffc1c1c1v|r|cff9191a10.0.1|r")
@@ -38,8 +41,11 @@ function LB_WelcomeWindow:Initialize()
 		welcomeWindowFrame:Hide()
 
 		welcomeWindowFrame:SetCallback("OnClose", function(widget)
-			PlaySound(840)
+			PlaySound(840) 
 		end)
+
+		-- header
+		LB_WelcomeHeader:ContainerHeaderFrame(tableData, welcomeWindowFrame)
 
 		-- table
 		LB_WelcomeBody:ContainerBodyFrame(tableData, welcomeWindowFrame)

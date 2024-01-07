@@ -28,3 +28,6 @@ L["Allows you to track hits or healing, both normal and critical."] = "Permite r
 L["Zones"] = "Zonas"
 L["Allows you to track zones."] = "Permite realizar un seguimiento de las zonas."
 L["LogBook welcome window"] = "Ventana de bienvenida del LogBook"
+L["Accept"] = "Aceptar"
+L["Cancel"] = "Cancelar"
+L["Settings"] = "Configuración"

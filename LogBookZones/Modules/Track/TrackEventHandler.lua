@@ -7,4 +7,12 @@ local LBZ_TrackZones = LB_ModuleLoader:ImportModule("LBZ_TrackZones")
 
 function LBZ_TrackEventHandler:Initialize()
   --LogBook:Debug(LogBookZones:i18n("Initializing track events..."))
+  --LogBookCritics:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", _LBC_TrackEventHandler.CombatLogEventUnfiltered)
+  LogBookZones:RegisterEvent("ZONE_CHANGED", _LBZ_TrackEventHandler.ZoneChanged)
+  LogBookZones:RegisterEvent("ZONE_CHANGED_INDOORS", _LBZ_TrackEventHandler.ZoneChanged)
+  LogBookZones:RegisterEvent("ZONE_CHANGED_NEW_AREA", _LBZ_TrackEventHandler.ZoneChanged)
+end
+
+function _LBZ_TrackEventHandler.ZoneChanged()
+  LBZ_TrackZones:ZoneChanged()
 end

@@ -35,35 +35,42 @@ end
 
 ---Process combat log event unfiltered
 function LBC_TrackCritics:ProcessCombatLogEventUnfiltered()
-  local timestamp, eventType, _, sourceGUID, _, _, _, destGUID, _, _, _, spellID, _, _, amount, overkill, _, _, _, _, critical =
-      CombatLogGetCurrentEventInfo()
+  --local timestamp, subEvent, _, sourceGUID, _, _, _, destGUID, destName, _, _, spellID, _, _, amount, overkill, _, _, _, _, critical = CombatLogGetCurrentEventInfo()
+  local timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = CombatLogGetCurrentEventInfo()
 
-  if not spellID then return end
-  local spellName, spellIcon
+  -- common
+  local spellID, spellName, spellSchool, amount, critical, absorbed, spellIcon
 
-  if eventType == nil then
-    return
-  end
+  -- damage
+  local overkill, school, resisted, blocked, absorbed, glancing, crushing, isOffHand
 
-  if eventType == "SWING_DAMAGE" then
+  -- heal
+  local overhealing
+
+  if subEvent == nil then return end
+
+  if subEvent == "SWING_DAMAGE" then
     amount = spellID
     spellName = LogBookCritics:i18n("Attack")
     spellIcon = 136235 -- default icon
-    spellID = 6603
-  else
-    spellName, _, spellIcon = GetSpellInfo(spellID)
+    spellID = 6603     -- default spellID
+  elseif subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" or subEvent == "RANGE_DAMAGE" then
+    spellID, spellName, spellSchool, amount, _, _, _, _, _, critical = select(12, CombatLogGetCurrentEventInfo())
+  elseif subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL" then
+    spellID, spellName, spellSchool, amount, overhealing, absorbed, critical = select(12, CombatLogGetCurrentEventInfo())
   end
+  _, _, spellIcon = GetSpellInfo(spellID)
 
-  if sourceGUID == UnitGUID("player") then
-    --LogBook:Debug(eventType)
-  end
+  --         timestamp 	subevent 	hideCaster 	sourceGUID 	sourceName 	sourceFlags 	sourceRaidFlags 	destGUID 	destName 	destFlags 	destRaidFlags
+  --         spellId 	spellName 	spellSchool
+  -- _DAMAGE amount 	overkill 	school 	resisted 	blocked 	absorbed 	critical 	glancing 	crushing 	isOffHand
+  -- _HEAL 	 amount 	overhealing 	absorbed 	critical
   -- Check if the event is a player hit or a player heal and update the highest hits/heals data if needed.
-  if sourceGUID == UnitGUID("player") and LB_CustomFunctions:TableHasValue(eventsToTrack, eventType) and amount > 0 then
-    --LogBook:Debug("Event type : " .. eventType)
+  if amount == nil then amount = 0 end
+  if sourceGUID == UnitGUID("player") and LB_CustomFunctions:TableHasValue(eventsToTrack, subEvent) and amount > 0 then
+    --LogBook:Debug("Event type : " .. subEvent)
+    --LogBook:Debug("Critical : " .. tostring(critical))
     if spellName then
-      local spellRank = GetSpellSubtext(spellID)
-      if spellRank == nil then spellRank = "" end
-
       local spellData = LogBookCritics.db.global.data.spells[spellName] or {}
       local spellLink = ("|Hspell:" .. spellID .. "|h|r|cff71d5ff[" .. spellName .. "]|r|h");
       local class = LogBook.db.global.characters[LogBookCritics.key].info.classFilename
@@ -73,7 +80,6 @@ function LBC_TrackCritics:ProcessCombatLogEventUnfiltered()
         spellID = spellID,
         spellLink = spellLink,
         spellIcon = spellIcon,
-        spellRank = spellRank,
         class = { class }
       }
       LBC_TrackCritics:StoreGlobalSpellData(spellData[spellName])
@@ -92,14 +98,14 @@ function LBC_TrackCritics:ProcessCombatLogEventUnfiltered()
         isHeal = false,
         timestamp = timestamp
       }
+
       if critical == nil then critical = false end
       if amount == nil then amount = 0 end
-      if eventType == "SPELL_HEAL" or eventType == "SPELL_PERIODIC_HEAL" then
+      if subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL" then
         LBC_TrackCritics:StoreNewHeal(spellName, amount, critical)
-      elseif eventType == "SPELL_DAMAGE" or eventType == "SPELL_PERIODIC_DAMAGE" or eventType == "SWING_DAMAGE" or eventType == "RANGE_DAMAGE" then
+      elseif subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" or subEvent == "SWING_DAMAGE" or subEvent == "RANGE_DAMAGE" then
         LBC_TrackCritics:StoreNewHit(spellName, amount, critical)
       end
-      LogBookCriticsData[spellName].spellRank = spellRank
       LBC_TrackCritics:StorePersonalSpellCritInfo(spellName, LogBookCriticsData[spellName])
     end
   end
@@ -185,7 +191,7 @@ function LBC_TrackCritics:StoreNewHit(spellName, amount, critical)
   LogBookCriticsData[spellName].isHeal = false
   local message = ""
   local critColor, normalColor, highestColor, lowestColor
-  
+
   local spellLink = LogBookCritics.db.global.data.spells[spellName].spellLink
   local spellID = LogBookCritics.db.global.data.spells[spellName].spellID
   local _, _, icon = GetSpellInfo(spellID)
@@ -214,7 +220,7 @@ function LBC_TrackCritics:StoreNewHit(spellName, amount, critical)
       LBC_TrackCritics:ShowMessage(message)
       return
     end
-    
+
     if LogBookCriticsData[spellName].highestHitCrit == nil then LogBookCriticsData[spellName].highestHitCrit = 0 end
     if LogBookCriticsData[spellName].highestHitCrit == 0 or amount > LogBookCriticsData[spellName].highestHitCrit then
       LB_CustomSounds:PlayCriticalHit()
@@ -236,7 +242,6 @@ function LBC_TrackCritics:StoreNewHit(spellName, amount, critical)
       return
     end
   else
-
     if LogBookCriticsData[spellName].highestHit == 0 and LogBookCriticsData[spellName].lowestHit == 0 then
       LB_CustomSounds:PlayCriticalHit()
       LogBookCriticsData[spellName].highestHit = amount
@@ -289,7 +294,6 @@ function LBC_TrackCritics:StoreNewHeal(spellName, amount, critical)
   lowestColor = LB_CustomColors:CustomColors("LOWEST_HEAL")
 
   if critical then
-
     if LogBookCriticsData[spellName].highestHealCrit == 0 and LogBookCriticsData[spellName].lowestHealCrit == 0 then
       LB_CustomSounds:PlayCriticalHit()
       LogBookCriticsData[spellName].highestHealCrit = amount
@@ -319,7 +323,6 @@ function LBC_TrackCritics:StoreNewHeal(spellName, amount, critical)
       LBC_TrackCritics:ShowMessage(message)
     end
   else
-
     if LogBookCriticsData[spellName].highestHeal == 0 and LogBookCriticsData[spellName].lowestHeal == 0 then
       LB_CustomSounds:PlayNormalHeal()
       LogBookCriticsData[spellName].highestHeal = amount

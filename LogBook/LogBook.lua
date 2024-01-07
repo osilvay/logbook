@@ -27,42 +27,42 @@ function LogBook:OnEnable()
 end
 
 ---Error message
-function LogBook:Error(...)
-	LogBook:Print("|cfffc8686[ERROR]|r", ...)
+function LogBook:Error(message)
+	LogBook:Print("|cfffc8686[ERROR]|r " .. message)
 end
 
 ---Warning message
-function LogBook:Warning(...)
+function LogBook:Warning(message)
 	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cfffcb986[WARNING]|r", ...)
+		LogBook:Print("|cfffcb986[WARNING]|r " .. message)
 	end
 end
 
 ---Info message
-function LogBook:Info(...)
+function LogBook:Info(message)
 	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cff86f0fc[INFO]|r", ...)
+		LogBook:Print("|cff86f0fc[INFO]|r " .. message)
 	end
 end
 
 ---Debug message
-function LogBook:Debug(...)
+function LogBook:Debug(message)
 	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cfffcfc86[DEBUG]|r", ...)
+		LogBook:Print("|cfffcfc86[DEBUG]|r " .. message)
 	end
 end
 
 ---Log message
-function LogBook:Log(...)
+function LogBook:Log(message)
 	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cffb2fc86[LOG]|r", ...)
+		LogBook:Print("|cffb2fc86[LOG]|r " .. message)
 	end
 end
 
 ---Dump message
-function LogBook:Dump(...)
+function LogBook:Dump(message)
 	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cffb3b2b8[DUMP]|r", LB_CustomFunctions:Dump(...))
+		LogBook:Print("|cffb3b2b8[DUMP]|r " .. LB_CustomFunctions:Dump(message))
 	end
 end
 
@@ -116,4 +116,8 @@ function LogBook:i18n(message)
 	table.sort(newLocales, function(v1, v2) return v1 < v2 end)
 	LogBook.db.global.data.locale[locale].new = newLocales
 	return tostring(L[message])
+end
+
+function LogBook:Print(message)
+	print("|cffffffffLog|r|cff57b6ffBook|r: " .. message)
 end

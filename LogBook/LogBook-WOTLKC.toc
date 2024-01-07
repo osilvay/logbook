@@ -25,10 +25,15 @@ Modules\Settings\SettingsDefaults.lua
 Modules\Settings\GeneralTab\GeneralTab.lua
 Modules\Settings\AdvancedTab\AdvancedTab.lua
 
+Modules\Window\WelcomeWindow.lua
+Modules\Window\Tables\WelcomeHeader.lua
+Modules\Window\Tables\WelcomeBody.lua
+
 Modules\Custom\CustomFrames.lua
 Modules\Custom\CustomFunctions.lua
 Modules\Custom\CustomColors.lua
 Modules\Custom\CustomSounds.lua
+Modules\Custom\CustomPopup.lua
 
 # Main
 LogBook.lua
