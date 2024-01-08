@@ -15,7 +15,7 @@ local LBC_SplashCriticsWindow = LB_ModuleLoader:ImportModule("LBC_SplashCriticsW
 
 LBC_Settings.critics_tab = { ... }
 local optionsDefaults = LBC_SettingsDefaults:Load()
-local colorIcon = "|TInterface\\AddOns\\LogBookCritics\\Images\\color:16:16|t"
+local colorIcon = "|TInterface\\AddOns\\LogBook\\Images\\color:16:16|t"
 
 function LBC_Settings:Initialize()
     return {

@@ -266,15 +266,15 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
 				--Options button
 				---@type AceGUIInteractiveLabel
 				local deleteButton = AceGUI:Create("InteractiveLabel")
-				local deleteIcon = "|TInterface\\AddOns\\LogBookCritics\\Images\\delete_a:24:24|t"
+				local deleteIcon = "|TInterface\\AddOns\\LogBook\\Images\\delete_a:24:24|t"
 				deleteButton:SetWidth(32)
 				deleteButton:SetPoint("LEFT", rowContainer.frame, "LEFT", 0, -50)
 				deleteButton:SetText(deleteIcon)
 				deleteButton:SetCallback("OnEnter", function(current)
-					current:SetText("|TInterface\\AddOns\\LogBookCritics\\Images\\delete:24:24|t")
+					current:SetText("|TInterface\\AddOns\\LogBook\\Images\\delete:24:24|t")
 				end)
 				deleteButton:SetCallback("OnLeave", function(current)
-					current:SetText("|TInterface\\AddOns\\LogBookCritics\\Images\\delete_a:24:24|t")
+					current:SetText("|TInterface\\AddOns\\LogBook\\Images\\delete_a:24:24|t")
 				end)
 				deleteButton:SetCallback("OnClick", function(current)
 					--local _selected_character = LogBookCritics.db.char.general.critics.filter.select_character
