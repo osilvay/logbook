@@ -25,7 +25,7 @@ function LB_Init:Initialize()
     LB_CustomFunctions:Delay(0.1, LB_Init.LoadAddons, "")
 end
 
-local addons_to_load = { "LogBookCritics", "LogBookLoot", "LogBookZones", "LogBookFishing" }
+local addons_to_load = { "LogBookCritics", "LogBookLoot", "LogBookZones", "LogBookFishing", "LogBookMobs" }
 function LB_Init.LoadAddons()
     for _, addon in ipairs(addons_to_load) do
         local loaded, reason = C_AddOns.LoadAddOn(addon)
@@ -35,7 +35,7 @@ function LB_Init.LoadAddons()
             LogBook:Info(string.format(LogBook:i18n("Module |cffffcc00%s|r loaded"), addon))
         end
     end
-    C_Timer.After(0.5, function()
+    C_Timer.After(1, function()
         LB_Init.InitializeAddons()
     end)
     LogBook.started = true
@@ -73,6 +73,11 @@ function LB_Init.InitializeAddons()
                         break
                     elseif addon == "LogBookFishing" then
                         LogBookFishing:Initialize()
+                        addonsProcessed[addon] = true
+                        currentAddonsProccesed = currentAddonsProccesed + 1
+                        break
+                    elseif addon == "LogBookMobs" then
+                        LogBookMobs:Initialize()
                         addonsProcessed[addon] = true
                         currentAddonsProccesed = currentAddonsProccesed + 1
                         break

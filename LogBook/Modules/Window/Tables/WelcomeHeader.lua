@@ -36,7 +36,7 @@ function LB_WelcomeHeader:ContainerHeaderFrame(containerTable, parentFrame)
   --Options button
   ---@type AceGUIButton
   local settingsButton = AceGUI:Create("Button")
-  local settingsIcon = "|TInterface\\AddOns\\LogBookWelcome\\Images\\settings:16:16|t"
+  local settingsIcon = "|TInterface\\AddOns\\LogBook\\Images\\settings:16:16|t"
   settingsButton:SetWidth(140)
   settingsButton:SetPoint("TOPRIGHT", parentFrame.frame, "TOPRIGHT", -20, -15)
   settingsButton:SetText(settingsIcon .. " " .. LogBook:i18n('Settings'))

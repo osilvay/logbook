@@ -33,5 +33,5 @@ function LogBookZones:i18n(message)
 end
 
 function LogBookZones:Print(message)
-	print("|cffffffffLog|r|cff57b6ffBook|r|cff4fe388Zones|r: " .. message)
+	print("|cffffffffLog|r|cff57b6ffBook|r|cff4fe368Zones|r: " .. message)
 end

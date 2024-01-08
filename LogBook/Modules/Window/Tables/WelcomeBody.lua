@@ -25,193 +25,257 @@ local itemColor = "ff95e6f5"
 ---@param containerTable table
 ---@param parentFrame AceGUIFrame
 function LB_WelcomeBody:RedrawWelcomeWindowBody(containerTable, parentFrame)
-	bodyContainer:ReleaseChildren()
-	LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
+  bodyContainer:ReleaseChildren()
+  LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
 end
 
 ---Create welcome container body frame
 function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
-	-- table
-	if not bodyContainer then
-		-- container
-		---@type AceGUIInlineGroup
-		bodyContainer = AceGUI:Create("InlineGroup")
-		bodyContainer:SetWidth(495)
-		bodyContainer:SetHeight(240)
-		bodyContainer:SetTitle(LogBook:i18n("Main plugins"))
-		bodyContainer:SetLayout("Flow")
-		bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 10, -40)
-		parentFrame:AddChild(bodyContainer)
-	end
+  -- table
+  if not bodyContainer then
+    -- container
+    ---@type AceGUIInlineGroup
+    bodyContainer = AceGUI:Create("InlineGroup")
+    bodyContainer:SetWidth(495)
+    bodyContainer:SetHeight(220)
+    bodyContainer:SetTitle(LogBook:i18n("Main plugins"))
+    bodyContainer:SetLayout("Flow")
+    bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 10, -40)
+    parentFrame:AddChild(bodyContainer)
+  end
 
-	-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	-- loot container
-	---@type AceGUIInlineGroup
-	local lootContainer = AceGUI:Create("InlineGroup")
-	lootContainer:SetWidth(150)
-	lootContainer:SetHeight(200)
-	lootContainer:SetAutoAdjustHeight(false)
-	lootContainer:SetLayout("Flow")
-	lootContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Loot")))
-	lootContainer:SetPoint("TOPLEFT", bodyContainer.frame, "TOPLEFT", 0, 0)
-	bodyContainer:AddChild(lootContainer)
+  -- ROW 1 ##########################################################################################
+  ---@type AceGUISimpleGroup
+  local row1 = AceGUI:Create("SimpleGroup")
+  row1:SetFullWidth(true)
+  row1:SetHeight(200)
+  row1:SetAutoAdjustHeight(false)
+  row1:SetLayout("Flow")
+  bodyContainer:AddChild(row1)
 
-	--Options button
-	---@type AceGUIInteractiveLabel
-	local lootButton = AceGUI:Create("InteractiveLabel")
-	local lootIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red_a:64:64|t"
-	local lootIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red:64:64|t"
-	local lootText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track loot and items crafted with trading skills."))
-	local lootformatted = "%s\n\n%s\n"
-	lootButton:SetWidth(135)
-	lootButton:SetHeight(200)
-	lootButton:SetPoint("TOPLEFT", lootContainer.frame, "TOPLEFT", 50, 0)
-	lootButton:SetText(string.format(lootformatted, lootIcon_a, lootText))
-	lootButton:SetCallback("OnEnter", function(current)
-		lootButton:SetText(string.format(lootformatted, lootIcon, lootText))
-	end)
-	lootButton:SetCallback("OnLeave", function(current)
-		lootButton:SetText(string.format(lootformatted, lootIcon_a, lootText))
-	end)
-	lootButton:SetCallback("OnClick", function(current)
-		LB_SlashCommands:OpenLootWindow()
-	end)
-	lootContainer:AddChild(lootButton)
+  local modules1 = 1
+  C_Timer.NewTicker(0.1, function()
+    if modules1 == 1 then
+      LB_WelcomeBody:drawLootContainer(row1)
+      LB_WelcomeBody:drawSeparator(row1, 10)
+    elseif modules1 == 2 then
+      LB_WelcomeBody:drawFishingContainer(row1)
+      LB_WelcomeBody:drawSeparator(row1, 10)
+    elseif modules1 == 3 then
+      LB_WelcomeBody:drawCriticsContainer(row1)
+    end
+    modules1 = modules1 + 1
+  end, 3)
 
-	-- separator
-	---@type AceGUIInlineGroup
-	local lootSeparator = AceGUI:Create("SimpleGroup")
-	lootSeparator:SetWidth(10)
-	lootSeparator:SetHeight(170)
-	lootSeparator:SetLayout("Fill")
-	bodyContainer:AddChild(lootSeparator)
+  -- ROW 2 ##########################################################################################
+  ---@type AceGUISimpleGroup
+  local row2 = AceGUI:Create("SimpleGroup")
+  row2:SetWidth(495)
+  row2:SetHeight(200)
+  row2:SetLayout("Flow")
+  bodyContainer:AddChild(row2)
 
-	-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	-- fishing container
-	---@type AceGUIInlineGroup
-	local fishingContainer = AceGUI:Create("InlineGroup")
-	fishingContainer:SetWidth(150)
-	fishingContainer:SetHeight(200)
-	fishingContainer:SetAutoAdjustHeight(false)
-	fishingContainer:SetLayout("Flow")
-	fishingContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Fishing")))
-	fishingContainer:SetPoint("TOPLEFT", bodyContainer.frame, "TOPLEFT", 0, 0)
-	bodyContainer:AddChild(fishingContainer)
+  local modules2 = 1
+  C_Timer.NewTicker(0.1, function()
+    if modules2 == 1 then
+      LB_WelcomeBody:drawZonesContainer(row2)
+      LB_WelcomeBody:drawSeparator(row2, 10)
+    elseif modules2 == 2 then
+      LB_WelcomeBody:drawMobsContainer(row2)
+      LB_WelcomeBody:drawSeparator(row2, 10)
+    elseif modules2 == 3 then
+    end
+    modules2 = modules2 + 1
+  end, 3)
+end
 
-	--Options button
-	---@type AceGUIInteractiveLabel
-	local fishingButton = AceGUI:Create("InteractiveLabel")
-	local fishingIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02_a:64:64|t"
-	local fishingIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02:64:64|t"
-	local fishingText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track fish from pools and wreckages."))
-	local Fishingformatted = "%s\n\n%s\n"
-	fishingButton:SetWidth(135)
-	fishingButton:SetHeight(200)
-	fishingButton:SetPoint("TOPLEFT", fishingContainer.frame, "TOPLEFT", 50, 0)
-	fishingButton:SetText(string.format(Fishingformatted, fishingIcon_a, fishingText))
-	fishingButton:SetCallback("OnEnter", function(current)
-		fishingButton:SetText(string.format(Fishingformatted, fishingIcon, fishingText))
-	end)
-	fishingButton:SetCallback("OnLeave", function(current)
-		fishingButton:SetText(string.format(Fishingformatted, fishingIcon_a, fishingText))
-	end)
-	fishingButton:SetCallback("OnClick", function(current)
-		LB_SlashCommands:OpenFishingWindow()
-	end)
-	fishingContainer:AddChild(fishingButton)
+function LB_WelcomeBody:drawSeparator(rowContainer, width)
+  -- separator
+  ---@type AceGUIInlineGroup
+  local fishingSeparator = AceGUI:Create("SimpleGroup")
+  fishingSeparator:SetWidth(width)
+  fishingSeparator:SetHeight(200)
+  fishingSeparator:SetLayout("Fill")
+  fishingSeparator:SetAutoAdjustHeight(false)
+  rowContainer:AddChild(fishingSeparator)
+end
 
-	-- separator
-	---@type AceGUIInlineGroup
-	local fishingSeparator = AceGUI:Create("SimpleGroup")
-	fishingSeparator:SetWidth(10)
-	fishingSeparator:SetHeight(170)
-	fishingSeparator:SetLayout("Fill")
-	bodyContainer:AddChild(fishingSeparator)
+function LB_WelcomeBody:drawLootContainer(rowContainer)
+  -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  -- loot container
+  ---@type AceGUIInlineGroup
+  local lootContainer = AceGUI:Create("InlineGroup")
+  lootContainer:SetWidth(150)
+  lootContainer:SetHeight(200)
+  lootContainer:SetAutoAdjustHeight(false)
+  lootContainer:SetLayout("Flow")
+  lootContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Loot")))
+  --lootContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
+  rowContainer:AddChild(lootContainer)
 
-	-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	-- critics container
-	---@type AceGUIInlineGroup
-	local criticsContainer = AceGUI:Create("InlineGroup")
-	criticsContainer:SetWidth(150)
-	criticsContainer:SetHeight(200)
-	criticsContainer:SetAutoAdjustHeight(false)
-	criticsContainer:SetLayout("Flow")
-	criticsContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Critics")))
-	criticsContainer:SetPoint("TOPLEFT", bodyContainer.frame, "TOPLEFT", 0, 0)
-	bodyContainer:AddChild(criticsContainer)
+  --Options button
+  ---@type AceGUIInteractiveLabel
+  local lootButton = AceGUI:Create("InteractiveLabel")
+  local lootIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red_a:64:64|t"
+  local lootIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red:64:64|t"
+  local lootText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track loot and items crafted with trading skills."))
+  local lootformatted = "%s\n\n%s\n"
+  lootButton:SetWidth(135)
+  lootButton:SetHeight(200)
+  lootButton:SetPoint("TOPLEFT", lootContainer.frame, "TOPLEFT", 50, 0)
+  lootButton:SetText(string.format(lootformatted, lootIcon_a, lootText))
+  lootButton:SetCallback("OnEnter", function(current)
+    lootButton:SetText(string.format(lootformatted, lootIcon, lootText))
+  end)
+  lootButton:SetCallback("OnLeave", function(current)
+    lootButton:SetText(string.format(lootformatted, lootIcon_a, lootText))
+  end)
+  lootButton:SetCallback("OnClick", function(current)
+    LB_SlashCommands:OpenLootWindow()
+  end)
+  lootContainer:AddChild(lootButton)
+end
 
-	--Options button
-	---@type AceGUIInteractiveLabel
-	local criticsButton = AceGUI:Create("InteractiveLabel")
-	local criticsIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap_a:64:64|t"
-	local criticsIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap:64:64|t"
-	local criticsText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track hits or healing, both normal and critical."))
-	local Fishingformatted = "%s\n\n%s\n"
-	criticsButton:SetWidth(135)
-	criticsButton:SetHeight(200)
-	criticsButton:SetPoint("TOPLEFT", criticsContainer.frame, "TOPLEFT", 50, 0)
-	criticsButton:SetText(string.format(Fishingformatted, criticsIcon_a, criticsText))
-	criticsButton:SetCallback("OnEnter", function(current)
-		criticsButton:SetText(string.format(Fishingformatted, criticsIcon, criticsText))
-	end)
-	criticsButton:SetCallback("OnLeave", function(current)
-		criticsButton:SetText(string.format(Fishingformatted, criticsIcon_a, criticsText))
-	end)
-	criticsButton:SetCallback("OnClick", function(current)
-		LB_SlashCommands:OpenCriticsWindow()
-	end)
-	criticsContainer:AddChild(criticsButton)
+function LB_WelcomeBody:drawFishingContainer(rowContainer)
+  -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  -- fishing container
+  ---@type AceGUIInlineGroup
+  local fishingContainer = AceGUI:Create("InlineGroup")
+  fishingContainer:SetWidth(150)
+  fishingContainer:SetHeight(200)
+  fishingContainer:SetAutoAdjustHeight(false)
+  fishingContainer:SetLayout("Flow")
+  fishingContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Fishing")))
+  --fishingContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
+  rowContainer:AddChild(fishingContainer)
 
-	-- separator
-	---@type AceGUIInlineGroup
-	local criticsSeparator = AceGUI:Create("SimpleGroup")
-	criticsSeparator:SetWidth(10)
-	criticsSeparator:SetHeight(170)
-	criticsSeparator:SetLayout("Fill")
-	bodyContainer:AddChild(criticsSeparator)
+  --Options button
+  ---@type AceGUIInteractiveLabel
+  local fishingButton = AceGUI:Create("InteractiveLabel")
+  local fishingIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02_a:64:64|t"
+  local fishingIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02:64:64|t"
+  local fishingText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track fish from pools and wreckages."))
+  local Fishingformatted = "%s\n\n%s\n"
+  fishingButton:SetWidth(135)
+  fishingButton:SetHeight(200)
+  fishingButton:SetPoint("TOPLEFT", fishingContainer.frame, "TOPLEFT", 50, 0)
+  fishingButton:SetText(string.format(Fishingformatted, fishingIcon_a, fishingText))
+  fishingButton:SetCallback("OnEnter", function(current)
+    fishingButton:SetText(string.format(Fishingformatted, fishingIcon, fishingText))
+  end)
+  fishingButton:SetCallback("OnLeave", function(current)
+    fishingButton:SetText(string.format(Fishingformatted, fishingIcon_a, fishingText))
+  end)
+  fishingButton:SetCallback("OnClick", function(current)
+    LB_SlashCommands:OpenFishingWindow()
+  end)
+  fishingContainer:AddChild(fishingButton)
+end
 
-	-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	-- zones container
-	---@type AceGUIInlineGroup
-	local zonesContainer = AceGUI:Create("InlineGroup")
-	zonesContainer:SetWidth(150)
-	zonesContainer:SetHeight(200)
-	zonesContainer:SetAutoAdjustHeight(false)
-	zonesContainer:SetLayout("Flow")
-	zonesContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Zones")))
-	zonesContainer:SetPoint("TOPLEFT", bodyContainer.frame, "TOPLEFT", 0, 0)
-	bodyContainer:AddChild(zonesContainer)
+function LB_WelcomeBody:drawCriticsContainer(rowContainer)
+  -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  -- critics container
+  ---@type AceGUIInlineGroup
+  local criticsContainer = AceGUI:Create("InlineGroup")
+  criticsContainer:SetWidth(150)
+  criticsContainer:SetHeight(200)
+  criticsContainer:SetAutoAdjustHeight(false)
+  criticsContainer:SetLayout("Flow")
+  criticsContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Critics")))
+  --criticsContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
+  rowContainer:AddChild(criticsContainer)
 
-	--Options button
-	---@type AceGUIInteractiveLabel
-	local zonesButton = AceGUI:Create("InteractiveLabel")
-	local zonesIcon_a = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01_a:64:64|t"
-	local zonesIcon = "      " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01:64:64|t"
-	local zonesText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track zones."))
-	local zonesFormatted = "%s\n\n%s\n"
-	zonesButton:SetWidth(135)
-	zonesButton:SetHeight(200)
-	zonesButton:SetPoint("TOPLEFT", zonesContainer.frame, "TOPLEFT", 50, 0)
-	zonesButton:SetText(string.format(zonesFormatted, zonesIcon_a, zonesText))
-	zonesButton:SetCallback("OnEnter", function(current)
-		zonesButton:SetText(string.format(zonesFormatted, zonesIcon, zonesText))
-	end)
-	zonesButton:SetCallback("OnLeave", function(current)
-		zonesButton:SetText(string.format(zonesFormatted, zonesIcon_a, zonesText))
-	end)
-	zonesButton:SetCallback("OnClick", function(current)
-		LB_SlashCommands:OpenZonesWindow()
-	end)
-	zonesContainer:AddChild(zonesButton)
+  --Options button
+  ---@type AceGUIInteractiveLabel
+  local criticsButton = AceGUI:Create("InteractiveLabel")
+  local criticsIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap_a:64:64|t"
+  local criticsIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap:64:64|t"
+  local criticsText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track hits or healing, both normal and critical."))
+  local Fishingformatted = "%s\n\n%s\n"
+  criticsButton:SetWidth(135)
+  criticsButton:SetHeight(200)
+  criticsButton:SetPoint("TOPLEFT", criticsContainer.frame, "TOPLEFT", 50, 0)
+  criticsButton:SetText(string.format(Fishingformatted, criticsIcon_a, criticsText))
+  criticsButton:SetCallback("OnEnter", function(current)
+    criticsButton:SetText(string.format(Fishingformatted, criticsIcon, criticsText))
+  end)
+  criticsButton:SetCallback("OnLeave", function(current)
+    criticsButton:SetText(string.format(Fishingformatted, criticsIcon_a, criticsText))
+  end)
+  criticsButton:SetCallback("OnClick", function(current)
+    LB_SlashCommands:OpenCriticsWindow()
+  end)
+  criticsContainer:AddChild(criticsButton)
+end
 
-	-- separator
-	---@type AceGUIInlineGroup
-	local zonesSeparator = AceGUI:Create("SimpleGroup")
-	zonesSeparator:SetWidth(10)
-	zonesSeparator:SetHeight(170)
-	zonesSeparator:SetLayout("Fill")
-	bodyContainer:AddChild(zonesSeparator)
+function LB_WelcomeBody:drawZonesContainer(rowContainer)
+  -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  -- zones container
+  ---@type AceGUIInlineGroup
+  local zonesContainer = AceGUI:Create("InlineGroup")
+  zonesContainer:SetWidth(150)
+  zonesContainer:SetHeight(200)
+  zonesContainer:SetAutoAdjustHeight(false)
+  zonesContainer:SetLayout("Flow")
+  zonesContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Zones")))
+  --zonesContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
+  rowContainer:AddChild(zonesContainer)
 
-	-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	-- end
+  --Options button
+  ---@type AceGUIInteractiveLabel
+  local zonesButton = AceGUI:Create("InteractiveLabel")
+  local zonesIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01_a:64:64|t"
+  local zonesIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01:64:64|t"
+  local zonesText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track zones."))
+  local zonesFormatted = "%s\n\n%s\n"
+  zonesButton:SetWidth(135)
+  zonesButton:SetHeight(200)
+  zonesButton:SetPoint("TOPLEFT", zonesContainer.frame, "TOPLEFT", 50, 0)
+  zonesButton:SetText(string.format(zonesFormatted, zonesIcon_a, zonesText))
+  zonesButton:SetCallback("OnEnter", function(current)
+    zonesButton:SetText(string.format(zonesFormatted, zonesIcon, zonesText))
+  end)
+  zonesButton:SetCallback("OnLeave", function(current)
+    zonesButton:SetText(string.format(zonesFormatted, zonesIcon_a, zonesText))
+  end)
+  zonesButton:SetCallback("OnClick", function(current)
+    LB_SlashCommands:OpenZonesWindow()
+  end)
+  zonesContainer:AddChild(zonesButton)
+end
+
+function LB_WelcomeBody:drawMobsContainer(rowContainer)
+  -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  -- zones container
+  ---@type AceGUIInlineGroup
+  local mobsContainer = AceGUI:Create("InlineGroup")
+  mobsContainer:SetWidth(150)
+  mobsContainer:SetHeight(200)
+  mobsContainer:SetAutoAdjustHeight(false)
+  mobsContainer:SetLayout("Flow")
+  mobsContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Mobs")))
+  --zonesContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
+  rowContainer:AddChild(mobsContainer)
+
+  --Options button
+  ---@type AceGUIInteractiveLabel
+  local mobsButton = AceGUI:Create("InteractiveLabel")
+  local mobsIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_head_murloc_01_a:64:64|t"
+  local mobsIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_head_murloc_01:64:64|t"
+  local mobsText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track mobs."))
+  local mobsFormatted = "%s\n\n%s\n"
+  mobsButton:SetWidth(135)
+  mobsButton:SetHeight(200)
+  mobsButton:SetPoint("TOPLEFT", mobsContainer.frame, "TOPLEFT", 50, 0)
+  mobsButton:SetText(string.format(mobsFormatted, mobsIcon_a, mobsText))
+  mobsButton:SetCallback("OnEnter", function(current)
+    mobsButton:SetText(string.format(mobsFormatted, mobsIcon, mobsText))
+  end)
+  mobsButton:SetCallback("OnLeave", function(current)
+    mobsButton:SetText(string.format(mobsFormatted, mobsIcon_a, mobsText))
+  end)
+  mobsButton:SetCallback("OnClick", function(current)
+    LB_SlashCommands:OpenZonesWindow()
+  end)
+  mobsContainer:AddChild(mobsButton)
 end

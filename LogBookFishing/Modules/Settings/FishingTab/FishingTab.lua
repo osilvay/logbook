@@ -22,7 +22,7 @@ function LBF_Settings:Initialize()
             fishing_header = {
                 type = "header",
                 order = 1,
-                name = LogBookFishing:i18n("Fishing settings"),
+                name = "|cffc1c1f1" .. LogBookFishing:i18n("Fishing settings") .. "|r",
             },
             tracking = {
                 type = "group",

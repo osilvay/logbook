@@ -19,6 +19,9 @@ local LBZ_ZonesWindow = LB_ModuleLoader:ImportModule("LBZ_ZonesWindow")
 ---@type LBF_FishingWindow
 local LBF_FishingWindow = LB_ModuleLoader:ImportModule("LBF_FishingWindow")
 
+---@type LBM_MobsWindow
+local LBM_MobsWindow = LB_ModuleLoader:ImportModule("LBM_MobsWindow")
+
 function LB_SlashCommands.RegisterSlashCommands()
   LogBook:RegisterChatCommand("logbook", LB_SlashCommands.HandleCommands)
   LogBook:RegisterChatCommand("lb", LB_SlashCommands.HandleCommands)
@@ -45,6 +48,12 @@ function LB_SlashCommands.HandleCommands(input)
     fishingModuleLoaded = true
   end
 
+  local mobsModuleLoaded = false
+  if MobsWindowFrame ~= nil then
+    mobsModuleLoaded = true
+  end
+  
+
   local command = string.lower(input) or "help"
   if command == "config" then
     LB_SlashCommands:OpenSettingsWindow()
@@ -58,6 +67,8 @@ function LB_SlashCommands.HandleCommands(input)
     LB_SlashCommands:OpenZonesWindow()
   elseif command == "zones" and zonesModuleLoaded then
     LB_SlashCommands:OpenFishingWindow()
+  elseif command == "mobs" and mobsModuleLoaded then
+    LB_SlashCommands:OpenMobsWindow()
   else
     LogBook:Print(LogBook:i18n("Log|cff57b6ffBook|r available commands"))
     LogBook:Print("/lb |cffc1c1c1config|r - " .. LogBook:i18n("Open settings window"))
@@ -74,6 +85,9 @@ function LB_SlashCommands.HandleCommands(input)
     if fishingModuleLoaded then
       LogBook:Print("/lb |cffa27be0fishing|r - " .. LogBook:i18n("Open fishing window"))
     end
+    if mobsModuleLoaded then
+      LogBook:Print("/lb |cff4bd1c4mobs|r - " .. LogBook:i18n("Open mobs window"))
+    end
   end
 end
 
@@ -84,6 +98,7 @@ function LB_SlashCommands:CloseAllFrames()
   LBL_LootWindow:HideLootWindowFrame()
   LBZ_ZonesWindow:HideZonesWindowFrame()
   LBF_FishingWindow:HideFishingWindowFrame()
+  LBM_MobsWindow:HideMobsWindowFrame()
 end
 
 function LB_SlashCommands:OpenSettingsWindow()
@@ -125,5 +140,12 @@ function LB_SlashCommands:OpenFishingWindow()
   LB_SlashCommands:CloseAllFrames()
   C_Timer.After(0.2, function()
     LBF_FishingWindow:OpenFishingWindowFrame()
+  end)
+end
+
+function LB_SlashCommands:OpenMobsWindow()
+  LB_SlashCommands:CloseAllFrames()
+  C_Timer.After(0.2, function()
+    LBM_MobsWindow:OpenMobsWindowFrame()
   end)
 end

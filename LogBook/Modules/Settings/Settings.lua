@@ -13,6 +13,9 @@ local LBZ_Settings = LB_ModuleLoader:ImportModule("LBZ_Settings")
 ---@type LBF_Settings
 local LBF_Settings = LB_ModuleLoader:ImportModule("LBF_Settings")
 
+---@type LBM_Settings
+local LBM_Settings = LB_ModuleLoader:ImportModule("LBM_Settings")
+
 ---@type LB_CustomFunctions
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 
@@ -83,17 +86,23 @@ _CreateSettingsTable = function()
 		fishing_tab = LBF_Settings:Initialize()
 	end
 	
+	local mobs_tab = nil
+	if MobsWindowFrame ~= nil then
+		mobs_tab = LBM_Settings:Initialize()
+	end
+	
 	return {
 		name = "LogBook",
 		handler = LogBook,
 		type = "group",
-		childGroups = "tree",
+		childGroups = "tabs",
 		args = {
 			general_tab = general_tab,
 			loot_tab = loot_tab,
 			critics_tab = critics_tab,
 			zones_tab = zones_tab,
 			fishing_tab = fishing_tab,
+			mobs_tab = mobs_tab,
 			advanced_tab = advanced_tab,
 			profiles_tab = LibStub("AceDBOptions-3.0"):GetOptionsTable(LogBook.db)
 		}
