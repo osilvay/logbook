@@ -16,10 +16,10 @@ LogBook.DEBUG_DEVELOP = "|cff7c83ff[DEVELOP]|r"
 LogBook.DEBUG_SPAM = "|cffff8484[SPAM]|r"
 
 function LogBook:OnInitialize()
-	LogBook.db = LibStub("AceDB-3.0"):New("LogBookDB", LB_SettingsDefaults:Load(), true)
-	LogBook.key = UnitName("player").." - "..GetRealmName()
-	LogBook.started = false
-	LB_EventHandler:RegisterEarlyEvents()
+  LogBook.db = LibStub("AceDB-3.0"):New("LogBookDB", LB_SettingsDefaults:Load(), true)
+  LogBook.key = UnitName("player") .. " - " .. GetRealmName()
+  LogBook.started = false
+  LB_EventHandler:RegisterEarlyEvents()
 end
 
 ---On enable addon
@@ -28,96 +28,89 @@ end
 
 ---Error message
 function LogBook:Error(message)
-	LogBook:Print("|cfffc8686[ERROR]|r " .. message)
+  LogBook:Print("|cfffc8686[ERROR]|r " .. message)
 end
 
 ---Warning message
 function LogBook:Warning(message)
-	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cfffcb986[WARNING]|r " .. message)
-	end
+  if LogBook:IsDebugEnabled() then
+    LogBook:Print("|cfffcb986[WARNING]|r " .. message)
+  end
 end
 
 ---Info message
 function LogBook:Info(message)
-	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cff86f0fc[INFO]|r " .. message)
-	end
+  if LogBook:IsDebugEnabled() then
+    LogBook:Print("|cff86f0fc[INFO]|r " .. message)
+  end
 end
 
 ---Debug message
 function LogBook:Debug(message)
-	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cfffcfc86[DEBUG]|r " .. message)
-	end
+  if LogBook:IsDebugEnabled() then
+    LogBook:Print("|cfffcfc86[DEBUG]|r " .. message)
+  end
 end
 
 ---Log message
 function LogBook:Log(message)
-	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cffb2fc86[LOG]|r " .. message)
-	end
+  if LogBook:IsDebugEnabled() then
+    LogBook:Print("|cffb2fc86[LOG]|r " .. message)
+  end
 end
 
 ---Dump message
 function LogBook:Dump(message)
-	if LogBook:IsDebugEnabled() then
-		LogBook:Print("|cffb3b2b8[DUMP]|r " .. LB_CustomFunctions:Dump(message))
-	end
+  if LogBook:IsDebugEnabled() then
+    LogBook:Print("|cffb3b2b8[DUMP]|r " .. LB_CustomFunctions:Dump(message))
+  end
 end
 
----Check debug enabled 
+---Check debug enabled
 function LogBook:IsDebugEnabled()
-	if LogBook.db.global.debug == nil then
-		return false
-	elseif LogBook.db.global.debug then
-		--LogBook:Print("IsDebugEnabled = true")
-	else
-		--LogBook:Print("IsDebugEnabled = false")
-	end
-	return LogBook.db.global.debug
+  if LogBook.db.global.debug == nil then
+    return false
+  elseif LogBook.db.global.debug then
+    --LogBook:Print("IsDebugEnabled = true")
+  else
+    --LogBook:Print("IsDebugEnabled = false")
+  end
+  return LogBook.db.global.debug
 end
 
 ---@param message string
 ---@return string string
 function LogBook:i18n(message)
-	local locale = GetLocale()
-	if LogBook.db.global.data.locale[locale] == nil then
-		LogBook.db.global.data.locale[locale] = {
-			old = {
-			},
-			new = {
-			}
-		}
-	end
-	if LogBook.db.global.data.locale["esUS"] == nil then
-		LogBook.db.global.data.locale["esUS"] = {
-			all = {
-			},
-		}
-	end
-	
-	LogBook.db.global.data.locale[locale].old = L
-	local oldLocales = LogBook.db.global.data.locale[locale].old
-	table.sort(oldLocales, function(a, b)
-		return a:lower() < b:lower()
-	end)
-
-	LogBook.db.global.data.locale[locale].old = oldLocales
-	LogBook.db.global.data.locale["esUS"].all[message] = true
-
-	if not LB_CustomFunctions:TableHasKey(L, message) then
-		LogBook.db.global.data.locale[locale].new[message] = message
-	end
-
-	local newLocales = LB_CustomFunctions:SyncTableEntries(LogBook.db.global.data.locale[locale].new,
-	LogBook.db.global.data.locale[locale].old)
-
-	table.sort(newLocales, function(v1, v2) return v1 < v2 end)
-	LogBook.db.global.data.locale[locale].new = newLocales
-	return tostring(L[message])
+  local locale = GetLocale()
+  LogBook.db.global.data.locale[locale] = {
+    old = {
+    },
+    new = {
+    }
+  }
+  return tostring(L[message])
 end
 
+---Prints message
+---@param message string
 function LogBook:Print(message)
-	print("|cffffffffLog|r|cff57b6ffBook|r: " .. message)
+  print("|cffffffffLog|r|cff57b6ffBook|r: " .. message)
+end
+
+local cachedTitle
+---Get addon version info
+function LogBook:GetAddonVersionInfo()
+  if (not cachedTitle) then
+    local _, title, _, _, _ = C_AddOns.GetAddOnInfo("LogBook")
+    cachedTitle = title
+  end
+  -- %d = digit, %p = punctuation character, %x = hexadecimal digits.
+  local major, minor, patch, _ = string.match(cachedTitle, "(%d+)%p(%d+)%p(%d+)")
+  return tonumber(major), tonumber(minor), tonumber(patch)
+end
+
+---Get addon version string
+function LogBook:GetAddonVersionString()
+  local major, minor, patch = LogBook:GetAddonVersionInfo()
+  return "v" .. tostring(major) .. "." .. tostring(minor) .. "." .. tostring(patch)
 end

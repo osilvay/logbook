@@ -1,5 +1,5 @@
 ## Interface: 11500
-## Title: |cffffffffLog|r|cff57b6ffBook|r |cffc1c1c1v|r|cff9191a10.0.1|r
+## Title: |cffffffffLog|r|cff57b6ffBook|r |cff9191a1v0.0.1|r
 ## Version: 0.0.1
 ## Notes: Log book for wow classic
 ## Author: osilvay

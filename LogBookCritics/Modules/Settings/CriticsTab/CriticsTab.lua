@@ -39,7 +39,7 @@ function LBC_Settings:Initialize()
             order = 1,
             name = LogBookCritics:i18n("Enable tracking"),
             desc = LogBookCritics:i18n("Toggle tracking hits and heals."),
-            width = 1.8,
+            width = "full",
             disabled = false,
             get = function() return LogBookCritics.db.char.general.critics.trackingEnabled end,
             set = function(info, value)
@@ -60,7 +60,7 @@ function LBC_Settings:Initialize()
             order = 2,
             name = LogBookCritics:i18n("Unlock text frame"),
             desc = LogBookCritics:i18n("Toggle text frame lock."),
-            width = 1.8,
+            width = "full",
             get = function() return LogBookCritics.db.char.general.critics.unlockTextFrame end,
             set = function(info, value)
               LogBookCritics.db.char.general.critics.unlockTextFrame = value
@@ -76,7 +76,7 @@ function LBC_Settings:Initialize()
             order = 3,
             name = LogBookCritics:i18n("Tracking heals"),
             desc = LogBookCritics:i18n("Toggle tracking heals."),
-            width = 1.8,
+            width = "full",
             disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
             get = function() return LogBookCritics.db.char.general.critics.trackHeals end,
             set = function(info, value)
@@ -88,7 +88,7 @@ function LBC_Settings:Initialize()
             order = 4,
             name = LogBookCritics:i18n("Tracking hits"),
             desc = LogBookCritics:i18n("Toggle tracking hits."),
-            width = 1.8,
+            width = "full",
             disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
             get = function() return LogBookCritics.db.char.general.critics.trackHits end,
             set = function(info, value)
@@ -100,7 +100,7 @@ function LBC_Settings:Initialize()
             order = 4,
             name = LogBookCritics:i18n("Tracking attacks"),
             desc = LogBookCritics:i18n("Toggle tracking attacks."),
-            width = 1.8,
+            width = "full",
             disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
             get = function() return LogBookCritics.db.char.general.critics.trackAttacks end,
             set = function(info, value)
@@ -118,10 +118,10 @@ function LBC_Settings:Initialize()
         args = {
           messageDuration = {
             type = "range",
-            order = 5,
+            order = 1,
             name = LogBookCritics:i18n("Message duration"),
             desc = LogBookCritics:i18n("Duration of messages on screen."),
-            width = 1.8,
+            width = "full",
             min = 1,
             max = 5,
             step = 1,
@@ -130,6 +130,47 @@ function LBC_Settings:Initialize()
             set = function(info, value)
               LogBookCritics.db.char.general.critics.messageDuration = value
             end,
+          },
+          screenMessages = {
+            type = "group",
+            order = 2,
+            inline = false,
+            width = "full",
+            name = LogBookCritics:i18n("Screen position"),
+            args = {
+              screenPositionX = {
+                type = "range",
+                order = 1,
+                width = "full",
+                min = tonumber(string.format("%.1f", -GetScreenWidth() / 2)),
+                max = tonumber(string.format("%.1f", GetScreenWidth() / 2)),
+                step = 0.1,
+                name = LogBookCritics:i18n("Position X"),
+                desc = LogBookCritics:i18n("Screen position X."),
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
+                get = function() return LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset end,
+                set = function(info, value)
+                  LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset = value
+                  LBC_SplashCriticsWindow:UpdateSplashCriticsWindowPoint()
+                end,
+              },
+              screenPositionY = {
+                type = "range",
+                order = 1,
+                width = "full",
+                min = tonumber(string.format("%.1f", -GetScreenHeight() / 2)),
+                max = tonumber(string.format("%.1f", GetScreenHeight() / 2)),
+                step = 0.1,
+                name = LogBookCritics:i18n("Position Y"),
+                desc = LogBookCritics:i18n("Screen position Y."),
+                disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
+                get = function() return LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset end,
+                set = function(info, value)
+                  LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset = value
+                  LBC_SplashCriticsWindow:UpdateSplashCriticsWindowPoint()
+                end,
+              }
+            }
           },
         },
       },

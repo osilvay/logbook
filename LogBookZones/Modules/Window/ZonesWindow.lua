@@ -29,80 +29,80 @@ local tableData = {}
 
 ---Initilize
 function LBZ_ZonesWindow:Initialize()
-	if not ZonesWindowFrame then
-		LBZ_ZonesWindow:CreateZonesWindowTable()
+  if not ZonesWindowFrame then
+    LBZ_ZonesWindow:CreateZonesWindowTable()
 
-		---@type AceGUIFrame, AceGUIFrame
-		local zonesWindowFrame = AceGUI:Create("Frame");
-		zonesWindowFrame:SetWidth(540)
-		zonesWindowFrame:SetHeight(520)
-		zonesWindowFrame:SetPoint("CENTER", 0, 0)
-		zonesWindowFrame:SetLayout("Fill")
-		zonesWindowFrame:SetTitle("|cffffffffLog|r|cff57b6ffBook|r |cff4fe388Zones|r |cffc1c1c1v|r|cff9191a10.0.1|r")
-		zonesWindowFrame:SetStatusText(LogBookZones:i18n("LogBook zones management window"))
-		zonesWindowFrame:EnableResize(false)
-		zonesWindowFrame:Hide()
+    ---@type AceGUIFrame, AceGUIFrame
+    local zonesWindowFrame = AceGUI:Create("Frame");
+    zonesWindowFrame:SetWidth(540)
+    zonesWindowFrame:SetHeight(520)
+    zonesWindowFrame:SetPoint("CENTER", 0, 0)
+    zonesWindowFrame:SetLayout("Fill")
+    zonesWindowFrame:SetTitle("LogBook Zones")
+    zonesWindowFrame:SetStatusText("|cffffffffLog|r|cff57b6ffBook|r |cff4fe368Zones|r |cff9191a1v0.0.1|r")
+    zonesWindowFrame:EnableResize(false)
+    zonesWindowFrame:Hide()
 
-		zonesWindowFrame:SetCallback("OnClose", function(widget)
-			PlaySound(840)
-		end)
+    zonesWindowFrame:SetCallback("OnClose", function(widget)
+      PlaySound(840)
+    end)
 
-		-- header
-		LBZ_ZonesHeader:ContainerHeaderFrame(tableData, zonesWindowFrame)
-		-- filter
-		LBZ_ZonesFilter:ContainerFilterFrame(zonesWindowFrame)
-		-- table
-		LBZ_ZonesBody:ContainerBodyFrame(tableData, zonesWindowFrame)
+    -- header
+    LBZ_ZonesHeader:ContainerHeaderFrame(tableData, zonesWindowFrame)
+    -- filter
+    LBZ_ZonesFilter:ContainerFilterFrame(zonesWindowFrame)
+    -- table
+    LBZ_ZonesBody:ContainerBodyFrame(tableData, zonesWindowFrame)
 
-		zonesWindowFrame:Hide()
-		ZonesWindowFrame = zonesWindowFrame;
+    zonesWindowFrame:Hide()
+    ZonesWindowFrame = zonesWindowFrame;
 
-		-- Add the frame as a global variable under the name `MyGlobalFrameName`
-		_G["LogBookZonesWindowFrame"] = ZonesWindowFrame.frame
-		-- Register the global variable `MyGlobalFrameName` as a "special frame"
-		-- so that it is closed when the escape key is pressed.
-		table.insert(UISpecialFrames, "LogBookZonesWindowFrame")
-	end
+    -- Add the frame as a global variable under the name `MyGlobalFrameName`
+    _G["LogBookZonesWindowFrame"] = ZonesWindowFrame.frame
+    -- Register the global variable `MyGlobalFrameName` as a "special frame"
+    -- so that it is closed when the escape key is pressed.
+    table.insert(UISpecialFrames, "LogBookZonesWindowFrame")
+  end
 end
 
 ---Create zones window table data
 function LBZ_ZonesWindow:CreateZonesWindowTable()
-	tableData = {
-		table = {
-			header = {
-			},
-			data = {
-			}
-		},
-	}
+  tableData = {
+    table = {
+      header = {
+      },
+      data = {
+      }
+    },
+  }
 end
 
 ---Hide zones window frame
 function LBZ_ZonesWindow:HideZonesWindowFrame()
-	if ZonesWindowFrame and ZonesWindowFrame:IsShown() then
-		ZonesWindowFrame:Hide();
-	end
+  if ZonesWindowFrame and ZonesWindowFrame:IsShown() then
+    ZonesWindowFrame:Hide();
+  end
 end
 
 ---Open zones window
 function LBZ_ZonesWindow:OpenZonesWindowFrame()
-	if not ZonesWindowFrame then return end
-	if not ZonesWindowFrame:IsShown() then
-		PlaySound(882)
-		--LogBook:Debug("Show ZonesWindow frame")
-		ZonesWindowFrame:Show()
-		LBZ_ZonesWindow:RedrawZonesWindowFrame()
-	else
-		--LogBook:Debug("Hide ZonesWindow frame")
-		ZonesWindowFrame:Hide()
-	end
+  if not ZonesWindowFrame then return end
+  if not ZonesWindowFrame:IsShown() then
+    PlaySound(882)
+    --LogBook:Debug("Show ZonesWindow frame")
+    ZonesWindowFrame:Show()
+    LBZ_ZonesWindow:RedrawZonesWindowFrame()
+  else
+    --LogBook:Debug("Hide ZonesWindow frame")
+    ZonesWindowFrame:Hide()
+  end
 end
 
 ---Redraw zones window frame
 function LBZ_ZonesWindow:RedrawZonesWindowFrame()
-	if not ZonesWindowFrame then return end
-	--LogBook:Debug("Redraw ZonesWindowFrame frame")
-	if ZonesWindowFrame:IsShown() then
-		LBZ_ZonesBody:RedrawZonesWindowBody(tableData, ZonesWindowFrame)
-	end
+  if not ZonesWindowFrame then return end
+  --LogBook:Debug("Redraw ZonesWindowFrame frame")
+  if ZonesWindowFrame:IsShown() then
+    LBZ_ZonesBody:RedrawZonesWindowBody(tableData, ZonesWindowFrame)
+  end
 end

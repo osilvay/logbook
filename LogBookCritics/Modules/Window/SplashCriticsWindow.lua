@@ -80,13 +80,14 @@ function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
   local lockIcon = "|TInterface\\AddOns\\LogBook\\Images\\lock:16:16|t"
   lockButton:SetPoint("BOTTOMRIGHT", baseFrame, -10, -20)
   lockButton:SetSize(96, 22)
-  lockButton:SetText(lockIcon .. " " .. "Lock")
+  lockButton:SetText(lockIcon .. " " .. LogBookCritics:i18n("Lock"))
   lockButton:SetScript("OnClick", function(current)
+    PlaySound(840)
     LBC_SplashCriticsWindow.LockTextMessage(LogBookCritics:i18n("Test message"))
   end)
   lockButton:SetScript("OnEnter", function(current)
     GameTooltip:SetOwner(current, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Lock position", nil, nil, nil, nil, true)
+    GameTooltip:SetText(LogBookCritics:i18n("Lock position"), nil, nil, nil, nil, true)
   end)
   lockButton:SetScript("OnLeave", function(current)
     GameTooltip:Hide()
@@ -95,6 +96,12 @@ function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
   baseFrame.lockButton = lockButton
 
   return baseFrame
+end
+
+function LBC_SplashCriticsWindow:UpdateSplashCriticsWindowPoint()
+  local xOffset = LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset
+  local yOffset = LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset
+  baseFrame:SetPoint("CENTER", UIParent, "CENTER", xOffset, yOffset)
 end
 
 ---Add message to queue
@@ -183,14 +190,12 @@ end
 ---@param message string
 function LBC_SplashCriticsWindow.LockTextMessage(message)
   if baseFrame then
-    C_Timer.After(0.1, function()
-      LogBookCritics.db.char.general.critics.textFrameBgColorAlpha = 0
-      LogBookCritics.db.char.general.critics.unlockTextFrame = false
-      baseFrame.lockButton:Hide()
-      baseFrame:Hide()
-      C_Timer.After(0.5, function()
-        showingMessage = false
-      end)
+    LogBookCritics.db.char.general.critics.textFrameBgColorAlpha = 0
+    LogBookCritics.db.char.general.critics.unlockTextFrame = false
+    baseFrame.lockButton:Hide()
+    baseFrame:Hide()
+    C_Timer.After(0.5, function()
+      showingMessage = false
     end)
   end
 end

@@ -275,7 +275,7 @@ function LB_WelcomeBody:drawMobsContainer(rowContainer)
     mobsButton:SetText(string.format(mobsFormatted, mobsIcon_a, mobsText))
   end)
   mobsButton:SetCallback("OnClick", function(current)
-    LB_SlashCommands:OpenZonesWindow()
+    LB_SlashCommands:OpenMobsWindow()
   end)
   mobsContainer:AddChild(mobsButton)
 end

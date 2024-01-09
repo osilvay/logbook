@@ -29,80 +29,80 @@ local tableData = {}
 
 ---Initilize
 function LBM_MobsWindow:Initialize()
-	if not MobsWindowFrame then
-		LBM_MobsWindow:CreateMobsWindowTable()
+  if not MobsWindowFrame then
+    LBM_MobsWindow:CreateMobsWindowTable()
 
-		---@type AceGUIFrame, AceGUIFrame
-		local mobsWindowFrame = AceGUI:Create("Frame");
-		mobsWindowFrame:SetWidth(540)
-		mobsWindowFrame:SetHeight(520)
-		mobsWindowFrame:SetPoint("CENTER", 0, 0)
-		mobsWindowFrame:SetLayout("Fill")
-		mobsWindowFrame:SetTitle("|cffffffffLog|r|cff57b6ffBook|r |cffe38d4fMobs|r |cffc1c1c1v|r|cff9191a10.0.1|r")
-		mobsWindowFrame:SetStatusText(LogBookMobs:i18n("LogBook mobs management window"))
-		mobsWindowFrame:EnableResize(false)
-		mobsWindowFrame:Hide()
+    ---@type AceGUIFrame, AceGUIFrame
+    local mobsWindowFrame = AceGUI:Create("Frame");
+    mobsWindowFrame:SetWidth(540)
+    mobsWindowFrame:SetHeight(520)
+    mobsWindowFrame:SetPoint("CENTER", 0, 0)
+    mobsWindowFrame:SetLayout("Fill")
+    mobsWindowFrame:SetTitle("LogBook Mobs")
+    mobsWindowFrame:SetStatusText("|cffffffffLog|r|cff57b6ffBook|r |cff4fe368Mobs|r |cff9191a1v0.0.1|r")
+    mobsWindowFrame:EnableResize(false)
+    mobsWindowFrame:Hide()
 
-		mobsWindowFrame:SetCallback("OnClose", function(widget)
-			PlaySound(840)
-		end)
+    mobsWindowFrame:SetCallback("OnClose", function(widget)
+      PlaySound(840)
+    end)
 
-		-- header
-		LBM_MobsHeader:ContainerHeaderFrame(tableData, mobsWindowFrame)
-		-- filter
-		LBM_MobsFilter:ContainerFilterFrame(mobsWindowFrame)
-		-- table
-		LBM_MobsBody:ContainerBodyFrame(tableData, mobsWindowFrame)
+    -- header
+    LBM_MobsHeader:ContainerHeaderFrame(tableData, mobsWindowFrame)
+    -- filter
+    LBM_MobsFilter:ContainerFilterFrame(mobsWindowFrame)
+    -- table
+    LBM_MobsBody:ContainerBodyFrame(tableData, mobsWindowFrame)
 
-		mobsWindowFrame:Hide()
-		MobsWindowFrame = mobsWindowFrame;
+    mobsWindowFrame:Hide()
+    MobsWindowFrame = mobsWindowFrame;
 
-		-- Add the frame as a global variable under the name `MyGlobalFrameName`
-		_G["LogBookMobsWindowFrame"] = MobsWindowFrame.frame
-		-- Register the global variable `MyGlobalFrameName` as a "special frame"
-		-- so that it is closed when the escape key is pressed.
-		table.insert(UISpecialFrames, "LogBookMobsWindowFrame")
-	end
+    -- Add the frame as a global variable under the name `MyGlobalFrameName`
+    _G["LogBookMobsWindowFrame"] = MobsWindowFrame.frame
+    -- Register the global variable `MyGlobalFrameName` as a "special frame"
+    -- so that it is closed when the escape key is pressed.
+    table.insert(UISpecialFrames, "LogBookMobsWindowFrame")
+  end
 end
 
 ---Create mobs window table data
 function LBM_MobsWindow:CreateMobsWindowTable()
-	tableData = {
-		table = {
-			header = {
-			},
-			data = {
-			}
-		},
-	}
+  tableData = {
+    table = {
+      header = {
+      },
+      data = {
+      }
+    },
+  }
 end
 
 ---Hide mobs window frame
 function LBM_MobsWindow:HideMobsWindowFrame()
-	if MobsWindowFrame and MobsWindowFrame:IsShown() then
-		MobsWindowFrame:Hide();
-	end
+  if MobsWindowFrame and MobsWindowFrame:IsShown() then
+    MobsWindowFrame:Hide();
+  end
 end
 
 ---Open mobs window
 function LBM_MobsWindow:OpenMobsWindowFrame()
-	if not MobsWindowFrame then return end
-	if not MobsWindowFrame:IsShown() then
-		PlaySound(882)
-		--LogBook:Debug("Show MobsWindow frame")
-		MobsWindowFrame:Show()
-		LBM_MobsWindow:RedrawMobsWindowFrame()
-	else
-		--LogBook:Debug("Hide MobsWindow frame")
-		MobsWindowFrame:Hide()
-	end
+  if not MobsWindowFrame then return end
+  if not MobsWindowFrame:IsShown() then
+    PlaySound(882)
+    --LogBook:Debug("Show MobsWindow frame")
+    MobsWindowFrame:Show()
+    LBM_MobsWindow:RedrawMobsWindowFrame()
+  else
+    --LogBook:Debug("Hide MobsWindow frame")
+    MobsWindowFrame:Hide()
+  end
 end
 
 ---Redraw mobs window frame
 function LBM_MobsWindow:RedrawMobsWindowFrame()
-	if not MobsWindowFrame then return end
-	--LogBook:Debug("Redraw MobsWindowFrame frame")
-	if MobsWindowFrame:IsShown() then
-		LBM_MobsBody:RedrawMobsWindowBody(tableData, MobsWindowFrame)
-	end
+  if not MobsWindowFrame then return end
+  --LogBook:Debug("Redraw MobsWindowFrame frame")
+  if MobsWindowFrame:IsShown() then
+    LBM_MobsBody:RedrawMobsWindowBody(tableData, MobsWindowFrame)
+  end
 end

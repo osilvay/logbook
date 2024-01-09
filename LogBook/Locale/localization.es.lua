@@ -1,7 +1,7 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("LogBook", "esES", false)
 if not L then return end
 
-L["LogBook initialized"] = "LogBook inicializado"
+L["LogBook %s initialized"] = "LogBook %s inicializado"
 L["Module |cffffcc00%s|r loaded"] = "Módulo |cffffcc00%s|r cargado"
 L["Left Click"] = "Clic Izquierdo"
 L["Open main window"] = "Abrir la ventana principal"

@@ -1,5 +1,5 @@
 ## Interface: 11500
-## Title: |cffffffffLog|r|cff57b6ffBook|r |cffa27be0Fishing|r |cffc1c1c1v|r|cff9191a10.0.1|r
+## Title: |cffffffffLog|r|cff57b6ffBook|r |cff4fe368Fishing|r |cff9191a1v0.0.1|r
 ## Version: 0.0.1
 ## Notes: Fishing tracker for wow classic
 ## Author: osilvay

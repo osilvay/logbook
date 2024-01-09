@@ -39,7 +39,6 @@ function LB_Settings:Initialize()
   AceConfigDialog:AddToBlizOptions("LogBook", "LogBook");
   if not LogBookSettingsFrame then
     --LogBook:Debug(LogBook:i18n("Creating settings frame"))
-
     ---@type AceGUIFrame, AceGUIFrame
     local logBookSettingsFrame = AceGUI:Create("Frame");
     logBookSettingsFrame:Hide()
@@ -50,9 +49,17 @@ function LB_Settings:Initialize()
     logBookSettingsFrame:EnableResize(false)
     logBookSettingsFrame:SetStatusText("|cffffffffLog|r|cff57b6ffBook|r |cffc1c1c1v|r|cff9191a10.0.1|r")
     logBookSettingsFrame:Hide()
+    logBookSettingsFrame:SetCallback("OnShow", function(widget)
+      LogBook:Log("Open")
+      logBookSettingsFrame:DoLayout()
+    end)
     logBookSettingsFrame:SetCallback("OnClose", function(widget)
       PlaySound(840)
     end)
+    logBookSettingsFrame:SetCallback("OnGroupSelected", function(widget)
+      LogBook:Log("Selected")
+    end)
+
 
     logBookSettingsFrame:Hide()
     LogBookSettingsFrame = logBookSettingsFrame;
@@ -118,7 +125,10 @@ end
 
 -- Open the configuration window
 function LB_Settings:OpenSettingsFrame()
-  if not LogBookSettingsFrame then return end
+  if not LogBookSettingsFrame then
+    return
+  end
+
   if not LogBookSettingsFrame:IsShown() then
     PlaySound(882)
     --LogBook:Debug("Show Config frame")
@@ -126,17 +136,5 @@ function LB_Settings:OpenSettingsFrame()
   else
     --LogBook:Debug("Hide Config frame")
     LogBookSettingsFrame:Hide()
-  end
-end
-
-function LB_Settings:CreateSettingsFrame()
-end
-
-function LB_Settings:RebuildFrame()
-  if LogBookSettingsFrame ~= nil then
-    --LogBook:Debug(LogBook:i18n("Refreshing settings frame"))
-    --AceGUI:Release(LogBookSettingsFrame)
-    --AceConfigDialog:Close(LogBookSettingsFrame)
-    LB_Settings:Initialize()
   end
 end
