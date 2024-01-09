@@ -13,7 +13,7 @@ embeds.xml
 Locale\Locales.xml
 
 # Modules
-Modules\EventHandler.lua
+Modules\MobsEventHandler.lua
 Modules\Init.lua
 Modules\VersionCheck.lua
 
@@ -22,6 +22,7 @@ Modules\Settings\MobsTab\MobsTab.lua
 
 Modules\Track\Track.lua
 Modules\Track\TrackMobs.lua
+Modules\Track\TrackMobCache.lua
 Modules\Track\TrackEventHandler.lua
 
 Modules\Window\MobsWindow.lua

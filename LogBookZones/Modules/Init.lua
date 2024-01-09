@@ -9,6 +9,6 @@ local LBZ_ZonesWindow = LB_ModuleLoader:ImportModule("LBZ_ZonesWindow")
 
 -- called by the PLAYER_LOGIN event handler
 function LBZ_Init:Initialize()
-    LBZ_Track:Initialize()
-    LBZ_ZonesWindow:Initialize()
+  LBZ_Track:Initialize()
+  LBZ_ZonesWindow:Initialize()
 end

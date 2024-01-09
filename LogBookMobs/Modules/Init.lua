@@ -9,6 +9,6 @@ local LBM_MobsWindow = LB_ModuleLoader:ImportModule("LBM_MobsWindow")
 
 -- called by the PLAYER_LOGIN event handler
 function LBM_Init:Initialize()
-    LBM_Track:Initialize()
-    LBM_MobsWindow:Initialize()
+  LBM_Track:Initialize()
+  LBM_MobsWindow:Initialize()
 end

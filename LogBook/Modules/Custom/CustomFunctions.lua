@@ -189,3 +189,21 @@ function LB_CustomFunctions:EmptyOrNil(value)
     if value == nil or value == "" then return true end
     return false
 end
+
+---Convert number to short version
+---@param num number
+---@param numNax number
+---@return string num
+function LB_CustomFunctions:GetNumText(num, numNax)
+	local factor = 1
+	if numNax and numNax > 10000 then
+		factor = 10
+	end
+	if num > 10000000 * factor then
+		return string.format("%.fM", num / 1000000)
+	end
+	if num > 10000 * factor then
+		return string.format("%.fK", num / 1000)
+	end
+	return tostring(num)
+end

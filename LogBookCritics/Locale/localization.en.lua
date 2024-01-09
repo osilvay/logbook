@@ -94,3 +94,6 @@ L["Back"] = true
 L["Settings"] = true
 L["Delete entry"] = true
 L["Are you sure you want to delete this entry?"] = true
+L["Screen"] = true
+L["Message duration"] = true
+L["Duration of messages on screen."] = true

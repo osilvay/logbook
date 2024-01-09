@@ -20,6 +20,10 @@ function LBM_SettingsDefaults:Load()
 					},
 				},
 			},
+			cache = {
+				mobs = { -- all mobs
+				},
+			}
 		},
 		char = {
 			general = {
