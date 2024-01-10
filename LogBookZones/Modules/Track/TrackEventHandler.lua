@@ -13,5 +13,5 @@ function LBZ_TrackEventHandler:Initialize()
 end
 
 function _LBZ_TrackEventHandler.ZoneChanged()
-  LBZ_TrackZones:ZoneChanged()
+  LBZ_TrackZones:ZoneChanged(true)
 end

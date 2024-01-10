@@ -15,13 +15,9 @@ local C_Map_GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 local UNKNOWN = UNKNOWN
 local SANCTUARY_TERRITORY, ARENA, FRIENDLY, HOSTILE, CONTESTED_TERRITORY, COMBAT, AGGRO_WARNING_IN_INSTANCE = SANCTUARY_TERRITORY, ARENA, FRIENDLY, HOSTILE, CONTESTED_TERRITORY, COMBAT, AGGRO_WARNING_IN_INSTANCE
 
----initialize track crit
-function LBZ_TrackZones:Initialize()
-  -- tooltip hook
-end
-
 -- Process zone change
-function LBZ_TrackZones:ZoneChanged()
+---@param printMessages boolean
+function LBZ_TrackZones:ZoneChanged(printMessages)
   local currentZone = GetZoneText()
   local currentSubZone = GetSubZoneText()
   if currentSubZone == nil or currentSubZone == "" then currentSubZone = UNKNOWN end
@@ -31,7 +27,9 @@ function LBZ_TrackZones:ZoneChanged()
   local unitOnTaxi = UnitOnTaxi("player")
   local trackInFlight = LogBookZones.db.char.general.zones.trackInFlight
   if unitOnTaxi and not trackInFlight then return end
-  LogBookZones:Print(string.format(LogBookZones:i18n("Entering") .. " %s - %s", LBZ_TrackZones:GetZoneRecolored(false, currentZone), LBZ_TrackZones:GetZoneRecolored(false, currentSubZone or "")))
+  if printMessages then
+    LogBookZones:Print(string.format(LogBookZones:i18n("Entering") .. " %s - %s", LBZ_TrackZones:GetZoneRecolored(false, currentZone), LBZ_TrackZones:GetZoneRecolored(false, currentSubZone or "")))
+  end
   LBZ_TrackZones:SetNewZone(currentZone, currentSubZone)
 end
 

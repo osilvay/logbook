@@ -21,7 +21,6 @@ function LB_Init:Initialize()
   LB_MinimapIcon:Initialize()
   LB_SlashCommands.RegisterSlashCommands()
   LB_WelcomeWindow:Initialize()
-  LogBook:Info(string.format(LogBook:i18n("LogBook %s initialized"), LogBook:GetAddonVersionString()))
   LB_CustomFunctions:Delay(0.1, LB_Init.LoadAddons, "")
 end
 
@@ -35,7 +34,7 @@ function LB_Init.LoadAddons()
       LogBook:Info(string.format(LogBook:i18n("Module |cffffcc00%s|r loaded"), addon))
     end
   end
-  C_Timer.After(1, function()
+  C_Timer.After(0.2, function()
     LB_Init.InitializeAddons()
   end)
   LogBook.started = true
@@ -53,6 +52,7 @@ function LB_Init.InitializeAddons()
         initializeTicker:Cancel()
         initializeTicker = nil
         LB_Settings:Initialize()
+        LogBook:Print(string.format(LogBook:i18n("LogBook %s initialized"), LogBook:GetAddonVersionString()))
       end
       for _, addon in ipairs(addons_to_load) do
         if addonsProcessed[addon] == nil and C_AddOns.IsAddOnLoaded(addon) then

@@ -26,8 +26,10 @@ function LBZ_SettingsDefaults:Load()
         zones = {
           trackingEnabled = true,
           trackInFlight = false,
-          showZoneChanges = false,
-          showZoneMessages = false,
+          showZoneChanges = true,
+          showZoneMessages = true,
+          autoTrackingEnabled = true,
+          timeAutoTracking = 5,
         },
       },
     },
