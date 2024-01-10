@@ -104,3 +104,6 @@ L["Screen position X."] = true
 L["Screen position Y."] = true
 L["Position X"] = true
 L["Position Y"] = true
+L["Maintenance"] = true
+L["Delete character"] = true
+L["Delete character critical data."] = true

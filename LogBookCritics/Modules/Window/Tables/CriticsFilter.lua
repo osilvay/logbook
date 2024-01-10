@@ -28,7 +28,6 @@ end
 ---Create critics fiter frame
 ---@param parentFrame AceGUIFrame
 function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
-
   if not filterContainer then
     -- container
     ---@type AceGUIInlineGroup
@@ -126,8 +125,8 @@ function LBC_CriticsFilter:CreateRealmDropdown()
   for k, v in pairs(characters) do
     local info = LogBook.db.global.characters[k].info
     if info then
-      local realm = LB_CustomColors:GetColoredFaction(info.realm, info.factionName)
-      r[info.realm] = string.format("%s", realm)
+      --local realm = LB_CustomColors:GetColoredFaction(info.realm, info.factionName)
+      r[info.realm] = string.format("|cffa1a1c1%s|r", info.realm)
     end
   end
   return r
@@ -142,10 +141,14 @@ function LBC_CriticsFilter:CreateCharactersDropdown()
   for k, v in pairs(characters) do
     local info = LogBook.db.global.characters[k].info
     if info then
-      local realm = LB_CustomColors:GetColoredFaction(info.realm, info.factionName)
+      local realm = LB_CustomColors:GetColoredFaction(info.faction, info.factionName)
       local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
-      if realm ~= nil and ((select_realm ~= "all" and select_realm == info.realm) or (select_realm == "all")) then
-        r[k] = string.format("%s", name)
+      --local faction_icon = info.factionName and "|TInterface\\PVPFrame\\PVP-Currency-" .. info.factionName .. ":22:22|t" or ""
+      local faction_icon = "|TInterface\\AddOns\\LogBook\\Images\\icon_" .. info.factionName .. ":16:16|t"
+      if realm ~= nil and ((select_realm ~= "all" and select_realm == info.realm)) then
+        r[k] = string.format("%s %s", faction_icon, name)
+      elseif select_realm == "all" then
+        r[k] = string.format("%s %s |cffa1a1c1%s|r", faction_icon, name, info.realm)
       end
     end
   end

@@ -127,6 +127,14 @@ function LBZ_Settings:Initialize()
           },
         },
       },
+      maintenance = {
+        type = "group",
+        order = 2,
+        inline = true,
+        name = LogBookCritics:i18n("Maintenance"),
+        args = {
+        }
+      },
     },
   }
 end

@@ -1,5 +1,6 @@
 ---@class LBC_Settings
 local LBC_Settings = LB_ModuleLoader:CreateModule("LBC_Settings");
+local _LBC_Settings = {}
 
 ---@type LBC_SettingsDefaults
 local LBC_SettingsDefaults = LB_ModuleLoader:ImportModule("LBC_SettingsDefaults");
@@ -7,8 +8,14 @@ local LBC_SettingsDefaults = LB_ModuleLoader:ImportModule("LBC_SettingsDefaults"
 ---@type LB_CustomFrames
 local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames");
 
+---@type LB_CustomFunctions
+local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions");
+
 ---@type LB_CustomColors
 local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors");
+
+---@type LB_CustomPopup
+local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
 
 ---@type LBC_SplashCriticsWindow
 local LBC_SplashCriticsWindow = LB_ModuleLoader:ImportModule("LBC_SplashCriticsWindow");
@@ -16,6 +23,8 @@ local LBC_SplashCriticsWindow = LB_ModuleLoader:ImportModule("LBC_SplashCriticsW
 LBC_Settings.critics_tab = { ... }
 local optionsDefaults = LBC_SettingsDefaults:Load()
 local colorIcon = "|TInterface\\AddOns\\LogBook\\Images\\color:16:16|t"
+local LibDialog = LibStub("LibDialog-1.0")
+
 
 function LBC_Settings:Initialize()
   return {
@@ -52,22 +61,6 @@ function LBC_Settings:Initialize()
                 LogBookCritics.db.char.general.critics.trackHeals = true
                 LogBookCritics.db.char.general.critics.trackHits = true
                 LogBookCritics.db.char.general.critics.trackAttacks = true
-              end
-            end,
-          },
-          unlockTextFrame = {
-            type = "toggle",
-            order = 2,
-            name = LogBookCritics:i18n("Unlock text frame"),
-            desc = LogBookCritics:i18n("Toggle text frame lock."),
-            width = "full",
-            get = function() return LogBookCritics.db.char.general.critics.unlockTextFrame end,
-            set = function(info, value)
-              LogBookCritics.db.char.general.critics.unlockTextFrame = value
-              if value then
-                LBC_SplashCriticsWindow.UnlockTextMessage(LogBookCritics:i18n("Test message"))
-              else
-                LBC_SplashCriticsWindow.LockTextMessage(LogBookCritics:i18n("Test message"))
               end
             end,
           },
@@ -116,9 +109,25 @@ function LBC_Settings:Initialize()
         inline = true,
         name = LogBookCritics:i18n("Screen"),
         args = {
+          unlockTextFrame = {
+            type = "toggle",
+            order = 1,
+            name = LogBookCritics:i18n("Unlock text frame"),
+            desc = LogBookCritics:i18n("Toggle text frame lock."),
+            width = "full",
+            get = function() return LogBookCritics.db.char.general.critics.unlockTextFrame end,
+            set = function(info, value)
+              LogBookCritics.db.char.general.critics.unlockTextFrame = value
+              if value then
+                LBC_SplashCriticsWindow.UnlockTextMessage(LogBookCritics:i18n("Test message"))
+              else
+                LBC_SplashCriticsWindow.LockTextMessage(LogBookCritics:i18n("Test message"))
+              end
+            end,
+          },
           messageDuration = {
             type = "range",
-            order = 1,
+            order = 2,
             name = LogBookCritics:i18n("Message duration"),
             desc = LogBookCritics:i18n("Duration of messages on screen."),
             width = "full",
@@ -133,7 +142,7 @@ function LBC_Settings:Initialize()
           },
           screenMessages = {
             type = "group",
-            order = 2,
+            order = 3,
             inline = false,
             width = "full",
             name = LogBookCritics:i18n("Screen position"),
@@ -150,13 +159,15 @@ function LBC_Settings:Initialize()
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
                 get = function() return LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset end,
                 set = function(info, value)
+                  LogBookCritics.db.char.general.critics.unlockTextFrame = true
+                  LBC_SplashCriticsWindow.UnlockTextMessage(LogBookCritics:i18n("Test message"))
                   LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset = value
                   LBC_SplashCriticsWindow:UpdateSplashCriticsWindowPoint()
                 end,
               },
               screenPositionY = {
                 type = "range",
-                order = 1,
+                order = 2,
                 width = "full",
                 min = tonumber(string.format("%.1f", -GetScreenHeight() / 2)),
                 max = tonumber(string.format("%.1f", GetScreenHeight() / 2)),
@@ -166,6 +177,8 @@ function LBC_Settings:Initialize()
                 disabled = function() return (not LogBookCritics.db.char.general.critics.trackingEnabled); end,
                 get = function() return LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset end,
                 set = function(info, value)
+                  LogBookCritics.db.char.general.critics.unlockTextFrame = true
+                  LBC_SplashCriticsWindow.UnlockTextMessage(LogBookCritics:i18n("Test message"))
                   LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset = value
                   LBC_SplashCriticsWindow:UpdateSplashCriticsWindowPoint()
                 end,
@@ -174,9 +187,34 @@ function LBC_Settings:Initialize()
           },
         },
       },
+      maintenance = {
+        type = "group",
+        order = 4,
+        inline = true,
+        name = LogBookCritics:i18n("Maintenance"),
+        args = {
+          deleteCharacterData = {
+            type = "select",
+            order = 1,
+            width = "full",
+            name = LogBookCritics:i18n("Delete character"),
+            desc = LogBookCritics:i18n("Delete character critical data."),
+            values = _LBC_Settings.CreateCharactersDropdown(),
+            disabled = false,
+            get = function() return LogBookCritics.db.char.general.critics.deleteCharacterData end,
+            set = function(info, value)
+              LogBookCritics.db.char.general.critics.deleteCharacterData = value
+              --info:SetList(_LBC_Settings.CreateCharactersDropdown())
+              LB_CustomPopup:CreatePopup(LogBookCritics:i18n("Delete entry"), LogBookCritics:i18n("Are you sure you want to delete this entry?"), function()
+                _LBC_Settings.DeleteCharacterEntry(value)
+              end)
+            end,
+          }
+        }
+      },
       critics_tabs = {
         name = LogBookCritics:i18n("Tracking groups"),
-        order = 4,
+        order = 5,
         type = "group",
         args = {
           hit_tab = LBC_Settings._HitTab(),
@@ -685,4 +723,25 @@ function LBC_Settings._AttackTab()
       },
     },
   }
+end
+
+function _LBC_Settings.CreateCharactersDropdown()
+  local r = {
+  }
+  local characters = LogBookCritics.db.global.data.characters
+  for k, v in pairs(characters) do
+    local info = LogBook.db.global.characters[k].info
+    if info then
+      local realm = LB_CustomColors:GetColoredFaction(info.faction, info.factionName)
+      local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
+      --local faction_icon = info.factionName and "|TInterface\\PVPFrame\\PVP-Currency-" .. info.factionName .. ":22:22|t" or ""
+      local faction_icon = "|TInterface\\AddOns\\LogBook\\Images\\icon_" .. info.factionName .. ":16:16|t"
+      r[k] = string.format("%s %s |cffa1a1c1%s|r", faction_icon, name, info.realm)
+    end
+  end
+  return LB_CustomFunctions:SortComplexTableByKey(r)
+end
+
+function _LBC_Settings.DeleteCharacterEntry(character)
+  LogBook:Debug(string.format("Delete %s", character))
 end

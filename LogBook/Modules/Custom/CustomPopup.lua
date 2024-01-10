@@ -11,144 +11,164 @@ local _CreateNoteWindow, _CreateContainer, _CreateDescription, _CreateButtonCont
 local title, description, _acceptFn
 
 function LB_CustomPopup:CreatePopup(customTitle, customDescription, customAcceptFn)
-    if customTitle == nil or customDescription == nil or customAcceptFn == nil then return end
-    title = customTitle
-    description = customDescription
-    _acceptFn = customAcceptFn
-    if not _LB_CustomPopup.popup then
-        _LB_CustomPopup.popup = _CreateNoteWindow()
-        _LB_CustomPopup.popup:Hide()
-    end
-    C_Timer.After(0.1, function()
-        LB_CustomPopup:ShowPopup()
-    end)
+  if customTitle == nil or customDescription == nil or customAcceptFn == nil then return end
+  title = customTitle
+  description = customDescription
+  _acceptFn = customAcceptFn
+  if not _LB_CustomPopup.popup then
+    _LB_CustomPopup.popup = _CreatePopupWindow()
+    _LB_CustomPopup.popup:Hide()
+  end
+  C_Timer.After(0.1, function()
+    LB_CustomPopup:ShowPopup()
+  end)
 end
 
 function LB_CustomPopup:ShowPopup()
-    if not _LB_CustomPopup.popup:IsShown() then
-        _LB_CustomPopup.popup:Show()
-        isOpened = true
-    else
-        _LB_CustomPopup.popup:Hide()
-        isOpened = false
-    end
+  if not _LB_CustomPopup.popup:IsShown() then
+    _LB_CustomPopup.popup:Show()
+    isOpened = true
+  else
+    _LB_CustomPopup.popup:Hide()
+    isOpened = false
+  end
 end
 
 function LB_CustomPopup:IsOpened()
-    return isOpened
+  return isOpened
 end
 
-_CreateNoteWindow      = function()
-    ---@type AceGUIWindow
-    local notePopup = AceGUI:Create("Window")
-    notePopup:Show()
-    notePopup:SetTitle(title)
-    notePopup:SetWidth(400)
-    notePopup:SetHeight(150)
-    notePopup:EnableResize(false)
-    notePopup.frame:Raise()
-    notePopup:SetCallback("OnClose", function()
-        notePopup:Hide()
-    end)
+_CreatePopupWindow     = function()
+  ---@type AceGUIWindow
+  local popup = AceGUI:Create("Window")
+  popup:Show()
+  popup:SetTitle(title)
+  popup:SetWidth(400)
+  popup:SetHeight(130)
+  popup:EnableResize(false)
+  popup.frame:Raise()
+  popup:SetCallback("OnClose", function()
+    popup:Hide()
+  end)
 
-    local container = _CreateContainer()
-    notePopup:AddChild(container)
+  local container = _CreateContainer()
+  popup:AddChild(container)
 
-    local desc = _CreateDescription()
-    container:AddChild(desc)
+  local desc = _CreateDescription()
+  container:AddChild(desc)
 
-    local buttonContainer = _CreateButtonContainer()
-    container:AddChild(buttonContainer)
+  local buttonContainer = _CreateButtonContainer()
+  container:AddChild(buttonContainer)
 
-    return notePopup
+  return popup
 end
 
 ---Create container
 ---@return AceGUIWidget
 _CreateContainer       = function()
-    ---@type AceGUISimpleGroup
-    local container = AceGUI:Create("SimpleGroup")
-    container:SetFullHeight(true)
-    container:SetFullWidth(true)
-    container:SetLayout('Flow')
-    return container
+  ---@type AceGUISimpleGroup
+  local container = AceGUI:Create("SimpleGroup")
+  container:SetWidth(400)
+  container:SetHeight(130)
+  container:SetLayout('Flow')
+  container:SetAutoAdjustHeight(false)
+  return container
 end
 
 ---Create label
 ---@return AceGUIWidget
 _CreateDescription     = function()
-    ---@type AceGUISimpleGroup
-    local descContainer = AceGUI:Create("SimpleGroup")
-    descContainer:SetFullWidth(true)
-    descContainer:SetHeight(60)
-    descContainer:SetLayout('Fill')
-    descContainer:SetAutoAdjustHeight(false)
+  ---@type AceGUISimpleGroup
+  local descContainer = AceGUI:Create("SimpleGroup")
+  descContainer:SetWidth(400)
+  descContainer:SetHeight(40)
+  descContainer:SetLayout('Flow')
+  descContainer:SetAutoAdjustHeight(false)
 
-    ---@type AceGUILabel
-    local desc = AceGUI:Create("Label")
-    desc:SetText(description)
-    desc:SetFullWidth(true)
-    desc:SetFullHeight(true)
-    descContainer:AddChild(desc)
-    
-    return descContainer
+  -- Separator
+  descContainer:AddChild(_CreateSeparator(10, 40))
+
+  ---@type AceGUILabel
+  local desc = AceGUI:Create("Label")
+  desc:SetText(description)
+  desc:SetWidth(380)
+  desc:SetFullHeight(true)
+  descContainer:AddChild(desc)
+
+  -- Separator
+  descContainer:AddChild(_CreateSeparator(10, 40))
+
+  return descContainer
 end
 
 ---Create container
 ---@return AceGUIWidget
 _CreateButtonContainer = function()
-    ---@type AceGUISimpleGroup
-    local btnContainer = AceGUI:Create("SimpleGroup")
-    btnContainer:SetFullWidth(true)
-    btnContainer:SetHeight(40)
-    btnContainer:SetLayout('Flow')
-    btnContainer:SetPoint("BOTTOMLEFT", 0, 0)
+  ---@type AceGUISimpleGroup
+  local btnContainer = AceGUI:Create("SimpleGroup")
+  btnContainer:SetWidth(400)
+  btnContainer:SetHeight(40)
+  btnContainer:SetLayout('Flow')
 
-    local addAcceptBtn = _CreateAcceptButton()
-    btnContainer:AddChild(addAcceptBtn)
+  -- Separator
+  btnContainer:AddChild(_CreateSeparator(10, 40))
 
-    ---@type AceGUILabel
-    local separator = AceGUI:Create("Label")
-    separator:SetText('')
-    separator:SetWidth(130)
-    separator:SetHeight(40)
-    btnContainer:AddChild(separator)
+  local addAcceptBtn = _CreateAcceptButton()
+  btnContainer:AddChild(addAcceptBtn)
 
-    local addCancelBtn = _CreateCancelButton()
-    btnContainer:AddChild(addCancelBtn)
+  -- Separator
+  btnContainer:AddChild(_CreateSeparator(120, 40))
 
-    return btnContainer
+  local addCancelBtn = _CreateCancelButton()
+  btnContainer:AddChild(addCancelBtn)
+
+  -- Separator
+  btnContainer:AddChild(_CreateSeparator(10, 40))
+
+  return btnContainer
 end
 
 ---Create accept button
 ---@return AceGUIWidget
 _CreateAcceptButton    = function()
-    ---@type AceGUIButton
-    local addAcceptBtn = AceGUI:Create("Button")
-    addAcceptBtn:SetText(LogBook:i18n('Accept'))
-    addAcceptBtn:SetWidth(120)
-    addAcceptBtn:SetCallback("OnClick", _HandleAcceptBtn)
-    return addAcceptBtn
+  ---@type AceGUIButton
+  local addAcceptBtn = AceGUI:Create("Button")
+  addAcceptBtn:SetText(LogBook:i18n('Accept'))
+  addAcceptBtn:SetWidth(120)
+  addAcceptBtn:SetCallback("OnClick", _HandleAcceptBtn)
+  return addAcceptBtn
 end
 
 ---Create cancel button
 ---@return AceGUIWidget
 _CreateCancelButton    = function()
-    ---@type AceGUIButton
-    local addCancelBtn = AceGUI:Create("Button")
-    addCancelBtn:SetText(LogBook:i18n('Cancel'))
-    addCancelBtn:SetWidth(120)
-    addCancelBtn:SetCallback("OnClick", _HandleCancelBtn)
-    return addCancelBtn
+  ---@type AceGUIButton
+  local addCancelBtn = AceGUI:Create("Button")
+  addCancelBtn:SetText(LogBook:i18n('Cancel'))
+  addCancelBtn:SetWidth(120)
+  addCancelBtn:SetCallback("OnClick", _HandleCancelBtn)
+  return addCancelBtn
+end
+
+
+---Create accept button
+---@return AceGUIWidget
+_CreateSeparator = function(width, height)
+  ---@type AceGUILabel
+  local separator = AceGUI:Create("Label")
+  separator:SetText('')
+  separator:SetWidth(width)
+  separator:SetHeight(height)
+  return separator
 end
 
 ---Handle entry note
-_HandleAcceptBtn       = function()
-    _acceptFn()
-    _LB_CustomPopup.popup:Hide()
+_HandleAcceptBtn = function()
+  _acceptFn()
+  _LB_CustomPopup.popup:Hide()
 end
 
 ---Handle entry note
-_HandleCancelBtn       = function()
-    _LB_CustomPopup.popup:Hide()
+_HandleCancelBtn = function()
+  _LB_CustomPopup.popup:Hide()
 end

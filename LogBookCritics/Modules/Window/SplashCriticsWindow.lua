@@ -76,10 +76,10 @@ function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
   text:SetText(currentText)
   baseFrame.text = text
 
-  local lockButton = CreateFrame("Button", "parentReset", baseFrame, "UIPanelButtonTemplate")
+  local lockButton = CreateFrame("Button", "parentReset", baseFrame, BackdropTemplateMixin and "BackdropTemplate")
   local lockIcon = "|TInterface\\AddOns\\LogBook\\Images\\lock:16:16|t"
   lockButton:SetPoint("BOTTOMRIGHT", baseFrame, -10, -20)
-  lockButton:SetSize(96, 22)
+  lockButton:SetSize(22, 22)
   lockButton:SetText(lockIcon .. " " .. LogBookCritics:i18n("Lock"))
   lockButton:SetScript("OnClick", function(current)
     PlaySound(840)
@@ -92,6 +92,20 @@ function LBC_SplashCriticsWindow:CreateSplashCriticsWindow()
   lockButton:SetScript("OnLeave", function(current)
     GameTooltip:Hide()
   end)
+
+  lockButton:SetBackdrop({
+    bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+    tile = true,
+    edgeSize = 2,
+    insets = { left = 1, right = 1, top = 1, bottom = 1 },
+  })
+  lockButton:SetBackdropColor(0, 0, 0, 0)
+
+  local buttonText = lockButton:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+  buttonText:SetPoint("CENTER", lockButton, "CENTER")
+  buttonText:SetText(lockIcon)
+  buttonText.text = buttonText
+
   lockButton:Hide()
   baseFrame.lockButton = lockButton
 
@@ -101,7 +115,9 @@ end
 function LBC_SplashCriticsWindow:UpdateSplashCriticsWindowPoint()
   local xOffset = LogBookCritics.db.char.general.critics.splashFrameOffset.xOffset
   local yOffset = LogBookCritics.db.char.general.critics.splashFrameOffset.yOffset
-  baseFrame:SetPoint("CENTER", UIParent, "CENTER", xOffset, yOffset)
+  if baseFrame then
+    baseFrame:SetPoint("CENTER", UIParent, "CENTER", xOffset, yOffset)
+  end
 end
 
 ---Add message to queue
@@ -216,11 +232,13 @@ end
 
 ---Drag start
 function LBC_SplashCriticsWindow.OnDragStart()
+  if not LogBookCritics.db.char.general.critics.unlockTextFrame then return end
   baseFrame:StartMoving()
 end
 
 ---Drag stop
 function LBC_SplashCriticsWindow.OnDragStop()
+  if not LogBookCritics.db.char.general.critics.unlockTextFrame then return end
   local frameX = baseFrame:GetCenter()
   local xLeft, yTop, xRight, yBottom = baseFrame:GetLeft(), baseFrame:GetTop(), baseFrame:GetRight(), baseFrame:GetBottom()
   local xSize, ySize = baseFrame:GetSize()
