@@ -18,6 +18,8 @@ local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames")
 
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
+local AceConfigDialog = LibStub("AceConfigDialog-3.0")
+local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
 
 ---Create loot fiter frame
 ---@param containerTable table

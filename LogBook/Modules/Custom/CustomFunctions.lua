@@ -1,8 +1,8 @@
 ---@class LB_CustomFunctions
 local LB_CustomFunctions = LB_ModuleLoader:CreateModule("LB_CustomFunctions")
 
-function LB_CustomFunctions:Initialize()
-end
+---@type LB_CustomColors
+local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 
 ---Dump table to string
 ---@param o table
@@ -222,4 +222,50 @@ function LB_CustomFunctions:SortComplexTableByKey(tableToSort)
     newList[v] = tableToSort[v]
   end
   return newList
+end
+
+---Create table for a dropdown
+---@param characters table
+---@param withRealm boolean
+---@param withFaction boolean
+---@return table result
+function LB_CustomFunctions:CreateCharacterDropdownList(characters, withRealm, withFaction)
+  local r = {}
+  for k, _ in pairs(characters) do
+    local info = LogBook.db.global.characters[k].info
+    if info then
+      local realm = LB_CustomColors:GetColoredFaction(info.faction, info.factionName)
+      local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
+      local faction_icon = "|TInterface\\AddOns\\LogBook\\Images\\icon_" .. info.factionName .. ":16:16|t"
+
+      local newKey = info.realm .. " - " .. info.name
+      if not withRealm and not withFaction then
+        r[newKey] = string.format("%s", name)
+      elseif not withRealm and withFaction then
+        r[newKey] = string.format("%s %s", faction_icon, name)
+      elseif withRealm and not withFaction then
+        r[newKey] = string.format("|cffa1a1c1%s|r - %s", info.realm, name)
+      else
+        r[newKey] = string.format("|cffa1a1c1%s|r - %s %s", info.realm, faction_icon, name)
+      end
+    end
+  end
+
+  table.sort(r, function(v1, v2) return v1 < v2 end)
+  return r
+end
+
+---Create table for a dropdown
+---@param characters table
+---@return table result
+function LB_CustomFunctions:CreateRealmDropdownList(characters)
+  local r = {}
+  for k, _ in pairs(characters) do
+    local info = LogBook.db.global.characters[k].info
+    if info then
+      r[info.realm] = string.format("|cffa1a1c1%s|r", info.realm)
+    end
+  end
+  table.sort(r, function(v1, v2) return v1 < v2 end)
+  return r
 end

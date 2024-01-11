@@ -52,7 +52,7 @@ function LB_SlashCommands.HandleCommands(input)
   if MobsWindowFrame ~= nil then
     mobsModuleLoaded = true
   end
-  
+
 
   local command = string.lower(input) or "help"
   if command == "config" then

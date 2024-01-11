@@ -1,5 +1,6 @@
 ---@class LBZ_Settings
 local LBZ_Settings = LB_ModuleLoader:CreateModule("LBZ_Settings");
+local _LBZ_Settings = {}
 
 ---@type LBZ_SettingsDefaults
 local LBZ_SettingsDefaults = LB_ModuleLoader:ImportModule("LBZ_SettingsDefaults");
@@ -10,11 +11,23 @@ local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames");
 ---@type LB_CustomColors
 local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors");
 
+---@type LB_CustomFunctions
+local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions");
+
+---@type LB_CustomPopup
+local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
+
 ---@type LBZ_Track
 local LBZ_Track = LB_ModuleLoader:ImportModule("LBZ_Track");
 
+---@type LB_Settings
+local LB_Settings = LB_ModuleLoader:ImportModule("LB_Settings");
+
 LBZ_Settings.zones_tab = { ... }
 local optionsDefaults = LBZ_SettingsDefaults:Load()
+
+local AceConfigDialog = LibStub("AceConfigDialog-3.0")
+local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
 
 function LBZ_Settings:Initialize()
   return {
@@ -57,28 +70,28 @@ function LBZ_Settings:Initialize()
               LogBookZones.db.char.general.zones.trackInFlight = value
             end,
           },
-          showZoneMessages = {
+          showZoneMessagesInChat = {
             type = "toggle",
             order = 3,
             name = LogBookZones:i18n("Zone messages in chat box"),
             desc = LogBookZones:i18n("Show zone change messages in chat box."),
             width = 2,
             disabled = function() return (not LogBookZones.db.char.general.zones.trackingEnabled); end,
-            get = function() return LogBookZones.db.char.general.zones.showZoneMessages end,
+            get = function() return LogBookZones.db.char.general.zones.showZoneMessagesInChat end,
             set = function(info, value)
-              LogBookZones.db.char.general.zones.showZoneMessages = value
+              LogBookZones.db.char.general.zones.showZoneMessagesInChat = value
             end,
           },
-          showZoneChanges = {
+          showZoneMessagesOnScreen = {
             type = "toggle",
             order = 4,
             name = LogBookZones:i18n("Zone changes on screen"),
             desc = LogBookZones:i18n("Show zone change messages on screen."),
             width = 2,
             disabled = function() return (not LogBookZones.db.char.general.zones.trackingEnabled); end,
-            get = function() return LogBookZones.db.char.general.zones.showZoneChanges end,
+            get = function() return LogBookZones.db.char.general.zones.showZoneMessagesOnScreen end,
             set = function(info, value)
-              LogBookZones.db.char.general.zones.showZoneChanges = value
+              LogBookZones.db.char.general.zones.showZoneMessagesOnScreen = value
             end,
           },
           autoTracking = {
@@ -127,14 +140,46 @@ function LBZ_Settings:Initialize()
           },
         },
       },
+      maintenance_header = {
+        type = "header",
+        order = 2,
+        name = "|cffc1c1f1" .. LogBookZones:i18n("Maintenance") .. "|r",
+      },
       maintenance = {
         type = "group",
-        order = 2,
+        order = 3,
         inline = true,
-        name = LogBookCritics:i18n("Maintenance"),
+        name = LogBookZones:i18n("Delete character data"),
         args = {
-        }
+          deleteCharacterData = {
+            type = "select",
+            order = 2,
+            width = "full",
+            name = LogBookZones:i18n("Character"),
+            desc = LogBookZones:i18n("Character name."),
+            values = _LBZ_Settings.CreateCharactersDropdown(),
+            disabled = false,
+            get = function(info)
+              return LogBookZones.db.char.general.zones.deleteCharacterData
+            end,
+            set = function(info, value)
+              LogBookZones.db.char.general.zones.deleteCharacterData = value
+              LB_CustomPopup:CreatePopup(LogBookZones:i18n("Delete entry"), LogBookZones:i18n("Are you sure you want to delete this entry?"), function()
+                _LBZ_Settings.DeleteCharacterEntry(value)
+              end)
+            end,
+          }
+        },
       },
     },
   }
+end
+
+function _LBZ_Settings.CreateCharactersDropdown()
+  local characters = LogBookZones.db.global.data.characters
+  return LB_CustomFunctions:CreateCharacterDropdownList(characters, true, true)
+end
+
+function _LBZ_Settings.DeleteCharacterEntry(character)
+  LogBook:Debug(string.format("Delete %s", character))
 end

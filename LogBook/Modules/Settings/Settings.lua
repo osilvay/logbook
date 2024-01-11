@@ -38,34 +38,31 @@ function LB_Settings:Initialize()
   AceConfigRegistry:RegisterOptionsTable("LogBook", optionsTable)
   AceConfigDialog:AddToBlizOptions("LogBook", "LogBook");
   if not LogBookSettingsFrame then
-    --LogBook:Debug(LogBook:i18n("Creating settings frame"))
-    ---@type AceGUIFrame, AceGUIFrame
-    local logBookSettingsFrame = AceGUI:Create("Frame");
-    logBookSettingsFrame:Hide()
-    AceConfigDialog:SetDefaultSize("LogBook", 600, 520)
-    AceConfigDialog:Open("LogBook", logBookSettingsFrame) -- load the options into configFrame
-    logBookSettingsFrame:SetTitle("LogBook")
-    logBookSettingsFrame:SetLayout("Fill")
-    logBookSettingsFrame:EnableResize(false)
-    logBookSettingsFrame:SetStatusText("|cffffffffLog|r|cff57b6ffBook|r |cffc1c1c1v|r|cff9191a10.0.1|r")
-    logBookSettingsFrame:Hide()
-    logBookSettingsFrame:SetCallback("OnShow", function(widget)
-      logBookSettingsFrame:DoLayout()
-    end)
-    logBookSettingsFrame:SetCallback("OnClose", function(widget)
-      PlaySound(840)
-    end)
-    logBookSettingsFrame:SetCallback("OnGroupSelected", function(widget)
-      LogBook:Log("Selected")
-    end)
-
-
-    logBookSettingsFrame:Hide()
-    LogBookSettingsFrame = logBookSettingsFrame;
-
-    _G["LogBookSettingsFrame"] = LogBookSettingsFrame.frame
-    table.insert(UISpecialFrames, "LogBookSettingsFrame");
+    LB_Settings:DrawSettingsFrame()
   end
+end
+
+function LB_Settings:DrawSettingsFrame()
+  --LogBook:Debug(LogBook:i18n("Creating settings frame"))
+  ---@type AceGUIFrame, AceGUIFrame
+  local logBookSettingsFrame = AceGUI:Create("Frame");
+  logBookSettingsFrame:Hide()
+  AceConfigDialog:SetDefaultSize("LogBook", 620, 540)
+  AceConfigDialog:Open("LogBook", logBookSettingsFrame) -- load the options into configFrame
+  logBookSettingsFrame:SetTitle("LogBook")
+  logBookSettingsFrame:SetLayout("Fill")
+  logBookSettingsFrame:EnableResize(false)
+  logBookSettingsFrame:SetStatusText("|cffffffffLog|r|cff57b6ffBook|r |cffc1c1c1v|r|cff9191a10.0.1|r")
+  logBookSettingsFrame:Hide()
+  logBookSettingsFrame:SetCallback("OnClose", function(widget)
+    PlaySound(840)
+  end)
+
+  logBookSettingsFrame:Hide()
+  LogBookSettingsFrame = logBookSettingsFrame;
+
+  _G["LogBookSettingsFrame"] = LogBookSettingsFrame.frame
+  table.insert(UISpecialFrames, "LogBookSettingsFrame");
 end
 
 ---@return table
@@ -122,12 +119,11 @@ function LB_Settings:HideSettingsFrame()
   end
 end
 
--- Open the configuration window
+---Open the configuration window
 function LB_Settings:OpenSettingsFrame()
   if not LogBookSettingsFrame then
     return
   end
-
   if not LogBookSettingsFrame:IsShown() then
     PlaySound(882)
     --LogBook:Debug("Show Config frame")
@@ -136,4 +132,8 @@ function LB_Settings:OpenSettingsFrame()
     --LogBook:Debug("Hide Config frame")
     LogBookSettingsFrame:Hide()
   end
+end
+
+function LB_Settings:RefreshConfig()
+  AceConfigRegistry:NotifyChange("LogBook")
 end

@@ -25,7 +25,6 @@ local optionsDefaults = LBC_SettingsDefaults:Load()
 local colorIcon = "|TInterface\\AddOns\\LogBook\\Images\\color:16:16|t"
 local LibDialog = LibStub("LibDialog-1.0")
 
-
 function LBC_Settings:Initialize()
   return {
     name = LogBookCritics:i18n("Critics"),
@@ -103,9 +102,14 @@ function LBC_Settings:Initialize()
 
         },
       },
+      screen_header = {
+        type = "header",
+        order = 3,
+        name = "|cffc1c1f1" .. LogBookCritics:i18n("Messages") .. "|r",
+      },
       screenMessages = {
         type = "group",
-        order = 3,
+        order = 4,
         inline = true,
         name = LogBookCritics:i18n("Screen"),
         args = {
@@ -187,41 +191,38 @@ function LBC_Settings:Initialize()
           },
         },
       },
+      maintenance_header = {
+        type = "header",
+        order = 5,
+        name = "|cffc1c1f1" .. LogBookCritics:i18n("Maintenance") .. "|r",
+      },
       maintenance = {
         type = "group",
-        order = 4,
+        order = 6,
         inline = true,
-        name = LogBookCritics:i18n("Maintenance"),
+        name = LogBookCritics:i18n("Delete character data"),
         args = {
           deleteCharacterData = {
             type = "select",
-            order = 1,
+            order = 2,
             width = "full",
-            name = LogBookCritics:i18n("Delete character"),
-            desc = LogBookCritics:i18n("Delete character critical data."),
+            name = LogBookCritics:i18n("Character"),
+            desc = LogBookCritics:i18n("Character name."),
             values = _LBC_Settings.CreateCharactersDropdown(),
             disabled = false,
             get = function() return LogBookCritics.db.char.general.critics.deleteCharacterData end,
             set = function(info, value)
               LogBookCritics.db.char.general.critics.deleteCharacterData = value
-              --info:SetList(_LBC_Settings.CreateCharactersDropdown())
               LB_CustomPopup:CreatePopup(LogBookCritics:i18n("Delete entry"), LogBookCritics:i18n("Are you sure you want to delete this entry?"), function()
                 _LBC_Settings.DeleteCharacterEntry(value)
               end)
             end,
           }
-        }
+        },
       },
-      critics_tabs = {
-        name = LogBookCritics:i18n("Tracking groups"),
-        order = 5,
-        type = "group",
-        args = {
-          hit_tab = LBC_Settings._HitTab(),
-          heal_tab = LBC_Settings._HealTab(),
-          attack_tab = LBC_Settings._AttackTab()
-        }
-      },
+      hit_tab = LBC_Settings._HitTab(),
+      heal_tab = LBC_Settings._HealTab(),
+      attack_tab = LBC_Settings._AttackTab()
     },
   }
 end
@@ -233,6 +234,11 @@ function LBC_Settings._HealTab()
     name = LogBookCritics:i18n("Healings"),
     disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
     args = {
+      healings_header = {
+        type = "header",
+        order = 0,
+        name = "|cffc1c1f1" .. LogBookCritics:i18n("Healings") .. "|r",
+      },
       --------------------------------------------------------------------------------------------------
       trackNormalHeals = {
         type = "toggle",
@@ -400,6 +406,11 @@ function LBC_Settings._HitTab()
     name = LogBookCritics:i18n("Harmful"),
     disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
     args = {
+      maintenance_header = {
+        type = "header",
+        order = 0,
+        name = "|cffc1c1f1" .. LogBookCritics:i18n("Harmful") .. "|r",
+      },
       trackNormalHits = {
         type = "toggle",
         order = 1,
@@ -566,6 +577,11 @@ function LBC_Settings._AttackTab()
     name = LogBookCritics:i18n("White hits"),
     disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
     args = {
+      maintenance_header = {
+        type = "header",
+        order = 0,
+        name = "|cffc1c1f1" .. LogBookCritics:i18n("White hits") .. "|r",
+      },
       trackNormalAttacks = {
         type = "toggle",
         order = 1,
@@ -726,20 +742,13 @@ function LBC_Settings._AttackTab()
 end
 
 function _LBC_Settings.CreateCharactersDropdown()
-  local r = {
-  }
   local characters = LogBookCritics.db.global.data.characters
-  for k, v in pairs(characters) do
-    local info = LogBook.db.global.characters[k].info
-    if info then
-      local realm = LB_CustomColors:GetColoredFaction(info.faction, info.factionName)
-      local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
-      --local faction_icon = info.factionName and "|TInterface\\PVPFrame\\PVP-Currency-" .. info.factionName .. ":22:22|t" or ""
-      local faction_icon = "|TInterface\\AddOns\\LogBook\\Images\\icon_" .. info.factionName .. ":16:16|t"
-      r[k] = string.format("%s %s |cffa1a1c1%s|r", faction_icon, name, info.realm)
-    end
-  end
-  return LB_CustomFunctions:SortComplexTableByKey(r)
+  return LB_CustomFunctions:CreateCharacterDropdownList(characters, false, true)
+end
+
+function _LBC_Settings.CreateRealmDropdown()
+  local characters = LogBookCritics.db.global.data.characters
+  return LB_CustomFunctions:CreateRealmDropdownList(characters)
 end
 
 function _LBC_Settings.DeleteCharacterEntry(character)
