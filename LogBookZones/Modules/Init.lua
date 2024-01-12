@@ -4,6 +4,9 @@ local LBZ_Init = LB_ModuleLoader:CreateModule("LBZ_Init")
 ---@type LBZ_Track
 local LBZ_Track = LB_ModuleLoader:ImportModule("LBZ_Track")
 
+---@type LB_Settings
+local LB_Settings = LB_ModuleLoader:ImportModule("LB_Settings")
+
 ---@type LBZ_ZonesWindow
 local LBZ_ZonesWindow = LB_ModuleLoader:ImportModule("LBZ_ZonesWindow")
 

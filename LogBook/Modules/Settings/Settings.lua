@@ -31,7 +31,7 @@ LogBookSettingsFrame = nil
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
-local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
+AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
 
 function LB_Settings:Initialize()
   local optionsTable = _CreateSettingsTable()
@@ -136,4 +136,14 @@ end
 
 function LB_Settings:RefreshConfig()
   AceConfigRegistry:NotifyChange("LogBook")
+end
+
+---Open settings with tab
+---@param tabName string
+---@param time? number
+function LB_Settings:OpenSettingsTab(tabName, time)
+  if time == nil then time = 0.1 end
+  C_Timer.After(time, function()
+    AceConfigDialog:SelectGroup("LogBook", tabName)
+  end)
 end

@@ -66,7 +66,7 @@ function LB_CustomFunctions:TableHasKey(table, key)
 end
 
 ---Count table entries
----@param table table
+---@param currentTable table
 ---@return number
 function LB_CustomFunctions:CountTableEntries(currentTable)
   local f = 0
@@ -231,22 +231,24 @@ end
 ---@return table result
 function LB_CustomFunctions:CreateCharacterDropdownList(characters, withRealm, withFaction)
   local r = {}
-  for k, _ in pairs(characters) do
-    local info = LogBook.db.global.characters[k].info
-    if info then
-      local realm = LB_CustomColors:GetColoredFaction(info.faction, info.factionName)
-      local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
-      local faction_icon = "|TInterface\\AddOns\\LogBook\\Images\\icon_" .. info.factionName .. ":16:16|t"
+  for k, v in pairs(characters) do
+    if LogBook.db.global.characters[k] ~= nil and v then
+      local info = LogBook.db.global.characters[k].info
+      if info then
+        local realm = LB_CustomColors:GetColoredFaction(info.faction, info.factionName)
+        local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
+        local faction_icon = "|TInterface\\AddOns\\LogBook\\Images\\icon_" .. info.factionName .. ":16:16|t"
 
-      local newKey = info.realm .. " - " .. info.name
-      if not withRealm and not withFaction then
-        r[newKey] = string.format("%s", name)
-      elseif not withRealm and withFaction then
-        r[newKey] = string.format("%s %s", faction_icon, name)
-      elseif withRealm and not withFaction then
-        r[newKey] = string.format("|cffa1a1c1%s|r - %s", info.realm, name)
-      else
-        r[newKey] = string.format("|cffa1a1c1%s|r - %s %s", info.realm, faction_icon, name)
+        local newKey = info.realm .. " - " .. info.name
+        if not withRealm and not withFaction then
+          r[newKey] = string.format("%s", name)
+        elseif not withRealm and withFaction then
+          r[newKey] = string.format("%s %s", faction_icon, name)
+        elseif withRealm and not withFaction then
+          r[newKey] = string.format("|cffa1a1c1%s|r - %s", info.realm, name)
+        else
+          r[newKey] = string.format("|cffa1a1c1%s|r - %s %s", info.realm, faction_icon, name)
+        end
       end
     end
   end
@@ -268,4 +270,18 @@ function LB_CustomFunctions:CreateRealmDropdownList(characters)
   end
   table.sort(r, function(v1, v2) return v1 < v2 end)
   return r
+end
+
+---@param newKey string
+---@return string key
+function LB_CustomFunctions:ConvertNewKeyToKey(newKey)
+  local realm, character = newKey:match("(.*)-(.*)")
+  return string.format('%s - %s', string.trim(character), string.trim(realm))
+end
+
+---@param key string
+---@return string key
+function LB_CustomFunctions:ConvertKeyToNewKey(key)
+  local realm, character = key:match("(.*)-(.*)")
+  return string.format('%s - %s', string.trim(realm), string.trim(character))
 end

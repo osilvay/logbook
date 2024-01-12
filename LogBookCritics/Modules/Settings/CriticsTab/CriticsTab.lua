@@ -24,6 +24,7 @@ LBC_Settings.critics_tab = { ... }
 local optionsDefaults = LBC_SettingsDefaults:Load()
 local colorIcon = "|TInterface\\AddOns\\LogBook\\Images\\color:16:16|t"
 local LibDialog = LibStub("LibDialog-1.0")
+local currentCharacters = {}
 
 function LBC_Settings:Initialize()
   return {
@@ -200,7 +201,7 @@ function LBC_Settings:Initialize()
         type = "group",
         order = 6,
         inline = true,
-        name = LogBookCritics:i18n("Delete character data"),
+        name = LogBookCritics:i18n("Delete character data") .. " |cffff3300(" .. LogBookCritics:i18n("Reload required") .. ")|r",
         args = {
           deleteCharacterData = {
             type = "select",
@@ -210,10 +211,10 @@ function LBC_Settings:Initialize()
             desc = LogBookCritics:i18n("Character name."),
             values = _LBC_Settings.CreateCharactersDropdown(),
             disabled = false,
-            get = function() return LogBookCritics.db.char.general.critics.deleteCharacterData end,
+            get = function() return nil end,
             set = function(info, value)
               LogBookCritics.db.char.general.critics.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBookCritics:i18n("Delete entry"), LogBookCritics:i18n("Are you sure you want to delete this entry?"), function()
+              LB_CustomPopup:CreatePopup(LogBookCritics:i18n("Delete character"), string.format(LogBookCritics:i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
                 _LBC_Settings.DeleteCharacterEntry(value)
               end)
             end,
@@ -743,14 +744,13 @@ end
 
 function _LBC_Settings.CreateCharactersDropdown()
   local characters = LogBookCritics.db.global.data.characters
-  return LB_CustomFunctions:CreateCharacterDropdownList(characters, false, true)
+  currentCharacters = LB_CustomFunctions:CreateCharacterDropdownList(characters, true, true)
+  return currentCharacters
 end
 
-function _LBC_Settings.CreateRealmDropdown()
-  local characters = LogBookCritics.db.global.data.characters
-  return LB_CustomFunctions:CreateRealmDropdownList(characters)
-end
-
-function _LBC_Settings.DeleteCharacterEntry(character)
-  LogBook:Debug(string.format("Delete %s", character))
+function _LBC_Settings.DeleteCharacterEntry(characterKey)
+  local character = LB_CustomFunctions:ConvertNewKeyToKey(characterKey)
+  LogBookCritics.db.global.characters[character] = {}
+  LogBookCritics.db.global.data.characters[character] = false
+  ReloadUI()
 end

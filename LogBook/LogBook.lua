@@ -48,6 +48,7 @@ end
 ---Debug message
 function LogBook:Debug(message)
   if LogBook:IsDebugEnabled() then
+    if message == nil then message = 'nil' end
     LogBook:Print("|cfffcfc86[DEBUG]|r " .. message)
   end
 end

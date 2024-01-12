@@ -26,8 +26,7 @@ local LB_Settings = LB_ModuleLoader:ImportModule("LB_Settings");
 LBZ_Settings.zones_tab = { ... }
 local optionsDefaults = LBZ_SettingsDefaults:Load()
 
-local AceConfigDialog = LibStub("AceConfigDialog-3.0")
-local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
+local currentCharacters = {}
 
 function LBZ_Settings:Initialize()
   return {
@@ -149,7 +148,7 @@ function LBZ_Settings:Initialize()
         type = "group",
         order = 3,
         inline = true,
-        name = LogBookZones:i18n("Delete character data"),
+        name = LogBookZones:i18n("Delete character data") .. " |cffff3300(" .. LogBookZones:i18n("Reload required") .. ")|r",
         args = {
           deleteCharacterData = {
             type = "select",
@@ -159,12 +158,10 @@ function LBZ_Settings:Initialize()
             desc = LogBookZones:i18n("Character name."),
             values = _LBZ_Settings.CreateCharactersDropdown(),
             disabled = false,
-            get = function(info)
-              return LogBookZones.db.char.general.zones.deleteCharacterData
-            end,
+            get = function(info) return nil end,
             set = function(info, value)
               LogBookZones.db.char.general.zones.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBookZones:i18n("Delete entry"), LogBookZones:i18n("Are you sure you want to delete this entry?"), function()
+              LB_CustomPopup:CreatePopup(LogBookZones:i18n("Delete character"), string.format(LogBookZones:i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
                 _LBZ_Settings.DeleteCharacterEntry(value)
               end)
             end,
@@ -177,9 +174,13 @@ end
 
 function _LBZ_Settings.CreateCharactersDropdown()
   local characters = LogBookZones.db.global.data.characters
-  return LB_CustomFunctions:CreateCharacterDropdownList(characters, true, true)
+  currentCharacters = LB_CustomFunctions:CreateCharacterDropdownList(characters, true, true)
+  return currentCharacters
 end
 
-function _LBZ_Settings.DeleteCharacterEntry(character)
-  LogBook:Debug(string.format("Delete %s", character))
+function _LBZ_Settings.DeleteCharacterEntry(characterKey)
+  local character = LB_CustomFunctions:ConvertNewKeyToKey(characterKey)
+  LogBookZones.db.global.characters[character] = {}
+  LogBookZones.db.global.data.characters[character] = false
+  ReloadUI()
 end
