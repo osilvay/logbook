@@ -5,7 +5,7 @@
 ## Author: osilvay
 ## SavedVariables: LogBookFishingDB
 ## OptionalDeps: Ace3, CallbackHandler-1.0, LibStub
-## Dependencies: LogBook
+## Dependencies: LogBook LogBookLoot
 ## DefaultState: enabled
 ## LoadOnDemand: 4
 

@@ -5,7 +5,7 @@
 ## Author: osilvay
 ## SavedVariables: LogBookLootDB
 ## OptionalDeps: Ace3, CallbackHandler-1.0, LibStub
-## Dependencies: LogBook
+## Dependencies: LogBook LogBookZones
 ## DefaultState: enabled
 ## LoadOnDemand: 2
 
