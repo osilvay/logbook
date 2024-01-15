@@ -28,7 +28,7 @@ function LBZ_TrackZones:ZoneChanged(printMessages)
   local trackInFlight = LogBookZones.db.char.general.zones.trackInFlight
   if unitOnTaxi and not trackInFlight then return end
   if printMessages and LogBookZones.db.char.general.zones.showZoneMessagesInChat then
-    LogBookZones:Print(string.format(LogBookZones:i18n("Entering") .. " %s - %s", LBZ_TrackZones:GetZoneRecolored(false, currentZone), LBZ_TrackZones:GetZoneRecolored(false, currentSubZone or "")))
+    LogBookZones:Print(string.format(LogBookZones:LBZ_i18n("Entering") .. " %s - %s", LBZ_TrackZones:GetZoneRecolored(false, currentZone), LBZ_TrackZones:GetZoneRecolored(false, currentSubZone or "")))
   end
   LBZ_TrackZones:SetNewZone(currentZone, currentSubZone)
 end

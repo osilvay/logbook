@@ -79,26 +79,26 @@ function LB_SlashCommands.HandleCommands(input)
   elseif command == "enchanting" and enchantingModuleLoaded then
     LB_SlashCommands:OpenEnchantingWindow()
   else
-    LogBook:Print(LogBook:i18n("Log|cff57b6ffBook|r available commands"))
-    LogBook:Print("/lb |cffc1c1c1config|r - " .. LogBook:i18n("Open settings window"))
-    LogBook:Print("/lb |cffc1c1c1main|r - " .. LogBook:i18n("Open main window"))
+    LogBook:Print(LogBook:LB_i18n("Log|cff57b6ffBook|r available commands"))
+    LogBook:Print("/lb |cffc1c1c1config|r - " .. LogBook:LB_i18n("Open settings window"))
+    LogBook:Print("/lb |cffc1c1c1main|r - " .. LogBook:LB_i18n("Open main window"))
     if criticsModuleLoaded then
-      LogBook:Print("/lb |cfffff757critics|r - " .. LogBook:i18n("Open critics window"))
+      LogBook:Print("/lb |cfffff757critics|r - " .. LogBook:LB_i18n("Open critics window"))
     end
     if lootModuleLoaded then
-      LogBook:Print("/lb |cffe38d4floot|r - " .. LogBook:i18n("Open loot window"))
+      LogBook:Print("/lb |cffe38d4floot|r - " .. LogBook:LB_i18n("Open loot window"))
     end
     if zonesModuleLoaded then
-      LogBook:Print("/lb |cff4fe388zones|r - " .. LogBook:i18n("Open zones window"))
+      LogBook:Print("/lb |cff4fe388zones|r - " .. LogBook:LB_i18n("Open zones window"))
     end
     if fishingModuleLoaded then
-      LogBook:Print("/lb |cffa27be0fishing|r - " .. LogBook:i18n("Open fishing window"))
+      LogBook:Print("/lb |cffa27be0fishing|r - " .. LogBook:LB_i18n("Open fishing window"))
     end
     if mobsModuleLoaded then
-      LogBook:Print("/lb |cff5be3demobs|r - " .. LogBook:i18n("Open mobs window"))
+      LogBook:Print("/lb |cff5be3demobs|r - " .. LogBook:LB_i18n("Open mobs window"))
     end
     if enchantingModuleLoaded then
-      LogBook:Print("/lb |cfff078eeenchanting|r - " .. LogBook:i18n("Open enchanting window"))
+      LogBook:Print("/lb |cfff078eeenchanting|r - " .. LogBook:LB_i18n("Open enchanting window"))
     end
   end
 end

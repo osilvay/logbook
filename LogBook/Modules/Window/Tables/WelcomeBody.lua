@@ -38,7 +38,7 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
     bodyContainer = AceGUI:Create("InlineGroup")
     bodyContainer:SetWidth(495)
     bodyContainer:SetHeight(220)
-    bodyContainer:SetTitle(LogBook:i18n("Main plugins"))
+    bodyContainer:SetTitle(LogBook:LB_i18n("Main plugins"))
     bodyContainer:SetLayout("Flow")
     bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 10, -40)
     parentFrame:AddChild(bodyContainer)
@@ -110,7 +110,7 @@ function LB_WelcomeBody:drawLootContainer(rowContainer)
   lootContainer:SetHeight(200)
   lootContainer:SetAutoAdjustHeight(false)
   lootContainer:SetLayout("Flow")
-  lootContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Loot")))
+  lootContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:LB_i18n("Loot")))
   --lootContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
   rowContainer:AddChild(lootContainer)
 
@@ -119,7 +119,7 @@ function LB_WelcomeBody:drawLootContainer(rowContainer)
   local lootButton = AceGUI:Create("InteractiveLabel")
   local lootIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red_a:64:64|t"
   local lootIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red:64:64|t"
-  local lootText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track loot and items crafted with trading skills."))
+  local lootText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track loot and items crafted with trading skills."))
   local lootformatted = "%s\n\n%s\n"
   lootButton:SetWidth(135)
   lootButton:SetHeight(200)
@@ -146,7 +146,7 @@ function LB_WelcomeBody:drawFishingContainer(rowContainer)
   fishingContainer:SetHeight(200)
   fishingContainer:SetAutoAdjustHeight(false)
   fishingContainer:SetLayout("Flow")
-  fishingContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Fishing")))
+  fishingContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:LB_i18n("Fishing")))
   --fishingContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
   rowContainer:AddChild(fishingContainer)
 
@@ -155,7 +155,7 @@ function LB_WelcomeBody:drawFishingContainer(rowContainer)
   local fishingButton = AceGUI:Create("InteractiveLabel")
   local fishingIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02_a:64:64|t"
   local fishingIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02:64:64|t"
-  local fishingText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track fish from pools and wreckages."))
+  local fishingText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track fish from pools and wreckages."))
   local Fishingformatted = "%s\n\n%s\n"
   fishingButton:SetWidth(135)
   fishingButton:SetHeight(200)
@@ -182,7 +182,7 @@ function LB_WelcomeBody:drawCriticsContainer(rowContainer)
   criticsContainer:SetHeight(200)
   criticsContainer:SetAutoAdjustHeight(false)
   criticsContainer:SetLayout("Flow")
-  criticsContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Critics")))
+  criticsContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:LB_i18n("Critics")))
   --criticsContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
   rowContainer:AddChild(criticsContainer)
 
@@ -191,7 +191,7 @@ function LB_WelcomeBody:drawCriticsContainer(rowContainer)
   local criticsButton = AceGUI:Create("InteractiveLabel")
   local criticsIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap_a:64:64|t"
   local criticsIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap:64:64|t"
-  local criticsText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track hits or healing, both normal and critical."))
+  local criticsText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track hits or healing, both normal and critical."))
   local Fishingformatted = "%s\n\n%s\n"
   criticsButton:SetWidth(135)
   criticsButton:SetHeight(200)
@@ -218,7 +218,7 @@ function LB_WelcomeBody:drawZonesContainer(rowContainer)
   zonesContainer:SetHeight(200)
   zonesContainer:SetAutoAdjustHeight(false)
   zonesContainer:SetLayout("Flow")
-  zonesContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Zones")))
+  zonesContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:LB_i18n("Zones")))
   --zonesContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
   rowContainer:AddChild(zonesContainer)
 
@@ -227,7 +227,7 @@ function LB_WelcomeBody:drawZonesContainer(rowContainer)
   local zonesButton = AceGUI:Create("InteractiveLabel")
   local zonesIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01_a:64:64|t"
   local zonesIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01:64:64|t"
-  local zonesText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track zones."))
+  local zonesText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track zones."))
   local zonesFormatted = "%s\n\n%s\n"
   zonesButton:SetWidth(135)
   zonesButton:SetHeight(200)
@@ -254,7 +254,7 @@ function LB_WelcomeBody:drawMobsContainer(rowContainer)
   mobsContainer:SetHeight(200)
   mobsContainer:SetAutoAdjustHeight(false)
   mobsContainer:SetLayout("Flow")
-  mobsContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Mobs")))
+  mobsContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:LB_i18n("Mobs")))
   --zonesContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
   rowContainer:AddChild(mobsContainer)
 
@@ -263,7 +263,7 @@ function LB_WelcomeBody:drawMobsContainer(rowContainer)
   local mobsButton = AceGUI:Create("InteractiveLabel")
   local mobsIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_head_murloc_01_a:64:64|t"
   local mobsIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_head_murloc_01:64:64|t"
-  local mobsText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track mobs."))
+  local mobsText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track mobs."))
   local mobsFormatted = "%s\n\n%s\n"
   mobsButton:SetWidth(135)
   mobsButton:SetHeight(200)
@@ -290,7 +290,7 @@ function LB_WelcomeBody:drawEnchantingContainer(rowContainer)
   enchantingContainer:SetHeight(200)
   enchantingContainer:SetAutoAdjustHeight(false)
   enchantingContainer:SetLayout("Flow")
-  enchantingContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Enchanting")))
+  enchantingContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:LB_i18n("Enchanting")))
   --zonesContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
   rowContainer:AddChild(enchantingContainer)
 
@@ -299,7 +299,7 @@ function LB_WelcomeBody:drawEnchantingContainer(rowContainer)
   local enchantingButton = AceGUI:Create("InteractiveLabel")
   local enchantingIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_enchant_shardprismaticlarge_a:64:64|t"
   local enchantingIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_enchant_shardprismaticlarge:64:64|t"
-  local enchantingText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track enchanting."))
+  local enchantingText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track enchanting."))
   local enchantingFormatted = "%s\n\n%s\n"
   enchantingButton:SetWidth(135)
   enchantingButton:SetHeight(200)

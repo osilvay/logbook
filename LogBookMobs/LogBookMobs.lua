@@ -21,7 +21,7 @@ end
 
 ---@param message string
 ---@return string string
-function LogBookMobs:i18n(message)
+function LogBookMobs:LBM_i18n(message)
   local locale = GetLocale()
   LogBookMobs.db.global.data.locale[locale] = {
     old = {

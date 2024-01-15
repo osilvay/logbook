@@ -6,5 +6,5 @@ local _LBE_TrackEventHandler = {}
 local LBE_TrackEnchanting = LB_ModuleLoader:ImportModule("LBE_TrackEnchanting")
 
 function LBE_TrackEventHandler:Initialize()
-  --LogBook:Debug(LogBookEnchanting:i18n("Initializing track events..."))
+  --LogBook:Debug(LogBookEnchanting:LBE_i18n("Initializing track events..."))
 end

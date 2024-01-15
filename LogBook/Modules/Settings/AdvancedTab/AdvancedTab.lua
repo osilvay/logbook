@@ -9,25 +9,25 @@ local optionsDefaults = LB_SettingsDefaults:Load()
 
 function LB_Settings.tabs.advanced:Initialize()
   return {
-    name = LogBook:i18n("Advanced"),
+    name = LogBook:LB_i18n("Advanced"),
     order = 98,
     type = "group",
     args = {
       advanced_header = {
         type = "header",
         order = 1,
-        name = "|cffc1c1f1" .. LogBook:i18n("Advanced settings") .. "|r",
+        name = "|cffc1c1f1" .. LogBook:LB_i18n("Advanced settings") .. "|r",
       },
       debug = {
         type = "group",
         order = 2,
         inline = true,
-        name = LogBook:i18n("Debug"),
+        name = LogBook:LB_i18n("Debug"),
         args = {
           debug = {
             type = "toggle",
             order = 2,
-            name = LogBook:i18n("Enable debug"),
+            name = LogBook:LB_i18n("Enable debug"),
             desc = "Toggle the debug mode",
             width = 1.5,
             get = function() return LogBook.db.global.debug; end,

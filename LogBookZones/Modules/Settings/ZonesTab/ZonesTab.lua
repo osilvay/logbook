@@ -29,26 +29,26 @@ local _LBZ_Settings = {}
 
 function LBZ_Settings:Initialize()
   return {
-    name = LogBookZones:i18n("Zones"),
+    name = LogBookZones:LBZ_i18n("Zones"),
     order = 7,
     type = "group",
     args = {
       zones_header = {
         type = "header",
         order = 0,
-        name = "|cffc1c1f1" .. LogBookZones:i18n("Zones settings") .. "|r",
+        name = "|cffc1c1f1" .. LogBookZones:LBZ_i18n("Zones settings") .. "|r",
       },
       tracking = {
         type = "group",
         order = 1,
         inline = true,
-        name = LogBookZones:i18n("Tracking"),
+        name = LogBookZones:LBZ_i18n("Tracking"),
         args = {
           trackingEnabled = {
             type = "toggle",
             order = 1,
-            name = LogBookZones:i18n("Enable tracking"),
-            desc = LogBookZones:i18n("Toggle tracking zones."),
+            name = LogBookZones:LBZ_i18n("Enable tracking"),
+            desc = LogBookZones:LBZ_i18n("Toggle tracking zones."),
             width = 2,
             disabled = false,
             get = function() return LogBookZones.db.char.general.zones.trackingEnabled end,
@@ -59,8 +59,8 @@ function LBZ_Settings:Initialize()
           trackInFlight = {
             type = "toggle",
             order = 2,
-            name = LogBookZones:i18n("Zone tracking during flight"),
-            desc = LogBookZones:i18n("Toggle zone tracking during flights."),
+            name = LogBookZones:LBZ_i18n("Zone tracking during flight"),
+            desc = LogBookZones:LBZ_i18n("Toggle zone tracking during flights."),
             width = 2,
             disabled = function() return (not LogBookZones.db.char.general.zones.trackingEnabled); end,
             get = function() return LogBookZones.db.char.general.zones.trackInFlight end,
@@ -71,8 +71,8 @@ function LBZ_Settings:Initialize()
           showZoneMessagesInChat = {
             type = "toggle",
             order = 3,
-            name = LogBookZones:i18n("Zone messages in chat box"),
-            desc = LogBookZones:i18n("Show zone change messages in chat box."),
+            name = LogBookZones:LBZ_i18n("Zone messages in chat box"),
+            desc = LogBookZones:LBZ_i18n("Show zone change messages in chat box."),
             width = 2,
             disabled = function() return (not LogBookZones.db.char.general.zones.trackingEnabled); end,
             get = function() return LogBookZones.db.char.general.zones.showZoneMessagesInChat end,
@@ -83,8 +83,8 @@ function LBZ_Settings:Initialize()
           showZoneMessagesOnScreen = {
             type = "toggle",
             order = 4,
-            name = LogBookZones:i18n("Zone changes on screen"),
-            desc = LogBookZones:i18n("Show zone change messages on screen."),
+            name = LogBookZones:LBZ_i18n("Zone changes on screen"),
+            desc = LogBookZones:LBZ_i18n("Show zone change messages on screen."),
             width = 2,
             disabled = function() return (not LogBookZones.db.char.general.zones.trackingEnabled); end,
             get = function() return LogBookZones.db.char.general.zones.showZoneMessagesOnScreen end,
@@ -96,13 +96,13 @@ function LBZ_Settings:Initialize()
             type = "group",
             order = 5,
             inline = true,
-            name = LogBookZones:i18n("Auto tracking"),
+            name = LogBookZones:LBZ_i18n("Auto tracking"),
             args = {
               autoTrackingEnabled = {
                 type = "toggle",
                 order = 1,
-                name = LogBookZones:i18n("Enable auto tracking"),
-                desc = LogBookZones:i18n("Toggle automatic tracking zones."),
+                name = LogBookZones:LBZ_i18n("Enable auto tracking"),
+                desc = LogBookZones:LBZ_i18n("Toggle automatic tracking zones."),
                 width = 2,
                 disabled = function() return (not LogBookZones.db.char.general.zones.trackingEnabled); end,
                 get = function() return LogBookZones.db.char.general.zones.autoTrackingEnabled end,
@@ -122,8 +122,8 @@ function LBZ_Settings:Initialize()
               timeAutoTracking = {
                 type = "range",
                 order = 2,
-                name = LogBookZones:i18n("Time (in minutes)"),
-                desc = LogBookZones:i18n("Time in minutes to check automatic zone changes."),
+                name = LogBookZones:LBZ_i18n("Time (in minutes)"),
+                desc = LogBookZones:LBZ_i18n("Time in minutes to check automatic zone changes."),
                 width = "full",
                 min = 5,
                 max = 60,
@@ -141,26 +141,26 @@ function LBZ_Settings:Initialize()
       maintenance_header = {
         type = "header",
         order = 2,
-        name = "|cffc1c1f1" .. LogBook:i18n("Maintenance") .. "|r",
+        name = "|cffc1c1f1" .. LogBook:LB_i18n("Maintenance") .. "|r",
       },
       maintenance = {
         type = "group",
         order = 3,
         inline = true,
-        name = LogBook:i18n("Delete character data") .. " |cffff3300(" .. LogBook:i18n("Reload required") .. ")|r",
+        name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
         args = {
           deleteCharacterData = {
             type = "select",
             order = 2,
             width = "full",
-            name = LogBook:i18n("Character"),
-            desc = LogBook:i18n("Character name."),
+            name = LogBook:LB_i18n("Character"),
+            desc = LogBook:LB_i18n("Character name."),
             values = _LBZ_Settings.CreateCharactersDropdown(),
             disabled = false,
             get = function(info) return nil end,
             set = function(info, value)
               LogBookZones.db.char.general.zones.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBook:i18n("Delete character"), string.format(LogBook:i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
+              LB_CustomPopup:CreatePopup(LogBook:LB_i18n("Delete character"), string.format(LogBook:LB_i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
                 _LBZ_Settings.DeleteCharacterEntry(value)
               end)
             end,

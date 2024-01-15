@@ -15,21 +15,21 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 
 ---Initialize track
 function LBE_Track:Initialize()
-  --LogBook:Debug(LogBookEnchanting:i18n("Initializating general tracking..."))
+  --LogBook:Debug(LogBookEnchanting:LBE_i18n("Initializating general tracking..."))
   LB_CustomFunctions:Delay(0, LBE_Track.StartTracking, "")
 end
 
 ---Start tracking
 function LBE_Track.StartTracking()
   local statusColor = "ffe04040"
-  local statusText = LogBookEnchanting:i18n("Disabled")
+  local statusText = LogBookEnchanting:LBE_i18n("Disabled")
   LBE_TrackEventHandler:Initialize()
   if LBE_Track:IsTrackingEnchanting() then
     LBE_TrackEnchanting:Initialize()
     statusColor = "ff40e068"
-    statusText = LogBookEnchanting:i18n("Enabled")
+    statusText = LogBookEnchanting:LBE_i18n("Enabled")
   end
-  LogBookEnchanting:Print(string.format(LogBookEnchanting:i18n("|c%s%s|r enchanting tracking"), statusColor, statusText))
+  LogBookEnchanting:Print(string.format(LogBookEnchanting:LBE_i18n("|c%s%s|r enchanting tracking"), statusColor, statusText))
 end
 
 ---Check if tracking experience

@@ -43,7 +43,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
     bodyContainer:SetFullWidth(true)
     bodyContainer:SetWidth(500)
     bodyContainer:SetHeight(240)
-    bodyContainer:SetTitle(LogBookCritics:i18n("Spell list"))
+    bodyContainer:SetTitle(LogBookCritics:LBC_i18n("Spell list"))
     bodyContainer:SetLayout("Flow")
     bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -180)
     parentFrame:AddChild(bodyContainer)
@@ -140,7 +140,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
       ---@type AceGUIIcon
       local classIcon = AceGUI:Create("Icon")
       local className = "ALL"
-      local tooltip = LogBookCritics:i18n("Various classes")
+      local tooltip = LogBookCritics:LBC_i18n("Various classes")
       local classes = spellDetails.class
       if #classes == 1 then
         className = classes[1]
@@ -281,7 +281,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
           --LogBookCritics.db.global.characters[_selected_character].spells[current.rowIndex] = nil
           --LBC_CriticsFilter:RedrawCriticsWindowFilter(parentFrame)
           --LBC_CriticsWindow:RedrawCriticsWindowFrame()
-          LB_CustomPopup:CreatePopup(LogBookCritics:i18n("Delete entry"), LogBookCritics:i18n("Are you sure you want to delete this entry?"), function()
+          LB_CustomPopup:CreatePopup(LogBookCritics:LBC_i18n("Delete entry"), LogBookCritics:LBC_i18n("Are you sure you want to delete this entry?"), function()
             local _selected_character = LogBookCritics.db.char.general.critics.filter.select_character
             LogBookCritics.db.global.characters[_selected_character].spells[current.rowIndex] = nil
             LBC_CriticsFilter:RedrawCriticsWindowFilter(parentFrame)

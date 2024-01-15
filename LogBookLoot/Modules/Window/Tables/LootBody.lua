@@ -18,22 +18,22 @@ local bodyContainer
 ---@param containerTable table
 ---@param parentFrame AceGUIFrame
 function LBL_LootBody:RedrawLootWindowBody(containerTable, parentFrame)
-	bodyContainer:ReleaseChildren()
-	LBL_LootBody:ContainerBodyFrame(containerTable, parentFrame)
+  bodyContainer:ReleaseChildren()
+  LBL_LootBody:ContainerBodyFrame(containerTable, parentFrame)
 end
 
 ---Create Loot container body frame
 function LBL_LootBody:ContainerBodyFrame(containerTable, parentFrame)
-	if not bodyContainer then
-		-- container
-		---@type AceGUIInlineGroup
-		bodyContainer = AceGUI:Create("InlineGroup")
-		bodyContainer:SetFullWidth(true)
-		bodyContainer:SetWidth(500)
-		bodyContainer:SetHeight(240)
-		bodyContainer:SetTitle(LogBookLoot:i18n("Loot list"))
-		bodyContainer:SetLayout("Flow")
-		bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -180)
-		parentFrame:AddChild(bodyContainer)
-	end
+  if not bodyContainer then
+    -- container
+    ---@type AceGUIInlineGroup
+    bodyContainer = AceGUI:Create("InlineGroup")
+    bodyContainer:SetFullWidth(true)
+    bodyContainer:SetWidth(500)
+    bodyContainer:SetHeight(240)
+    bodyContainer:SetTitle(LogBookLoot:LBL_i18n("Loot list"))
+    bodyContainer:SetLayout("Flow")
+    bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -180)
+    parentFrame:AddChild(bodyContainer)
+  end
 end

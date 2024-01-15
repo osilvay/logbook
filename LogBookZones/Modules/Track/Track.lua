@@ -34,14 +34,14 @@ end
 ---Start tracking
 function LBZ_Track.StartTracking()
   local statusColor = "ffe04040"
-  local statusText = LogBookZones:i18n("Disabled")
+  local statusText = LogBookZones:LBZ_i18n("Disabled")
   LBZ_TrackEventHandler:Initialize()
   if LBZ_Track:IsTrackingZones() then
     LBZ_TrackEventHandler:Initialize()
     statusColor = "ff40e068"
-    statusText = LogBookZones:i18n("Enabled")
+    statusText = LogBookZones:LBZ_i18n("Enabled")
   end
-  LogBookZones:Print(string.format(LogBookZones:i18n("|c%s%s|r zone tracking"), statusColor, statusText))
+  LogBookZones:Print(string.format(LogBookZones:LBZ_i18n("|c%s%s|r zone tracking"), statusColor, statusText))
 end
 
 ---Check if tracking

@@ -31,7 +31,7 @@ function LB_Init.LoadAddons()
     if not loaded then
       LogBook:Warning(ADDON_LOAD_FAILED:format(C_AddOns.GetAddOnInfo(addon), _G["ADDON_" .. reason]))
     else
-      LogBook:Info(string.format(LogBook:i18n("Module |cffffcc00%s|r loaded"), addon))
+      LogBook:Info(string.format(LogBook:LB_i18n("Module |cffffcc00%s|r loaded"), addon))
     end
   end
   C_Timer.After(0.2, function()
@@ -52,7 +52,7 @@ function LB_Init.InitializeAddons()
         initializeTicker:Cancel()
         initializeTicker = nil
         LB_Settings:Initialize()
-        LogBook:Print(string.format(LogBook:i18n("LogBook %s initialized"), LogBook:GetAddonVersionString()))
+        LogBook:Print(string.format(LogBook:LB_i18n("LogBook %s initialized"), LogBook:GetAddonVersionString()))
       end
       for _, addon in ipairs(addons_to_load) do
         if addonsProcessed[addon] == nil and C_AddOns.IsAddOnLoaded(addon) then

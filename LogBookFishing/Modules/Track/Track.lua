@@ -15,21 +15,21 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 
 ---Initialize track
 function LBF_Track:Initialize()
-  --LogBook:Debug(LogBookFishing:i18n("Initializating general tracking..."))
+  --LogBook:Debug(LogBookFishing:LBF_i18n("Initializating general tracking..."))
   LB_CustomFunctions:Delay(0, LBF_Track.StartTracking, "")
 end
 
 ---Start tracking
 function LBF_Track.StartTracking()
   local statusColor = "ffe04040"
-  local statusText = LogBookFishing:i18n("Disabled")
+  local statusText = LogBookFishing:LBF_i18n("Disabled")
   LBF_TrackEventHandler:Initialize()
   if LBF_Track:IsTrackingFishing() then
     LBF_TrackFishing:Initialize()
     statusColor = "ff40e068"
-    statusText = LogBookFishing:i18n("Enabled")
+    statusText = LogBookFishing:LBF_i18n("Enabled")
   end
-  LogBookFishing:Print(string.format(LogBookFishing:i18n("|c%s%s|r fishing tracking"), statusColor, statusText))
+  LogBookFishing:Print(string.format(LogBookFishing:LBF_i18n("|c%s%s|r fishing tracking"), statusColor, statusText))
 end
 
 ---Check if tracking experience

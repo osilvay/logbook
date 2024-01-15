@@ -39,7 +39,7 @@ function LB_WelcomeHeader:ContainerHeaderFrame(containerTable, parentFrame)
   local settingsIcon = "|TInterface\\AddOns\\LogBook\\Images\\settings:16:16|t"
   settingsButton:SetWidth(140)
   settingsButton:SetPoint("TOPRIGHT", parentFrame.frame, "TOPRIGHT", -20, -15)
-  settingsButton:SetText(settingsIcon .. " " .. LogBook:i18n('Settings'))
+  settingsButton:SetText(settingsIcon .. " " .. LogBook:LB_i18n('Settings'))
   settingsButton:SetCallback("OnClick", function()
     LB_SlashCommands:OpenSettingsWindow()
   end)

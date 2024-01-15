@@ -12,11 +12,11 @@ local hitLineLeft, hitCritLineLeft, healLineLeft, healCritLineLeft
 function LBC_CriticsTooltip.AddHighestHitsToTooltip(self, slot)
   if (not slot) then return end
 
-  hitLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIT_NORMAL"), LogBookCritics:i18n("Hit:"))
-  hitCritLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIT_CRITICAL"), LogBookCritics:i18n("Hit crit.:"))
+  hitLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIT_NORMAL"), LogBookCritics:LBC_i18n("Hit:"))
+  hitCritLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIT_CRITICAL"), LogBookCritics:LBC_i18n("Hit crit.:"))
 
-  healLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HEAL_NORMAL"), LogBookCritics:i18n("Heal:"))
-  healCritLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HEAL_CRITICAL"), LogBookCritics:i18n("Heal crit.:"))
+  healLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HEAL_NORMAL"), LogBookCritics:LBC_i18n("Heal:"))
+  healCritLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HEAL_CRITICAL"), LogBookCritics:LBC_i18n("Heal crit.:"))
 
   local actionType, id = GetActionInfo(slot)
   if actionType == "spell" then

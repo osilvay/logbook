@@ -18,22 +18,22 @@ local bodyContainer
 ---@param containerTable table
 ---@param parentFrame AceGUIFrame
 function LBM_MobsBody:RedrawMobsWindowBody(containerTable, parentFrame)
-	bodyContainer:ReleaseChildren()
-	LBM_MobsBody:ContainerBodyFrame(containerTable, parentFrame)
+  bodyContainer:ReleaseChildren()
+  LBM_MobsBody:ContainerBodyFrame(containerTable, parentFrame)
 end
 
 ---Create Mobs container body frame
 function LBM_MobsBody:ContainerBodyFrame(containerTable, parentFrame)
-	if not bodyContainer then
-		-- container
-		---@type AceGUIInlineGroup
-		bodyContainer = AceGUI:Create("InlineGroup")
-		bodyContainer:SetFullWidth(true)
-		bodyContainer:SetWidth(500)
-		bodyContainer:SetHeight(240)
-		bodyContainer:SetTitle(LogBookMobs:i18n("Mobs list"))
-		bodyContainer:SetLayout("Flow")
-		bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -180)
-		parentFrame:AddChild(bodyContainer)
-	end
+  if not bodyContainer then
+    -- container
+    ---@type AceGUIInlineGroup
+    bodyContainer = AceGUI:Create("InlineGroup")
+    bodyContainer:SetFullWidth(true)
+    bodyContainer:SetWidth(500)
+    bodyContainer:SetHeight(240)
+    bodyContainer:SetTitle(LogBookMobs:LBM_i18n("Mobs list"))
+    bodyContainer:SetLayout("Flow")
+    bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -180)
+    parentFrame:AddChild(bodyContainer)
+  end
 end

@@ -35,23 +35,23 @@ function LBL_TrackLoot:Initialize()
   allProfessionID = {
     Enchanting = {
       spellID = { 13262, 7412, 7413, 13920, 7411 },
-      professionName = LogBookLoot:i18n("Enchanting")
+      professionName = LogBookLoot:LBL_i18n("Enchanting")
     },
     Herbalism = {
       spellID = { 2383, 2368, 3570, 11993, 2366 },
-      professionName = LogBookLoot:i18n("Herbalism")
+      professionName = LogBookLoot:LBL_i18n("Herbalism")
     },
     Skinning = {
       spellID = { 8617, 8618, 10768, 8613 },
-      professionName = LogBookLoot:i18n("Skinning")
+      professionName = LogBookLoot:LBL_i18n("Skinning")
     },
     Mining = {
       spellID = { 2580, 2576, 3564, 10248, 2575, 2656 },
-      professionName = LogBookLoot:i18n("Mining")
+      professionName = LogBookLoot:LBL_i18n("Mining")
     },
     Fishing = {
       spellID = { 7731, 7620, 7732, 18248 },
-      professionName = LogBookLoot:i18n("Fishing")
+      professionName = LogBookLoot:LBL_i18n("Fishing")
     },
   }
 end
@@ -223,22 +223,22 @@ function LBL_TrackLoot:LootNameToMoney(item)
   local g, s, c = 0, 0, 0
   local money = 0
 
-  local gold = string.find(item, LogBookLoot:i18n("Gold"))
+  local gold = string.find(item, LogBookLoot:LBL_i18n("Gold"))
   if gold then
     g = tonumber(string.sub(item, 0, gold - 1)) or 0
-    item = string.sub(item, gold + string.len(LogBookLoot:i18n("Gold")), string.len(item))
+    item = string.sub(item, gold + string.len(LogBookLoot:LBL_i18n("Gold")), string.len(item))
     money = money + ((g or 0) * SilverPerGold * CopperPerSilver)
   end
 
-  local silver = string.find(item, LogBookLoot:i18n("Silver"))
+  local silver = string.find(item, LogBookLoot:LBL_i18n("Silver"))
   if silver then
     s = tonumber(string.sub(item, 0, silver - 1)) or 0
-    item = string.sub(item, silver + string.len(LogBookLoot:i18n("Silver")), string.len(item))
+    item = string.sub(item, silver + string.len(LogBookLoot:LBL_i18n("Silver")), string.len(item))
     print(item)
     money = money + ((s or 0) * CopperPerSilver)
   end
 
-  local copper = string.find(item, LogBookLoot:i18n("Copper"))
+  local copper = string.find(item, LogBookLoot:LBL_i18n("Copper"))
   if copper then
     c = tonumber(string.sub(item, 0, copper - 1)) or 0
     money = money + (c or 0)

@@ -35,7 +35,7 @@ function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
     filterContainer:SetFullWidth(true)
     filterContainer:SetWidth(500)
     filterContainer:SetHeight(140)
-    filterContainer:SetTitle(LogBookCritics:i18n("Filter"))
+    filterContainer:SetTitle(LogBookCritics:LBC_i18n("Filter"))
     filterContainer:SetLayout("Flow")
     filterContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -40)
     parentFrame:AddChild(filterContainer)
@@ -46,8 +46,8 @@ function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
   ---@type AceGUIDropdown
   realmDropdown = AceGUI:Create("Dropdown")
   realmDropdown:SetRelativeWidth(0.45)
-  realmDropdown:SetText(LogBookCritics:i18n('Realm'))
-  realmDropdown:SetLabel(LogBookCritics:i18n('Realm'))
+  realmDropdown:SetText(LogBookCritics:LBC_i18n('Realm'))
+  realmDropdown:SetLabel(LogBookCritics:LBC_i18n('Realm'))
   realmDropdown:SetList(LBC_CriticsFilter:CreateRealmDropdown())
   realmDropdown:SetCallback("OnValueChanged", function(widget, event, value)
     LogBookCritics.db.char.general.critics.filter.select_realm = value
@@ -70,8 +70,8 @@ function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
   ---@type AceGUIDropdown
   characterDropdown = AceGUI:Create("Dropdown")
   characterDropdown:SetRelativeWidth(0.45)
-  characterDropdown:SetText(LogBookCritics:i18n('Character'))
-  characterDropdown:SetLabel(LogBookCritics:i18n('Character'))
+  characterDropdown:SetText(LogBookCritics:LBC_i18n('Character'))
+  characterDropdown:SetLabel(LogBookCritics:LBC_i18n('Character'))
   characterDropdown:SetList(LBC_CriticsFilter:CreateCharactersDropdown())
   characterDropdown:SetCallback("OnValueChanged", function(widget, event, value)
     LogBookCritics.db.char.general.critics.filter.select_character = value
@@ -85,8 +85,8 @@ function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
   ---@type AceGUIDropdown
   typeDropdown = AceGUI:Create("Dropdown")
   typeDropdown:SetRelativeWidth(0.45)
-  typeDropdown:SetText(LogBookCritics:i18n('Type'))
-  typeDropdown:SetLabel(LogBookCritics:i18n('Type'))
+  typeDropdown:SetText(LogBookCritics:LBC_i18n('Type'))
+  typeDropdown:SetLabel(LogBookCritics:LBC_i18n('Type'))
   typeDropdown:SetList(LBC_CriticsFilter:CreateTypeDropdown())
   typeDropdown:SetCallback("OnValueChanged", function(widget, event, value)
     LogBookCritics.db.char.general.critics.filter.select_type = value
@@ -107,7 +107,7 @@ function LBC_CriticsFilter:ContainerFilterFrame(parentFrame)
   local searchCriteriaInput = AceGUI:Create("EditBox")
   searchCriteriaInput:SetRelativeWidth(0.45)
   searchCriteriaInput:DisableButton(true)
-  searchCriteriaInput:SetLabel(LogBookCritics:i18n('Search criteria'))
+  searchCriteriaInput:SetLabel(LogBookCritics:LBC_i18n('Search criteria'))
   searchCriteriaInput:SetText(LogBookCritics.db.char.general.critics.filter.search_criteria)
   searchCriteriaInput:SetCallback("OnTextChanged", function(widget, event, value)
     LogBookCritics.db.char.general.critics.filter.search_criteria = value
@@ -119,7 +119,7 @@ end
 ---Create realm dropdown
 function LBC_CriticsFilter:CreateRealmDropdown()
   local r = {
-    ["all"] = LogBookCritics:i18n("All"),
+    ["all"] = LogBookCritics:LBC_i18n("All"),
   }
   local characters = LogBookCritics.db.global.data.characters
   for k, v in pairs(characters) do
@@ -153,16 +153,16 @@ function LBC_CriticsFilter:CreateCharactersDropdown()
     end
   end
   --table.sort(r, function(k1, k2) return k1.order > k2.order end)
-  r["all"] = LogBookCritics:i18n("All")
+  r["all"] = LogBookCritics:LBC_i18n("All")
   return r
 end
 
 ---Create type dropdown
 function LBC_CriticsFilter:CreateTypeDropdown()
   return {
-    ["all"] = LogBookCritics:i18n("All"),
-    ["hit"] = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIT_NORMAL"), LogBookCritics:i18n("Harmful")),
-    ["heal"] = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HEAL_NORMAL"), LogBookCritics:i18n("Healings")),
+    ["all"] = LogBookCritics:LBC_i18n("All"),
+    ["hit"] = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIT_NORMAL"), LogBookCritics:LBC_i18n("Harmful")),
+    ["heal"] = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HEAL_NORMAL"), LogBookCritics:LBC_i18n("Healings")),
   }
 end
 

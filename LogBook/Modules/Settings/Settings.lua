@@ -46,7 +46,7 @@ function LB_Settings:Initialize()
 end
 
 function LB_Settings:DrawSettingsFrame()
-  --LogBook:Debug(LogBook:i18n("Creating settings frame"))
+  --LogBook:Debug(LogBook:LB_i18n("Creating settings frame"))
   ---@type AceGUIFrame, AceGUIFrame
   local logBookSettingsFrame = AceGUI:Create("Frame");
   logBookSettingsFrame:Hide()

@@ -21,7 +21,7 @@ end
 
 ---@param message string
 ---@return string string
-function LogBookEnchanting:i18n(message)
+function LogBookEnchanting:LBE_i18n(message)
   local locale = GetLocale()
   LogBookEnchanting.db.global.data.locale[locale] = {
     old = {

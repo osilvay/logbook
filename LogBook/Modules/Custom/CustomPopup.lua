@@ -133,7 +133,7 @@ end
 _CreateAcceptButton    = function()
   ---@type AceGUIButton
   local addAcceptBtn = AceGUI:Create("Button")
-  addAcceptBtn:SetText(LogBook:i18n('Accept'))
+  addAcceptBtn:SetText(LogBook:LB_i18n('Accept'))
   addAcceptBtn:SetWidth(120)
   addAcceptBtn:SetCallback("OnClick", _HandleAcceptBtn)
   return addAcceptBtn
@@ -144,7 +144,7 @@ end
 _CreateCancelButton    = function()
   ---@type AceGUIButton
   local addCancelBtn = AceGUI:Create("Button")
-  addCancelBtn:SetText(LogBook:i18n('Cancel'))
+  addCancelBtn:SetText(LogBook:LB_i18n('Cancel'))
   addCancelBtn:SetWidth(120)
   addCancelBtn:SetCallback("OnClick", _HandleCancelBtn)
   return addCancelBtn

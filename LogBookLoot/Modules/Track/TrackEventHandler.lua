@@ -6,7 +6,7 @@ local _LBL_TrackEventHandler = {}
 local LBL_TrackLoot = LB_ModuleLoader:ImportModule("LBL_TrackLoot")
 
 function LBL_TrackEventHandler:Initialize()
-  --LogBook:Debug(LogBookLoot:i18n("Initializing track events..."))
+  --LogBook:Debug(LogBookLoot:LBL_i18n("Initializing track events..."))
 
   LogBookLoot:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", _LBL_TrackEventHandler.UnitSpellCastSucceeded)
   LogBookLoot:RegisterEvent("LOOT_READY", _LBL_TrackEventHandler.LootReady)

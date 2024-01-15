@@ -10,10 +10,9 @@ L["Toggle tracking mobs."] = true
 L["Disabled"] = true
 L["Enabled"] = true
 L["|c%s%s|r mobs tracking"] = true
-L["Mobs tracking initialized"] = true
-L["LogBook mobs management window"] = true
 L["Mobs list"] = true
 L["Filter"] = true
 L["Back"] = true
 L["Settings"] = true
-
+L["Back"] = true
+L["Settings"] = true

@@ -6,7 +6,7 @@ local _LBM_TrackEventHandler = {}
 local LBM_TrackMobs = LB_ModuleLoader:ImportModule("LBM_TrackMobs")
 
 function LBM_TrackEventHandler:Initialize()
-  --LogBook:Debug(LogBookMobs:i18n("Initializing track events..."))
+  --LogBook:Debug(LogBookMobs:LBM_i18n("Initializing track events..."))
   LogBookMobs:RegisterEvent("PLAYER_TARGET_CHANGED", _LBM_TrackEventHandler.PlayerTargetChanged)
   LogBookMobs:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", _LBM_TrackEventHandler.CombatLogEventUnfiltered)
 end

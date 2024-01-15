@@ -18,22 +18,22 @@ local bodyContainer
 ---@param containerTable table
 ---@param parentFrame AceGUIFrame
 function LBZ_ZonesBody:RedrawZonesWindowBody(containerTable, parentFrame)
-	bodyContainer:ReleaseChildren()
-	LBZ_ZonesBody:ContainerBodyFrame(containerTable, parentFrame)
+  bodyContainer:ReleaseChildren()
+  LBZ_ZonesBody:ContainerBodyFrame(containerTable, parentFrame)
 end
 
 ---Create Zones container body frame
 function LBZ_ZonesBody:ContainerBodyFrame(containerTable, parentFrame)
-	if not bodyContainer then
-		-- container
-		---@type AceGUIInlineGroup
-		bodyContainer = AceGUI:Create("InlineGroup")
-		bodyContainer:SetFullWidth(true)
-		bodyContainer:SetWidth(500)
-		bodyContainer:SetHeight(240)
-		bodyContainer:SetTitle(LogBookZones:i18n("Zones list"))
-		bodyContainer:SetLayout("Flow")
-		bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -180)
-		parentFrame:AddChild(bodyContainer)
-	end
+  if not bodyContainer then
+    -- container
+    ---@type AceGUIInlineGroup
+    bodyContainer = AceGUI:Create("InlineGroup")
+    bodyContainer:SetFullWidth(true)
+    bodyContainer:SetWidth(500)
+    bodyContainer:SetHeight(240)
+    bodyContainer:SetTitle(LogBookZones:LBZ_i18n("Zones list"))
+    bodyContainer:SetLayout("Flow")
+    bodyContainer:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -180)
+    parentFrame:AddChild(bodyContainer)
+  end
 end

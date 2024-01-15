@@ -84,7 +84,7 @@ end
 
 ---@param message string
 ---@return string string
-function LogBook:i18n(message)
+function LogBook:LB_i18n(message)
   local locale = GetLocale()
   LogBook.db.global.data.locale[locale] = {
     old = {

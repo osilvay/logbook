@@ -17,27 +17,27 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 local _LibDBIcon = LibStub("LibDBIcon-1.0");
 
 function LB_MinimapIcon:Initialize()
-    _LibDBIcon:Register("LogBook", _LB_MinimapIcon:CreateDataBrokerObject(), LogBook.db.profile.minimap);
-    LogBook.minimapConfigIcon = _LibDBIcon
+  _LibDBIcon:Register("LogBook", _LB_MinimapIcon:CreateDataBrokerObject(), LogBook.db.profile.minimap);
+  LogBook.minimapConfigIcon = _LibDBIcon
 end
 
 function _LB_MinimapIcon:CreateDataBrokerObject()
-    local LDBDataObject = LibStub("LibDataBroker-1.1"):NewDataObject("LogBook", {
-        type = "data source",
-        text = "ldbDisplayText",
-        icon = "Interface\\Icons\\Inv_scroll_11",
+  local LDBDataObject = LibStub("LibDataBroker-1.1"):NewDataObject("LogBook", {
+    type = "data source",
+    text = "ldbDisplayText",
+    icon = "Interface\\Icons\\Inv_scroll_11",
 
-        OnClick = function(_, button)
-            --if (not LogBook.started) then return end
+    OnClick = function(_, button)
+      --if (not LogBook.started) then return end
 
-            if button == "LeftButton" then
-                LB_SlashCommands:CloseAllFrames()
-                LB_WelcomeWindow:OpenWelcomeWindowFrame()
-            elseif button == "RightButton" then
-                LB_SlashCommands:CloseAllFrames()
-                LB_Settings:OpenSettingsFrame()
-            end
-            --[[
+      if button == "LeftButton" then
+        LB_SlashCommands:CloseAllFrames()
+        LB_WelcomeWindow:OpenWelcomeWindowFrame()
+      elseif button == "RightButton" then
+        LB_SlashCommands:CloseAllFrames()
+        LB_Settings:OpenSettingsFrame()
+      end
+      --[[
             if button == "LeftButton" then
                 if IsShiftKeyDown() and IsControlKeyDown() then
                     Questie.db.profile.enabled = (not Questie.db.profile.enabled)
@@ -76,22 +76,22 @@ function _LB_MinimapIcon:CreateDataBrokerObject()
                 end
             end
             ]]
-        end,
+    end,
 
-        OnTooltipShow = function(tooltip)
-            tooltip:AddLine("|cffffffffLog|r|cff57b6ffBook|r")
-            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:i18n("Left Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open main window")));
-            tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:i18n("Right Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:i18n("Open settings window")));
-        end,
-    });
+    OnTooltipShow = function(tooltip)
+      tooltip:AddLine("|cffffffffLog|r|cff57b6ffBook|r")
+      tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:LB_i18n("Left Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:LB_i18n("Open main window")));
+      tooltip:AddLine(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIGHLIGHTED"), LogBook:LB_i18n("Right Click")) .. ": " .. LB_CustomColors:Colorize(LB_CustomColors:CustomColors("TEXT_VALUE"), LogBook:LB_i18n("Open settings window")));
+    end,
+  });
 
-    self.LDBDataObject = LDBDataObject
+  self.LDBDataObject = LDBDataObject
 
-    return LDBDataObject
+  return LDBDataObject
 end
 
 --- Update the LibDataBroker text
 function LB_MinimapIcon:UpdateText(text)
-    --Questie.db.profile.ldbDisplayText = text
-    _LB_MinimapIcon.LDBDataObject.text = text
+  --Questie.db.profile.ldbDisplayText = text
+  _LB_MinimapIcon.LDBDataObject.text = text
 end

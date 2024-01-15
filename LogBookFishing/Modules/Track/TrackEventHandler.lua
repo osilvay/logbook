@@ -6,5 +6,5 @@ local _LBF_TrackEventHandler = {}
 local LBF_TrackFishing = LB_ModuleLoader:ImportModule("LBF_TrackFishing")
 
 function LBF_TrackEventHandler:Initialize()
-  --LogBook:Debug(LogBookFishing:i18n("Initializing track events..."))
+  --LogBook:Debug(LogBookFishing:LBF_i18n("Initializing track events..."))
 end

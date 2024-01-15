@@ -23,26 +23,26 @@ local _LBL_Settings = {}
 
 function LBL_Settings:Initialize()
   return {
-    name = LogBookLoot:i18n("Loot"),
+    name = LogBookLoot:LBL_i18n("Loot"),
     order = 5,
     type = "group",
     args = {
       loot_header = {
         type = "header",
         order = 1,
-        name = "|cffc1c1f1" .. LogBookLoot:i18n("Loot settings") .. "|r",
+        name = "|cffc1c1f1" .. LogBookLoot:LBL_i18n("Loot settings") .. "|r",
       },
       tracking = {
         type = "group",
         order = 2,
         inline = true,
-        name = LogBookLoot:i18n("Tracking"),
+        name = LogBookLoot:LBL_i18n("Tracking"),
         args = {
           trackingEnabled = {
             type = "toggle",
             order = 1,
-            name = LogBookLoot:i18n("Enable tracking"),
-            desc = LogBookLoot:i18n("Toggle tracking loot."),
+            name = LogBookLoot:LBL_i18n("Enable tracking"),
+            desc = LogBookLoot:LBL_i18n("Toggle tracking loot."),
             width = 1.2,
             disabled = false,
             get = function() return LogBookLoot.db.char.general.loot.trackingEnabled end,
@@ -55,26 +55,26 @@ function LBL_Settings:Initialize()
       maintenance_header = {
         type = "header",
         order = 5,
-        name = "|cffc1c1f1" .. LogBook:i18n("Maintenance") .. "|r",
+        name = "|cffc1c1f1" .. LogBook:LB_i18n("Maintenance") .. "|r",
       },
       maintenance = {
         type = "group",
         order = 6,
         inline = true,
-        name = LogBook:i18n("Delete character data") .. " |cffff3300(" .. LogBook:i18n("Reload required") .. ")|r",
+        name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
         args = {
           deleteCharacterData = {
             type = "select",
             order = 2,
             width = "full",
-            name = LogBook:i18n("Character"),
-            desc = LogBook:i18n("Character name."),
+            name = LogBook:LB_i18n("Character"),
+            desc = LogBook:LB_i18n("Character name."),
             values = _LBL_Settings.CreateCharactersDropdown(),
             disabled = false,
             get = function() return nil end,
             set = function(info, value)
               LogBookLoot.db.char.general.enchanting.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBook:i18n("Delete character"), string.format(LogBook:i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
+              LB_CustomPopup:CreatePopup(LogBook:LB_i18n("Delete character"), string.format(LogBook:LB_i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
                 _LBL_Settings.DeleteCharacterEntry(value)
               end)
             end,
