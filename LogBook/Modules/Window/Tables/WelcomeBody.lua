@@ -54,7 +54,7 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
   bodyContainer:AddChild(row1)
 
   local modules1 = 1
-  C_Timer.NewTicker(0.1, function()
+  C_Timer.NewTicker(0.05, function()
     if modules1 == 1 then
       LB_WelcomeBody:drawLootContainer(row1)
       LB_WelcomeBody:drawSeparator(row1, 10)
@@ -76,7 +76,7 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
   bodyContainer:AddChild(row2)
 
   local modules2 = 1
-  C_Timer.NewTicker(0.1, function()
+  C_Timer.NewTicker(0.05, function()
     if modules2 == 1 then
       LB_WelcomeBody:drawZonesContainer(row2)
       LB_WelcomeBody:drawSeparator(row2, 10)

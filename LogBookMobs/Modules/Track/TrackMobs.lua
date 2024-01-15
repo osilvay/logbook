@@ -13,6 +13,9 @@ local LB_CustomSounds = LB_ModuleLoader:ImportModule("LB_CustomSounds")
 ---@type LBM_TrackMobCache
 local LBM_TrackMobCache = LB_ModuleLoader:ImportModule("LBM_TrackMobCache")
 
+---@type LBZ_TrackZones
+local LBZ_TrackZones = LB_ModuleLoader:ImportModule("LBZ_TrackZones")
+
 Target = {}
 LastTargetIdx = nil
 
@@ -47,7 +50,8 @@ function LBM_TrackMobs:ProcessPlayerTargetChanged()
         mobData = LBM_TrackMobs:GetUnitMobData("target")
       end
       Target.mobData = mobData
-
+      Target.zones = {}
+      table.insert(Target.zones, LBZ_TrackZones:GetCurrentPersonalZone())
       if Target.mobGUID then
         LBM_TrackMobCache:AddMobToCache(Target.mobGUID, mobData)
       end
