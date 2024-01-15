@@ -63,6 +63,9 @@ end
 ---Dump message
 function LogBook:Dump(message)
   if LogBook:IsDebugEnabled() then
+    if message == nil then
+      LogBook:Print("|cffb3b2b8[DUMP]|r nil")
+    end
     LogBook:Print("|cffb3b2b8[DUMP]|r " .. LB_CustomFunctions:Dump(message))
   end
 end

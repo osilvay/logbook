@@ -214,3 +214,48 @@ function LBZ_TrackZones:StorePersonalZone(zone)
   zoneValue = zoneValue + 1
   LogBookZones.db.global.characters[LogBookZones.key].zones[zoneString] = zoneValue
 end
+
+---Get current personal zone
+function LBZ_TrackZones:GetCurrentZone()
+  local currentZone = GetZoneText()
+  local currentSubZone = GetSubZoneText()
+  if currentSubZone == nil or currentSubZone == "" then currentSubZone = UNKNOWN end
+  local mapID = C_Map_GetBestMapForUnit("player")
+  if not mapID then mapID = 0 end
+  local mapInfo = C_Map.GetMapInfo(mapID)
+  if mapInfo == nil then return end
+  local parentMapInfo = C_Map.GetMapInfo(mapInfo.parentMapID)
+  if parentMapInfo == nil then return end
+  local worldMapInfo = C_Map.GetMapInfo(parentMapInfo.parentMapID)
+  if worldMapInfo == nil then return end
+
+  local zoneResult = {
+    continent = parentMapInfo.name,
+    name = currentZone,
+  }
+  return string.format("%s - %s", zoneResult.continent, zoneResult.name)
+end
+
+---Get current personal zone
+function LBZ_TrackZones:GetCurrentPersonalZone()
+  local currentZone = GetZoneText()
+  local currentSubZone = GetSubZoneText()
+  if currentSubZone == nil or currentSubZone == "" then currentSubZone = UNKNOWN end
+  local mapID = C_Map_GetBestMapForUnit("player")
+  local mapPos = mapID and C_Map_GetPlayerMapPosition(mapID, "player")
+  if not mapID then mapID = 0 end
+  local mapInfo = C_Map.GetMapInfo(mapID)
+  if mapInfo == nil then return end
+  local parentMapInfo = C_Map.GetMapInfo(mapInfo.parentMapID)
+  if parentMapInfo == nil then return end
+
+  local worldMapInfo = C_Map.GetMapInfo(parentMapInfo.parentMapID)
+  if worldMapInfo == nil then return end
+
+  local zoneResult = {
+    continent = parentMapInfo.name,
+    name = currentZone,
+    subzone = currentSubZone,
+  }
+  return string.format("%s - %s - %s", zoneResult.continent, zoneResult.name, zoneResult.subzone)
+end

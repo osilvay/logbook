@@ -1,0 +1,33 @@
+## Interface: 11500
+## Title: |cffffffffLog|r|cff57b6ffBook|r |cff4fe368Enchanting|r |cff9191a1v0.0.1|r
+## Version: 0.0.1
+## Notes: Enchanting tracker for wow classic
+## Author: osilvay
+## SavedVariables: LogBookEnchantingDB
+## OptionalDeps: Ace3, CallbackHandler-1.0, LibStub
+## Dependencies: LogBook
+## DefaultState: enabled
+## LoadOnDemand: 4
+
+embeds.xml
+Locale\Locales.xml
+
+# Modules
+Modules\EnchantingEventHandler.lua
+Modules\Init.lua
+Modules\VersionCheck.lua
+
+Modules\Settings\SettingsDefaults.lua
+Modules\Settings\EnchantingTab\EnchantingTab.lua
+
+Modules\Track\Track.lua
+Modules\Track\TrackEnchanting.lua
+Modules\Track\TrackEventHandler.lua
+
+Modules\Window\EnchantingWindow.lua
+Modules\Window\Tables\EnchantingHeader.lua
+Modules\Window\Tables\EnchantingFilter.lua
+Modules\Window\Tables\EnchantingBody.lua
+
+# Main
+LogBookEnchanting.lua

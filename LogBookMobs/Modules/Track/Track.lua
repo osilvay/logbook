@@ -23,9 +23,9 @@ end
 function LBM_Track.StartTracking()
   local statusColor = "ffe04040"
   local statusText = LogBookMobs:i18n("Disabled")
-  LBM_TrackEventHandler:Initialize()
   if LBM_Track:IsTrackingMobs() then
     LBM_TrackEventHandler:Initialize()
+    LBM_TrackMobs:Initialize()
     statusColor = "ff40e068"
     statusText = LogBookMobs:i18n("Enabled")
   end

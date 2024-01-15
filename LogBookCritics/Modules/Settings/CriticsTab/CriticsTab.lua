@@ -1,6 +1,5 @@
 ---@class LBC_Settings
 local LBC_Settings = LB_ModuleLoader:CreateModule("LBC_Settings");
-local _LBC_Settings = {}
 
 ---@type LBC_SettingsDefaults
 local LBC_SettingsDefaults = LB_ModuleLoader:ImportModule("LBC_SettingsDefaults");
@@ -25,6 +24,7 @@ local optionsDefaults = LBC_SettingsDefaults:Load()
 local colorIcon = "|TInterface\\AddOns\\LogBook\\Images\\color:16:16|t"
 local LibDialog = LibStub("LibDialog-1.0")
 local currentCharacters = {}
+local _LBC_Settings = {}
 
 function LBC_Settings:Initialize()
   return {
@@ -195,26 +195,26 @@ function LBC_Settings:Initialize()
       maintenance_header = {
         type = "header",
         order = 5,
-        name = "|cffc1c1f1" .. LogBookCritics:i18n("Maintenance") .. "|r",
+        name = "|cffc1c1f1" .. LogBook:i18n("Maintenance") .. "|r",
       },
       maintenance = {
         type = "group",
         order = 6,
         inline = true,
-        name = LogBookCritics:i18n("Delete character data") .. " |cffff3300(" .. LogBookCritics:i18n("Reload required") .. ")|r",
+        name = LogBook:i18n("Delete character data") .. " |cffff3300(" .. LogBook:i18n("Reload required") .. ")|r",
         args = {
           deleteCharacterData = {
             type = "select",
             order = 2,
             width = "full",
-            name = LogBookCritics:i18n("Character"),
-            desc = LogBookCritics:i18n("Character name."),
+            name = LogBook:i18n("Character"),
+            desc = LogBook:i18n("Character name."),
             values = _LBC_Settings.CreateCharactersDropdown(),
             disabled = false,
             get = function() return nil end,
             set = function(info, value)
               LogBookCritics.db.char.general.critics.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBookCritics:i18n("Delete character"), string.format(LogBookCritics:i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
+              LB_CustomPopup:CreatePopup(LogBook:i18n("Delete character"), string.format(LogBook:i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
                 _LBC_Settings.DeleteCharacterEntry(value)
               end)
             end,

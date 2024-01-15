@@ -26,6 +26,7 @@ function LBL_Track.StartTracking()
   LBL_TrackEventHandler:Initialize()
   if LBL_Track:IsTrackingLoot() then
     LBL_TrackEventHandler:Initialize()
+    LBL_TrackLoot:Initialize()
     statusColor = "ff40e068"
     statusText = LogBookLoot:i18n("Enabled")
   end

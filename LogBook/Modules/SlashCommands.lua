@@ -22,6 +22,9 @@ local LBF_FishingWindow = LB_ModuleLoader:ImportModule("LBF_FishingWindow")
 ---@type LBM_MobsWindow
 local LBM_MobsWindow = LB_ModuleLoader:ImportModule("LBM_MobsWindow")
 
+---@type LBE_EnchantingWindow
+local LBE_EnchantingWindow = LB_ModuleLoader:ImportModule("LBE_EnchantingWindow")
+
 function LB_SlashCommands.RegisterSlashCommands()
   LogBook:RegisterChatCommand("logbook", LB_SlashCommands.HandleCommands)
   LogBook:RegisterChatCommand("lb", LB_SlashCommands.HandleCommands)
@@ -53,6 +56,10 @@ function LB_SlashCommands.HandleCommands(input)
     mobsModuleLoaded = true
   end
 
+  local enchantingModuleLoaded = false
+  if EnchantingWindowFrame ~= nil then
+    enchantingModuleLoaded = true
+  end
 
   local command = string.lower(input) or "help"
   if command == "config" then
@@ -69,6 +76,8 @@ function LB_SlashCommands.HandleCommands(input)
     LB_SlashCommands:OpenFishingWindow()
   elseif command == "mobs" and mobsModuleLoaded then
     LB_SlashCommands:OpenMobsWindow()
+  elseif command == "enchanting" and enchantingModuleLoaded then
+    LB_SlashCommands:OpenEnchantingWindow()
   else
     LogBook:Print(LogBook:i18n("Log|cff57b6ffBook|r available commands"))
     LogBook:Print("/lb |cffc1c1c1config|r - " .. LogBook:i18n("Open settings window"))
@@ -86,7 +95,10 @@ function LB_SlashCommands.HandleCommands(input)
       LogBook:Print("/lb |cffa27be0fishing|r - " .. LogBook:i18n("Open fishing window"))
     end
     if mobsModuleLoaded then
-      LogBook:Print("/lb |cff4bd1c4mobs|r - " .. LogBook:i18n("Open mobs window"))
+      LogBook:Print("/lb |cff5be3demobs|r - " .. LogBook:i18n("Open mobs window"))
+    end
+    if enchantingModuleLoaded then
+      LogBook:Print("/lb |cfff078eeenchanting|r - " .. LogBook:i18n("Open enchanting window"))
     end
   end
 end
@@ -99,6 +111,7 @@ function LB_SlashCommands:CloseAllFrames()
   LBZ_ZonesWindow:HideZonesWindowFrame()
   LBF_FishingWindow:HideFishingWindowFrame()
   LBM_MobsWindow:HideMobsWindowFrame()
+  LBE_EnchantingWindow:HideEnchantingWindowFrame()
 end
 
 function LB_SlashCommands:OpenSettingsWindow()
@@ -147,5 +160,12 @@ function LB_SlashCommands:OpenMobsWindow()
   LB_SlashCommands:CloseAllFrames()
   C_Timer.After(0.2, function()
     LBM_MobsWindow:OpenMobsWindowFrame()
+  end)
+end
+
+function LB_SlashCommands:OpenEnchantingWindow()
+  LB_SlashCommands:CloseAllFrames()
+  C_Timer.After(0.2, function()
+    LBE_EnchantingWindow:OpenEnchantingWindowFrame()
   end)
 end

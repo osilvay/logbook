@@ -1,8 +1,8 @@
----@class LBF_Settings
-local LBF_Settings = LB_ModuleLoader:CreateModule("LBF_Settings");
+---@class LBE_Settings
+local LBE_Settings = LB_ModuleLoader:CreateModule("LBE_Settings");
 
----@type LBF_SettingsDefaults
-local LBF_SettingsDefaults = LB_ModuleLoader:ImportModule("LBF_SettingsDefaults");
+---@type LBE_SettingsDefaults
+local LBE_SettingsDefaults = LB_ModuleLoader:ImportModule("LBE_SettingsDefaults");
 
 ---@type LB_CustomFrames
 local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames");
@@ -16,38 +16,38 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors");
 ---@type LB_CustomPopup
 local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
 
-LBF_Settings.fishing_tab = { ... }
-local optionsDefaults = LBF_SettingsDefaults:Load()
+LBE_Settings.enchanting_tab = { ... }
+local optionsDefaults = LBE_SettingsDefaults:Load()
 local currentCharacters = {}
-local _LBF_Settings = {}
+local _LBE_Settings = {}
 
-function LBF_Settings:Initialize()
+function LBE_Settings:Initialize()
   return {
-    name = LogBookFishing:i18n("Fishing"),
-    order = 4,
+    name = LogBookEnchanting:i18n("Enchanting"),
+    order = 3,
     type = "group",
     args = {
-      fishing_header = {
+      enchanting_header = {
         type = "header",
         order = 1,
-        name = "|cffc1c1f1" .. LogBookFishing:i18n("Fishing settings") .. "|r",
+        name = "|cffc1c1f1" .. LogBookEnchanting:i18n("Enchanting settings") .. "|r",
       },
       tracking = {
         type = "group",
         order = 2,
         inline = true,
-        name = LogBookFishing:i18n("Tracking"),
+        name = LogBookEnchanting:i18n("Tracking"),
         args = {
           trackingEnabled = {
             type = "toggle",
             order = 1,
-            name = LogBookFishing:i18n("Enable tracking"),
-            desc = LogBookFishing:i18n("Toggle tracking fishing."),
+            name = LogBookEnchanting:i18n("Enable tracking"),
+            desc = LogBookEnchanting:i18n("Toggle tracking enchanting."),
             width = 1.2,
             disabled = false,
-            get = function() return LogBookFishing.db.char.general.fishing.trackingEnabled end,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.trackingEnabled end,
             set = function(info, value)
-              LogBookFishing.db.char.general.fishing.trackingEnabled = value
+              LogBookEnchanting.db.char.general.enchanting.trackingEnabled = value
             end,
           },
         },
@@ -69,13 +69,13 @@ function LBF_Settings:Initialize()
             width = "full",
             name = LogBook:i18n("Character"),
             desc = LogBook:i18n("Character name."),
-            values = _LBF_Settings.CreateCharactersDropdown(),
+            values = _LBE_Settings.CreateCharactersDropdown(),
             disabled = false,
             get = function() return nil end,
             set = function(info, value)
-              LogBookFishing.db.char.general.enchanting.deleteCharacterData = value
+              LogBookEnchanting.db.char.general.enchanting.deleteCharacterData = value
               LB_CustomPopup:CreatePopup(LogBook:i18n("Delete character"), string.format(LogBook:i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
-                _LBF_Settings.DeleteCharacterEntry(value)
+                _LBE_Settings.DeleteCharacterEntry(value)
               end)
             end,
           }
@@ -85,15 +85,15 @@ function LBF_Settings:Initialize()
   }
 end
 
-function _LBF_Settings.CreateCharactersDropdown()
-  local characters = LogBookFishing.db.global.data.characters
+function _LBE_Settings.CreateCharactersDropdown()
+  local characters = LogBookEnchanting.db.global.data.characters
   currentCharacters = LB_CustomFunctions:CreateCharacterDropdownList(characters, true, true)
   return currentCharacters
 end
 
-function _LBF_Settings.DeleteCharacterEntry(characterKey)
+function _LBE_Settings.DeleteCharacterEntry(characterKey)
   local character = LB_CustomFunctions:ConvertNewKeyToKey(characterKey)
-  LogBookFishing.db.global.characters[character] = {}
-  LogBookFishing.db.global.data.characters[character] = false
+  LogBookEnchanting.db.global.characters[character] = {}
+  LogBookEnchanting.db.global.data.characters[character] = false
   ReloadUI()
 end

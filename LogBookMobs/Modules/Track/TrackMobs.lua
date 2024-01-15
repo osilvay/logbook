@@ -13,13 +13,23 @@ local LB_CustomSounds = LB_ModuleLoader:ImportModule("LB_CustomSounds")
 ---@type LBM_TrackMobCache
 local LBM_TrackMobCache = LB_ModuleLoader:ImportModule("LBM_TrackMobCache")
 
----initialize track crit
-function LBM_TrackMobs:Initialize()
-  -- tooltip hook
-end
-
 Target = {}
 LastTargetIdx = nil
+
+local lastExp, currentExp, maxExp
+local lastRestedExp, currentRestedExp
+local lastLevel, currentLevel
+
+function LBM_TrackMobs:Initialize()
+  maxExp = UnitXPMax("player")
+  currentExp = UnitXP("player")
+  lastExp = UnitXP("player")
+  currentRestedExp = GetXPExhaustion()
+  lastRestedExp = GetXPExhaustion()
+  lastLevel = UnitLevel("player")
+  currentLevel = UnitLevel("player")
+  LBM_TrackMobs.StoreExperience()
+end
 
 ---Process target changed event
 function LBM_TrackMobs:ProcessPlayerTargetChanged()
@@ -92,7 +102,7 @@ end
 ---@param target table
 function LBM_TrackMobs:StoreMobDetailsFromTarget(target)
   if target then
-    --Bitacora:Debug("Storing mobDetails : " .. target.mobIndex)
+    --LogBook:Debug("Storing mobDetails : " .. target.mobIndex)
     -- corrections to mobData
     local savedMob = LogBookMobs.db.global.data.mobs[target.mobIndex]
     if savedMob then
@@ -144,7 +154,7 @@ end
 ---@return table r
 function LBM_TrackMobs:GetMobDetailsByMobIndex(mobIndex)
   local r = {}
-  --Bitacora:Debug("Searching mob = " .. mobIndex)
+  --LogBook:Debug("Searching mob = " .. mobIndex)
   for k, mobDetails in pairs(LogBookMobs.db.global.data.mobs) do
     if mobDetails.mobIndex == mobIndex then
       r = mobDetails
@@ -158,8 +168,60 @@ end
 ---@param mobDetails table
 function LBM_TrackMobs:StoreMobDetails(mobDetails)
   if mobDetails then
-    --Bitacora:Debug("Storing mobDetails : ")
-    --Bitacora:Dump(mobDetails)
+    --LogBook:Debug("Storing mobDetails : ")
+    --LogBook:Dump(mobDetails)
     LogBookMobs.db.global.data.mobs[mobDetails.mobIndex] = mobDetails
   end
+end
+
+---Process combat log for xp
+function LBM_TrackMobs:ProcessCombatLogEventUnfiltered()
+  local timestamp, eventType, _, sourceGUID, _, _, _, destGUID, _, _, _, spellID, _, _, amount, overkill, _, _, _, _, critical =
+      CombatLogGetCurrentEventInfo()
+
+  if not spellID then return end
+  if eventType == nil then
+    return
+  end
+  if eventType == "PARTY_KILL" then
+    C_Timer.After(0.2, LBM_TrackMobs.StoreExperience)
+    return
+  end
+end
+
+---Stores experience mob
+function LBM_TrackMobs.StoreExperience()
+  currentExp = UnitXP("player")
+  currentRestedExp = GetXPExhaustion()
+  currentLevel = UnitLevel("player")
+
+  if lastLevel < currentLevel then
+    return
+  end
+  local diffExp = (currentExp - lastExp)
+  if lastRestedExp == nil then lastRestedExp = 0 end
+  if currentRestedExp == nil then currentRestedExp = 0 end
+  local diffRestedExp = (lastRestedExp - currentRestedExp)
+  if diffExp ~= 0 then
+    --LogBook:Debug("mobIndex = " .. LastTargetIdx)
+    --LogBook:Debug(string.format(" lastExp = %d, currentExp = %d, maxExp = %d", lastExp, currentExp, maxExp))
+    --LogBook:Debug(string.format(" lastRestedExp = %d, currentRestedExp = %d", lastRestedExp, currentRestedExp))
+    --LogBook:Debug(string.format(" XP gained = %d", diffExp))
+
+    -- Update mob experience
+    if LastTargetIdx ~= nil then
+      local mobDetails = LBM_TrackMobs:GetMobDetailsByMobIndex(LastTargetIdx)
+      if mobDetails then
+        local currentMinExp = mobDetails.minExp or 0
+        local currentMaxExp = mobDetails.maxExp or 0
+        if diffExp < currentMinExp or currentMinExp == 0 then currentMinExp = diffExp end
+        if diffExp > currentMaxExp or currentMaxExp == 0 then currentMaxExp = diffExp end
+        mobDetails.minExp = currentMinExp
+        mobDetails.maxExp = currentMaxExp
+        --LogBook:Dump(mobDetails)
+      end
+      LBM_TrackMobs:StoreMobDetails(mobDetails)
+    end
+  end
+  lastExp = currentExp
 end

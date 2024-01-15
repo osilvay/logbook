@@ -16,4 +16,11 @@ L["Loot list"] = true
 L["Filter"] = true
 L["Back"] = true
 L["Settings"] = true
-
+L["Gold"] = true
+L["Silver"] = true
+L["Copper"] = true
+L["Enchanting"] = true
+L["Herbalism"] = true
+L["Skinning"] = true
+L["Mining"] = true
+L["Fishing"] = true

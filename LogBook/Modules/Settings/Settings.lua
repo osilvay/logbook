@@ -16,6 +16,9 @@ local LBF_Settings = LB_ModuleLoader:ImportModule("LBF_Settings")
 ---@type LBM_Settings
 local LBM_Settings = LB_ModuleLoader:ImportModule("LBM_Settings")
 
+---@type LBE_Settings
+local LBE_Settings = LB_ModuleLoader:ImportModule("LBE_Settings")
+
 ---@type LB_CustomFunctions
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 
@@ -94,6 +97,11 @@ _CreateSettingsTable = function()
     mobs_tab = LBM_Settings:Initialize()
   end
 
+  local enchanting_tab = nil
+  if EnchantingWindowFrame ~= nil then
+    enchanting_tab = LBE_Settings:Initialize()
+  end
+
   return {
     name = "LogBook",
     handler = LogBook,
@@ -106,6 +114,7 @@ _CreateSettingsTable = function()
       zones_tab = zones_tab,
       fishing_tab = fishing_tab,
       mobs_tab = mobs_tab,
+      enchanting_tab = enchanting_tab,
       advanced_tab = advanced_tab,
       profiles_tab = LibStub("AceDBOptions-3.0"):GetOptionsTable(LogBook.db)
     }

@@ -84,6 +84,7 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
       LB_WelcomeBody:drawMobsContainer(row2)
       LB_WelcomeBody:drawSeparator(row2, 10)
     elseif modules2 == 3 then
+      LB_WelcomeBody:drawEnchantingContainer(row2)
     end
     modules2 = modules2 + 1
   end, 3)
@@ -278,4 +279,40 @@ function LB_WelcomeBody:drawMobsContainer(rowContainer)
     LB_SlashCommands:OpenMobsWindow()
   end)
   mobsContainer:AddChild(mobsButton)
+end
+
+function LB_WelcomeBody:drawEnchantingContainer(rowContainer)
+  -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  -- zones container
+  ---@type AceGUIInlineGroup
+  local enchantingContainer = AceGUI:Create("InlineGroup")
+  enchantingContainer:SetWidth(150)
+  enchantingContainer:SetHeight(200)
+  enchantingContainer:SetAutoAdjustHeight(false)
+  enchantingContainer:SetLayout("Flow")
+  enchantingContainer:SetTitle(string.format("|c%s%s|r", itemColor, LogBook:i18n("Enchanting")))
+  --zonesContainer:SetPoint("TOPLEFT", rowContainer.frame, "TOPLEFT", 0, 0)
+  rowContainer:AddChild(enchantingContainer)
+
+  --Options button
+  ---@type AceGUIInteractiveLabel
+  local enchantingButton = AceGUI:Create("InteractiveLabel")
+  local enchantingIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_enchant_shardprismaticlarge_a:64:64|t"
+  local enchantingIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_enchant_shardprismaticlarge:64:64|t"
+  local enchantingText = string.format("|cffc1c1c1%s|r", LogBook:i18n("Allows you to track enchanting."))
+  local enchantingFormatted = "%s\n\n%s\n"
+  enchantingButton:SetWidth(135)
+  enchantingButton:SetHeight(200)
+  enchantingButton:SetPoint("TOPLEFT", enchantingContainer.frame, "TOPLEFT", 50, 0)
+  enchantingButton:SetText(string.format(enchantingFormatted, enchantingIcon_a, enchantingText))
+  enchantingButton:SetCallback("OnEnter", function(current)
+    enchantingButton:SetText(string.format(enchantingFormatted, enchantingIcon, enchantingText))
+  end)
+  enchantingButton:SetCallback("OnLeave", function(current)
+    enchantingButton:SetText(string.format(enchantingFormatted, enchantingIcon_a, enchantingText))
+  end)
+  enchantingButton:SetCallback("OnClick", function(current)
+    LB_SlashCommands:OpenEnchantingWindow()
+  end)
+  enchantingContainer:AddChild(enchantingButton)
 end

@@ -1,6 +1,5 @@
 ---@class LBZ_Settings
 local LBZ_Settings = LB_ModuleLoader:CreateModule("LBZ_Settings");
-local _LBZ_Settings = {}
 
 ---@type LBZ_SettingsDefaults
 local LBZ_SettingsDefaults = LB_ModuleLoader:ImportModule("LBZ_SettingsDefaults");
@@ -25,13 +24,13 @@ local LB_Settings = LB_ModuleLoader:ImportModule("LB_Settings");
 
 LBZ_Settings.zones_tab = { ... }
 local optionsDefaults = LBZ_SettingsDefaults:Load()
-
 local currentCharacters = {}
+local _LBZ_Settings = {}
 
 function LBZ_Settings:Initialize()
   return {
     name = LogBookZones:i18n("Zones"),
-    order = 2,
+    order = 7,
     type = "group",
     args = {
       zones_header = {
@@ -142,26 +141,26 @@ function LBZ_Settings:Initialize()
       maintenance_header = {
         type = "header",
         order = 2,
-        name = "|cffc1c1f1" .. LogBookZones:i18n("Maintenance") .. "|r",
+        name = "|cffc1c1f1" .. LogBook:i18n("Maintenance") .. "|r",
       },
       maintenance = {
         type = "group",
         order = 3,
         inline = true,
-        name = LogBookZones:i18n("Delete character data") .. " |cffff3300(" .. LogBookZones:i18n("Reload required") .. ")|r",
+        name = LogBook:i18n("Delete character data") .. " |cffff3300(" .. LogBook:i18n("Reload required") .. ")|r",
         args = {
           deleteCharacterData = {
             type = "select",
             order = 2,
             width = "full",
-            name = LogBookZones:i18n("Character"),
-            desc = LogBookZones:i18n("Character name."),
+            name = LogBook:i18n("Character"),
+            desc = LogBook:i18n("Character name."),
             values = _LBZ_Settings.CreateCharactersDropdown(),
             disabled = false,
             get = function(info) return nil end,
             set = function(info, value)
               LogBookZones.db.char.general.zones.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBookZones:i18n("Delete character"), string.format(LogBookZones:i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
+              LB_CustomPopup:CreatePopup(LogBook:i18n("Delete character"), string.format(LogBook:i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
                 _LBZ_Settings.DeleteCharacterEntry(value)
               end)
             end,
