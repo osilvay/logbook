@@ -43,6 +43,10 @@ function LBC_SettingsDefaults:Load()
           unlockTextFrame = false,
           textFrameBgColorAlpha = 0,
           messageDuration = 3,
+          tooltipsEnabled = true,
+          showTitle = true,
+          showSpellID = true,
+          pressKeyDown = "1_none",
           splashFrameOffset = {
             xOffset = 0,
             yOffset = 200

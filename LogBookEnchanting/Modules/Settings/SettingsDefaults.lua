@@ -7,7 +7,9 @@ function LBE_SettingsDefaults:Load()
       data = {
         characters = {
         },
-        enchanting = { -- all enchanting
+        items = {    -- all enchanting
+        },
+        essences = { -- all enchanting
         },
         locale = {
         }
@@ -25,6 +27,13 @@ function LBE_SettingsDefaults:Load()
       general = {
         enchanting = {
           trackingEnabled = true,
+          tooltipsEnabled = true,
+          showItemID = false,
+          autoUpdateDb = true,
+          showTitle = true,
+          updateDbTimeout = 15,
+          itemsToShow = 5,
+          pressKeyDown = "2_alt"
         },
       },
     },

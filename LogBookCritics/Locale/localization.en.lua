@@ -2,9 +2,10 @@ local L = LibStub("AceLocale-3.0"):NewLocale("LogBookCritics", "enUS", true)
 
 if not L then return end
 
+L["Total spells"] = true
+L["Saved values"] = true
 L["Test message"] = true
 L["Critics"] = true
-L["Critics settings"] = true
 L["Tracking"] = true
 L["Enable tracking"] = true
 L["Toggle tracking hits and heals."] = true
@@ -14,6 +15,12 @@ L["Tracking hits"] = true
 L["Toggle tracking hits."] = true
 L["Tracking attacks"] = true
 L["Toggle tracking attacks."] = true
+L["Enable tooltips"] = true
+L["Toggle showing critical tooltips."] = true
+L["Show title"] = true
+L["Toggle showing title."] = true
+L["Show SpellID"] = true
+L["Toggle showing spell ids."] = true
 L["Messages"] = true
 L["Screen"] = true
 L["Unlock text frame"] = true

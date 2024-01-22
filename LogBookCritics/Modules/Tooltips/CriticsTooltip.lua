@@ -21,8 +21,22 @@ function LBC_CriticsTooltip.AddHighestHitsToTooltip(self, slot)
   local actionType, id = GetActionInfo(slot)
   if actionType == "spell" then
     if id == nil then return end
-    local spellName, _, _, castTime = GetSpellInfo(id)
+    local spellName, _, _, _, _, _, spellID = GetSpellInfo(id)
     if LogBookCriticsData[spellName] then
+      local isShowSpellID = LogBookCritics.db.char.general.critics.showSpellID
+      local isShowTitle = LogBookCritics.db.char.general.critics.showTitle
+      local itemIDText = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("ROWID"), tostring(spellID))
+      if not isShowSpellID then
+        itemIDText = ""
+      end
+      local titleText = LogBookCritics:MessageWithAddonColor(LogBookCritics:LBC_i18n("Critics"))
+
+      if isShowTitle then
+        GameTooltip:AddLine(" ")
+        titleText = string.format("%s", titleText)
+        GameTooltip:AddDoubleLine(titleText, itemIDText)
+      end
+
       if LogBookCriticsData[spellName].isHeal then
         LBC_CriticsTooltip:PrintHealLines(spellName)
       else
@@ -48,7 +62,6 @@ function LBC_CriticsTooltip:PrintHitLines(spellName)
     LBC_CriticsTooltip:ValueColor(lowestHitCrit, LB_CustomColors:CustomColors("LOWEST_HIT")),
     LBC_CriticsTooltip:ValueColor(highestHitCrit, LB_CustomColors:CustomColors("HIGHEST_HIT")))
 
-  GameTooltip:AddLine(" ")
   GameTooltip:AddDoubleLine(hitLineLeft, hitRight)
   GameTooltip:AddDoubleLine(hitCritLineLeft, hitCritRight)
 end
@@ -68,7 +81,6 @@ function LBC_CriticsTooltip:PrintHealLines(spellName)
     LBC_CriticsTooltip:ValueColor(lowestHealCrit, LB_CustomColors:CustomColors("LOWEST_HEAL")),
     LBC_CriticsTooltip:ValueColor(highestHealCrit, LB_CustomColors:CustomColors("HIGHEST_HEAL")))
 
-  GameTooltip:AddLine(" ")
   GameTooltip:AddDoubleLine(healLineLeft, healRight)
   GameTooltip:AddDoubleLine(healCritLineLeft, healCritRight)
 end

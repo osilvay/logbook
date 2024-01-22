@@ -8,26 +8,25 @@ end
 ---@param order number
 ---@param width number
 function LB_CustomFrames:HorizontalSpacer(order, width)
-    if not width then
-        width = 0.5
-    end
-    return {
-        type = "description",
-        order = order,
-        name = " ",
-        width = width
-    }
+  if not width then
+    width = 0.5
+  end
+  return {
+    type = "description",
+    order = order,
+    name = " ",
+    width = width
+  }
 end
 
 --- Creates a vertical spacer with the given height
 ---@param order number
 ---@param hidden boolean?
 function LB_CustomFrames:Spacer(order, hidden)
-    return {
-        type = "description",
-        order = order,
-        hidden = hidden,
-        name = " ",
-        fontSize = "large"
-    }
+  return {
+    type = "description",
+    order = order,
+    hidden = hidden,
+    name = " "
+  }
 end

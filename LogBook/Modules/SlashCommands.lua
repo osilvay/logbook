@@ -83,7 +83,7 @@ function LB_SlashCommands.HandleCommands(input)
     LogBook:Print("/lb |cffc1c1c1config|r - " .. LogBook:LB_i18n("Open settings window"))
     LogBook:Print("/lb |cffc1c1c1main|r - " .. LogBook:LB_i18n("Open main window"))
     if criticsModuleLoaded then
-      LogBook:Print("/lb |cfffff757critics|r - " .. LogBook:LB_i18n("Open critics window"))
+      LogBook:Print("/lb |cFFFFF875critics|r - " .. LogBook:LB_i18n("Open critics window"))
     end
     if lootModuleLoaded then
       LogBook:Print("/lb |cffe38d4floot|r - " .. LogBook:LB_i18n("Open loot window"))

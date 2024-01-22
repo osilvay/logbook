@@ -16,13 +16,18 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors");
 ---@type LB_CustomPopup
 local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
 
+---@type LB_CustomConfig
+local LB_CustomConfig = LB_ModuleLoader:ImportModule("LB_CustomConfig")
+
 ---@type LBC_SplashCriticsWindow
 local LBC_SplashCriticsWindow = LB_ModuleLoader:ImportModule("LBC_SplashCriticsWindow");
+
+---@type LBC_Database
+local LBC_Database = LB_ModuleLoader:ImportModule("LBC_Database");
 
 LBC_Settings.critics_tab = { ... }
 local optionsDefaults = LBC_SettingsDefaults:Load()
 local colorIcon = "|TInterface\\AddOns\\LogBook\\Images\\color:16:16|t"
-local LibDialog = LibStub("LibDialog-1.0")
 local currentCharacters = {}
 local _LBC_Settings = {}
 
@@ -32,11 +37,9 @@ function LBC_Settings:Initialize()
     order = 2,
     type = "group",
     args = {
-      critics_header = {
-        type = "header",
-        order = 1,
-        name = "|cffc1c1f1" .. LogBookCritics:LBC_i18n("Critics settings") .. "|r",
-      },
+      stats_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Stats"), 0, LogBookCritics:GetAddonColor()),
+      stats = LB_CustomConfig:CreateStatsConfig("LogBookCritics", LBC_Database:GetNumEntries(), 0.1),
+      critics_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Settings"), 1, LogBookCritics:GetAddonColor()),
       tracking = {
         type = "group",
         order = 2,
@@ -103,14 +106,56 @@ function LBC_Settings:Initialize()
 
         },
       },
-      screen_header = {
-        type = "header",
+      tooltip_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Tooltips"), 2, LogBookCritics:GetAddonColor()),
+      toltips = {
+        type = "group",
         order = 3,
-        name = "|cffc1c1f1" .. LogBookCritics:LBC_i18n("Messages") .. "|r",
+        inline = true,
+        name = " ",
+        args = {
+          tooltipsEnabled = {
+            type = "toggle",
+            order = 1,
+            name = LogBookCritics:LBC_i18n("Enable tooltips"),
+            desc = LogBookCritics:LBC_i18n("Toggle showing critical tooltips."),
+            width = "full",
+            disabled = false,
+            get = function() return LogBookCritics.db.char.general.critics.tooltipsEnabled end,
+            set = function(info, value)
+              LogBookCritics.db.char.general.critics.tooltipsEnabled = value
+            end,
+          },
+          showTitle = {
+            type = "toggle",
+            order = 2,
+            name = LogBookCritics:LBC_i18n("Show title"),
+            desc = LogBookCritics:LBC_i18n("Toggle showing title."),
+            width = "full",
+            disabled = function() return (not LogBookCritics.db.char.general.critics.tooltipsEnabled); end,
+            get = function() return LogBookCritics.db.char.general.critics.showTitle end,
+            set = function(info, value)
+              LogBookCritics.db.char.general.critics.showTitle = value
+            end,
+          },
+          showSpellID = {
+            type = "toggle",
+            order = 3,
+            name = LogBookCritics:LBC_i18n("Show SpellID"),
+            desc = LogBookCritics:LBC_i18n("Toggle showing spell ids."),
+            width = "full",
+            disabled = function() return (not LogBookCritics.db.char.general.critics.tooltipsEnabled); end,
+            get = function() return LogBookCritics.db.char.general.critics.showSpellID end,
+            set = function(info, value)
+              LogBookCritics.db.char.general.critics.showSpellID = value
+            end,
+          },
+          pressKeyDownGroup = _LBC_Settings:CreateKeyDownDropdownConfig(4)
+        },
       },
+      screen_header = LB_CustomConfig:CreateHeaderConfig(LogBookCritics:LBC_i18n("Messages"), 5, LogBookCritics:GetAddonColor()),
       screenMessages = {
         type = "group",
-        order = 4,
+        order = 6,
         inline = true,
         name = LogBookCritics:LBC_i18n("Screen"),
         args = {
@@ -192,33 +237,14 @@ function LBC_Settings:Initialize()
           },
         },
       },
-      maintenance_header = {
-        type = "header",
-        order = 5,
-        name = "|cffc1c1f1" .. LogBook:LB_i18n("Maintenance") .. "|r",
-      },
+      maintenance_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Maintenance"), 98, LogBookCritics:GetAddonColor()),
       maintenance = {
         type = "group",
-        order = 6,
+        order = 99,
         inline = true,
-        name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
+        name = "",
         args = {
-          deleteCharacterData = {
-            type = "select",
-            order = 2,
-            width = "full",
-            name = LogBook:LB_i18n("Character"),
-            desc = LogBook:LB_i18n("Character name."),
-            values = _LBC_Settings.CreateCharactersDropdown(),
-            disabled = false,
-            get = function() return nil end,
-            set = function(info, value)
-              LogBookCritics.db.char.general.critics.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBook:LB_i18n("Delete character"), string.format(LogBook:LB_i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
-                _LBC_Settings.DeleteCharacterEntry(value)
-              end)
-            end,
-          }
+          deleteCharacterData = LB_CustomConfig:CreateDeleteChararterConfig(_LBC_Settings.CreateCharactersDropdown(), _LBC_Settings.DeleteCharacterEntry, currentCharacters, 1)
         },
       },
       hit_tab = LBC_Settings._HitTab(),
@@ -235,11 +261,7 @@ function LBC_Settings._HealTab()
     name = LogBookCritics:LBC_i18n("Healings"),
     disabled = function() return (not LogBookCritics.db.char.general.critics.trackHeals); end,
     args = {
-      healings_header = {
-        type = "header",
-        order = 0,
-        name = "|cffc1c1f1" .. LogBookCritics:LBC_i18n("Healings") .. "|r",
-      },
+      healings_header = LB_CustomConfig:CreateHeaderConfig(LogBookCritics:LBC_i18n("Healings"), 0, LogBookCritics:GetAddonColor()),
       --------------------------------------------------------------------------------------------------
       trackNormalHeals = {
         type = "toggle",
@@ -407,11 +429,7 @@ function LBC_Settings._HitTab()
     name = LogBookCritics:LBC_i18n("Harmful"),
     disabled = function() return (not LogBookCritics.db.char.general.critics.trackHits); end,
     args = {
-      maintenance_header = {
-        type = "header",
-        order = 0,
-        name = "|cffc1c1f1" .. LogBookCritics:LBC_i18n("Harmful") .. "|r",
-      },
+      hits_header = LB_CustomConfig:CreateHeaderConfig(LogBookCritics:LBC_i18n("Harmful"), 0, LogBookCritics:GetAddonColor()),
       trackNormalHits = {
         type = "toggle",
         order = 1,
@@ -578,11 +596,7 @@ function LBC_Settings._AttackTab()
     name = LogBookCritics:LBC_i18n("White hits"),
     disabled = function() return (not LogBookCritics.db.char.general.critics.trackAttacks); end,
     args = {
-      maintenance_header = {
-        type = "header",
-        order = 0,
-        name = "|cffc1c1f1" .. LogBookCritics:LBC_i18n("White hits") .. "|r",
-      },
+      white_hits_header = LB_CustomConfig:CreateHeaderConfig(LogBookCritics:LBC_i18n("White hits"), 0, LogBookCritics:GetAddonColor()),
       trackNormalAttacks = {
         type = "toggle",
         order = 1,
@@ -753,4 +767,27 @@ function _LBC_Settings.DeleteCharacterEntry(characterKey)
   LogBookCritics.db.global.characters[character] = {}
   LogBookCritics.db.global.data.characters[character] = false
   ReloadUI()
+end
+
+function _LBC_Settings:CreateKeyDownDropdownConfig(order)
+  return {
+    type = "group",
+    order = order,
+    inline = true,
+    name = "",
+    args = {
+      pressKeyDown = {
+        type = "select",
+        order = 1,
+        width = 1.2,
+        name = LogBook:LB_i18n("Press key to show"),
+        values = LB_CustomConfig:KeyDownDropdownConfig(),
+        disabled = false,
+        get = function() return LogBookCritics.db.char.general.critics.pressKeyDown end,
+        set = function(info, value)
+          LogBookCritics.db.char.general.critics.pressKeyDown = value
+        end,
+      }
+    }
+  }
 end

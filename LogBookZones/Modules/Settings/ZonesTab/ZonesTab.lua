@@ -71,7 +71,7 @@ function LBZ_Settings:Initialize()
           showZoneMessagesInChat = {
             type = "toggle",
             order = 3,
-            name = LogBookZones:LBZ_i18n("Zone messages in chat box"),
+            name = LogBookZones:LBZ_i18n("Zone changes in chat box"),
             desc = LogBookZones:LBZ_i18n("Show zone change messages in chat box."),
             width = 2,
             disabled = function() return (not LogBookZones.db.char.general.zones.trackingEnabled); end,
@@ -140,18 +140,18 @@ function LBZ_Settings:Initialize()
       },
       maintenance_header = {
         type = "header",
-        order = 2,
+        order = 98,
         name = "|cffc1c1f1" .. LogBook:LB_i18n("Maintenance") .. "|r",
       },
       maintenance = {
         type = "group",
-        order = 3,
+        order = 99,
         inline = true,
         name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
         args = {
           deleteCharacterData = {
             type = "select",
-            order = 2,
+            order = 90,
             width = "full",
             name = LogBook:LB_i18n("Character"),
             desc = LogBook:LB_i18n("Character name."),

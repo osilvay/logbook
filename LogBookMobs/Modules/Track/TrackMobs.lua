@@ -51,7 +51,11 @@ function LBM_TrackMobs:ProcessPlayerTargetChanged()
       end
       Target.mobData = mobData
       Target.zones = {}
-      table.insert(Target.zones, LBZ_TrackZones:GetCurrentPersonalZone())
+      local currentZone = LBZ_TrackZones:GetCurrentPersonalZone()
+      --LogBook:Debug("Current zone")
+      --LogBook:Dump(currentZone)
+
+      table.insert(Target.zones, currentZone)
       if Target.mobGUID then
         LBM_TrackMobCache:AddMobToCache(Target.mobGUID, mobData)
       end

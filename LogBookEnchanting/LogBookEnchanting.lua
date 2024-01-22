@@ -8,6 +8,7 @@ local LBE_EventHandler = LB_ModuleLoader:ImportModule("LBE_EventHandler");
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions");
 
 local L = LibStub("AceLocale-3.0"):GetLocale("LogBookEnchanting")
+local AddonColor = "fff078ee"
 
 function LogBookEnchanting:OnInitialize()
   LogBookEnchanting.db = LibStub("AceDB-3.0"):New("LogBookEnchantingDB", LBE_SettingsDefaults:Load(), true)
@@ -34,4 +35,19 @@ end
 
 function LogBookEnchanting:Print(message)
   print("|cffffffffLog|r|cff57b6ffBook|r|cfff078eeEnchanting|r: " .. message)
+end
+
+---Return addon colored
+---@param message? string
+function LogBookEnchanting:MessageWithAddonColor(message)
+  if message == nil then
+    return AddonColor
+  else
+    return string.format("|c%s%s|r", AddonColor, message)
+  end
+end
+
+---Gets addon color
+function LogBookEnchanting:GetAddonColor()
+  return AddonColor
 end

@@ -240,9 +240,10 @@ end
 function LBZ_TrackZones:GetCurrentPersonalZone()
   local currentZone = GetZoneText()
   local currentSubZone = GetSubZoneText()
+  --LogBook:Debug(currentZone .. " - " .. currentSubZone)
   if currentSubZone == nil or currentSubZone == "" then currentSubZone = UNKNOWN end
-  local mapID = C_Map_GetBestMapForUnit("player")
-  local mapPos = mapID and C_Map_GetPlayerMapPosition(mapID, "player")
+  local mapID = C_Map.GetBestMapForUnit("player")
+  local mapPos = mapID and C_Map.GetPlayerMapPosition(mapID, "player")
   if not mapID then mapID = 0 end
   local mapInfo = C_Map.GetMapInfo(mapID)
   if mapInfo == nil then return end

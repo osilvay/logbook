@@ -10,7 +10,11 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 ---@type LB_CustomSounds
 local LB_CustomSounds = LB_ModuleLoader:ImportModule("LB_CustomSounds")
 
+---@type LBE_EnchantingTooltip
+local LBE_EnchantingTooltip = LB_ModuleLoader:ImportModule("LBE_EnchantingTooltip")
+
 ---initialize track crit
 function LBE_TrackEnchanting:Initialize()
   -- tooltip hook
+  hooksecurefunc(GameTooltip, "SetBagItem", LBE_EnchantingTooltip.AddEnchantingTooltip)
 end

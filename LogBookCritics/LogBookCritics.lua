@@ -8,6 +8,7 @@ local LBC_EventHandler = LB_ModuleLoader:ImportModule("LBC_EventHandler");
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions");
 
 local L = LibStub("AceLocale-3.0"):GetLocale("LogBookCritics")
+local AddonColor = "FFFFF875"
 
 function LogBookCritics:OnInitialize()
   LogBookCritics.db = LibStub("AceDB-3.0"):New("LogBookCriticsDB", LBC_SettingsDefaults:Load(), true)
@@ -34,4 +35,19 @@ end
 
 function LogBookCritics:Print(message)
   print("|cffffffffLog|r|cff57b6ffBook|r|cfffff757Critics|r: " .. message)
+end
+
+---Return addon colored
+---@param message? string
+function LogBookCritics:MessageWithAddonColor(message)
+  if message == nil then
+    return AddonColor
+  else
+    return string.format("|c%s%s|r", AddonColor, message)
+  end
+end
+
+---Gets addon color
+function LogBookCritics:GetAddonColor()
+  return AddonColor
 end

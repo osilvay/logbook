@@ -7,7 +7,7 @@
 ## OptionalDeps: Ace3, CallbackHandler-1.0, LibStub
 ## Dependencies: LogBook LogBookZones
 ## DefaultState: enabled
-## LoadOnDemand: 2
+## LoadOnDemand: 4
 
 embeds.xml
 Locale\Locales.xml

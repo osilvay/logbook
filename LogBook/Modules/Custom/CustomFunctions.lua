@@ -285,3 +285,115 @@ function LB_CustomFunctions:ConvertKeyToNewKey(key)
   local realm, character = key:match("(.*)-(.*)")
   return string.format('%s - %s', string.trim(realm), string.trim(character))
 end
+
+---Check boolean nil value
+---@param value boolean
+---@return boolean value
+function LB_CustomFunctions:CheckNilBoolean(value)
+  if value == nil then
+    return false
+  end
+  return value
+end
+
+local addonStats = {}
+local lastDate = GetServerTime()
+
+---Update my memory usage
+---@param addon string
+---@return table result
+function LB_CustomFunctions:UpdateMemoryUsageForAddon(addon)
+  local addonList = {}
+  table.insert(addonList, addon)
+  local currentDate = GetServerTime()
+  local diff = difftime(currentDate, lastDate)
+  if diff > 60 * 15 or addonStats[addon] == nil then
+    local result = LB_CustomFunctions:UpdateMemoryUsageFromList(addonList)
+    addonStats[addon] = result[addon]
+    return result[addon]
+  else
+    return addonStats[addon]
+  end
+end
+
+--Update my memory usage
+---@param addonList table
+---@return table result
+function LB_CustomFunctions:UpdateMemoryUsageForAddonList(addonList)
+  local currentDate = GetServerTime()
+  local diff = difftime(currentDate, lastDate)
+  if diff > 60 * 15 or addonStats == {} then
+    local result = LB_CustomFunctions:UpdateMemoryUsageFromList(addonList)
+    addonStats = result
+    return result
+  else
+    return addonStats
+  end
+end
+
+---Update memory usage
+---@param addonList table
+---@return table list
+function LB_CustomFunctions:UpdateMemoryUsageFromList(addonList)
+  collectgarbage()
+  UpdateAddOnMemoryUsage()
+
+  local memInKb = 0
+  local totalMem = 0
+  local result = {}
+
+  for _, module in ipairs(addonList) do
+    if C_AddOns.IsAddOnLoaded(module) then -- module is enabled
+      memInKb = GetAddOnMemoryUsage(module)
+      totalMem = totalMem + memInKb
+      result[module] = {
+        disabled = false,
+        memInKb = tonumber(format("%.0f", memInKb)),
+        memInMb = tonumber(format("%.2f", memInKb / 1024)),
+        totalMemInKb = tonumber(format("%.0f", totalMem)),
+        totalMemInMb = tonumber(format("%.2f", totalMem / 1024)),
+      }
+    else
+      result[module] = {
+        disabled = true,
+        memInKb = 0,
+        memInMb = 0,
+        totalMemInKb = tonumber(format("%.0f", totalMem)),
+        totalMemInMb = tonumber(format("%.2f", totalMem / 1024)),
+      }
+    end
+  end
+  return result
+end
+
+---Count table entries
+---@param T table
+---@return number count
+function LB_CustomFunctions:TableLength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
+
+---Count table entries
+---@param keyNeeded string
+---@return boolean pressed
+function LB_CustomFunctions:IsKeyPressed(keyNeeded)
+  if keyNeeded == "2_alt" then
+    return IsAltKeyDown()
+  elseif keyNeeded == "3_shift" then
+    return IsShiftKeyDown()
+  elseif keyNeeded == "4_control" then
+    return IsControlKeyDown()
+  elseif keyNeeded == "5_altShift" then
+    return IsAltKeyDown() and IsShiftKeyDown()
+  elseif keyNeeded == "6_altControl" then
+    return IsAltKeyDown() and IsControlKeyDown()
+  elseif keyNeeded == "7_altShiftControl" then
+    return IsAltKeyDown() and IsShiftKeyDown() and IsControlKeyDown()
+  elseif keyNeeded == "8_shiftControl" then
+    return IsShiftKeyDown() and IsControlKeyDown()
+  else
+    return true
+  end
+end

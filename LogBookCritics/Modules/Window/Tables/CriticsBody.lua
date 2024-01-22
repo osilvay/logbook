@@ -132,7 +132,7 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
       spellIDLabel:SetWidth(60)
       spellIDLabel:SetHeight(80)
       spellIDLabel:SetPoint("LEFT", rowContainer.frame, "LEFT", 0, -50)
-      spellIDLabel:SetText(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("SPELLID"), spellDetails.spellID))
+      spellIDLabel:SetText(LB_CustomColors:Colorize(LB_CustomColors:CustomColors("ROWID"), spellDetails.spellID))
       spellIDLabel:SetColor(224, 224, 224)
       rowContainer:AddChild(spellIDLabel)
 

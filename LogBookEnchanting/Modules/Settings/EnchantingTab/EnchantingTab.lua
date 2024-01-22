@@ -16,10 +16,17 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors");
 ---@type LB_CustomPopup
 local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
 
+---@type LB_CustomConfig
+local LB_CustomConfig = LB_ModuleLoader:ImportModule("LB_CustomConfig")
+
+---@type LBE_Database
+local LBE_Database = LB_ModuleLoader:ImportModule("LBE_Database")
+
 LBE_Settings.enchanting_tab = { ... }
 local optionsDefaults = LBE_SettingsDefaults:Load()
 local currentCharacters = {}
 local _LBE_Settings = {}
+local addonStats = {}
 
 function LBE_Settings:Initialize()
   return {
@@ -27,11 +34,9 @@ function LBE_Settings:Initialize()
     order = 3,
     type = "group",
     args = {
-      enchanting_header = {
-        type = "header",
-        order = 1,
-        name = "|cffc1c1f1" .. LogBookEnchanting:LBE_i18n("Enchanting settings") .. "|r",
-      },
+      stats_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Stats"), 0, LogBookEnchanting:GetAddonColor()),
+      stats = LB_CustomConfig:CreateStatsConfig("LogBookEnchanting", LBE_Database:GetNumEntries(), 0.1),
+      enchanting_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Settings"), 1, LogBookCritics:GetAddonColor()),
       tracking = {
         type = "group",
         order = 2,
@@ -43,42 +48,141 @@ function LBE_Settings:Initialize()
             order = 1,
             name = LogBookEnchanting:LBE_i18n("Enable tracking"),
             desc = LogBookEnchanting:LBE_i18n("Toggle tracking enchanting."),
-            width = 1.2,
+            width = "full",
             disabled = false,
-            get = function() return LogBookEnchanting.db.char.general.enchanting.trackingEnabled end,
+            get = function()
+              return LogBookEnchanting.db.char.general.enchanting.trackingEnabled
+            end,
             set = function(info, value)
               LogBookEnchanting.db.char.general.enchanting.trackingEnabled = value
             end,
           },
         },
       },
-      maintenance_header = {
-        type = "header",
-        order = 5,
-        name = "|cffc1c1f1" .. LogBook:LB_i18n("Maintenance") .. "|r",
+      tooltip_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Tooltips"), 3, LogBookEnchanting:GetAddonColor()),
+      toltips = {
+        type = "group",
+        order = 4,
+        inline = true,
+        name = " ",
+        args = {
+          tooltipsEnabled = {
+            type = "toggle",
+            order = 1,
+            name = LogBookEnchanting:LBE_i18n("Enable tooltips"),
+            desc = LogBookEnchanting:LBE_i18n("Toggle showing enchanting tooltips."),
+            width = "full",
+            disabled = false,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled = value
+            end,
+          },
+          showTitle = {
+            type = "toggle",
+            order = 2,
+            name = LogBookEnchanting:LBE_i18n("Show title"),
+            desc = LogBookEnchanting:LBE_i18n("Toggle showing title."),
+            width = "full",
+            disabled = function() return (not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled); end,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.showTitle end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.showTitle = value
+            end,
+          },
+          showItemID = {
+            type = "toggle",
+            order = 3,
+            name = LogBookEnchanting:LBE_i18n("Show ItemID"),
+            desc = LogBookEnchanting:LBE_i18n("Toggle showing item ids."),
+            width = "full",
+            disabled = function() return (not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled); end,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.showItemID end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.showItemID = value
+            end,
+          },
+          itemsToShow = {
+            type = "range",
+            order = 4,
+            name = LogBookEnchanting:LBE_i18n("Items to show"),
+            desc = LogBookEnchanting:LBE_i18n("Items to show in tooltip."),
+            width = "full",
+            min = 1,
+            max = 20,
+            step = 1,
+            disabled = function() return (not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled); end,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.itemsToShow end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.itemsToShow = value
+            end,
+          },
+          pressKeyDownGroup = _LBE_Settings:CreateKeyDownDropdownConfig(5)
+        },
       },
+      database_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Database"), 88, LogBookEnchanting:GetAddonColor()),
+      database = {
+        type = "group",
+        order = 89,
+        inline = true,
+        name = "",
+        args = {
+          autoUpdateDb = {
+            type = "toggle",
+            order = 1,
+            name = LogBookEnchanting:LBE_i18n("Auto update Database"),
+            desc = LogBookEnchanting:LBE_i18n("Toggle update database automatically."),
+            width = "full",
+            disabled = false,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.autoUpdateDb end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.autoUpdateDb = value
+              if value then
+                C_Timer.After(0.1, function()
+                  LBE_Database:StartAutoUpdateDatabase()
+                end)
+              else
+                C_Timer.After(0.1, function()
+                  LBE_Database:CancelAutoUpdateDatabase()
+                end)
+              end
+            end,
+          },
+          updateDbTimeout = {
+            type = "range",
+            order = 2,
+            name = LogBookEnchanting:LBE_i18n("Database update time"),
+            desc = LogBookEnchanting:LBE_i18n("Sets how often the enchanting database is updated."),
+            width = "full",
+            min = 5,
+            max = 60,
+            step = 1,
+            disabled = function() return (not LogBookEnchanting.db.char.general.enchanting.autoUpdateDb); end,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.updateDbTimeout end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.updateDbTimeout = value
+            end,
+          },
+          separator_1 = LB_CustomFrames:Spacer(2.5, false),
+          executeUpdateDb = {
+            type = "execute",
+            order = 3,
+            name = LogBookEnchanting:LBE_i18n("Manual database update"),
+            desc = LogBookEnchanting:LBE_i18n("Update enchanting database manually."),
+            width = "full",
+            disabled = false,
+            func = function() return LBE_Database:UpdateDatabase() end,
+          },
+        }
+      },
+      maintenance_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Maintenance"), 98, LogBookEnchanting:GetAddonColor()),
       maintenance = {
         type = "group",
-        order = 6,
+        order = 99,
         inline = true,
-        name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
+        name = "",
         args = {
-          deleteCharacterData = {
-            type = "select",
-            order = 2,
-            width = "full",
-            name = LogBook:LB_i18n("Character"),
-            desc = LogBook:LB_i18n("Character name."),
-            values = _LBE_Settings.CreateCharactersDropdown(),
-            disabled = false,
-            get = function() return nil end,
-            set = function(info, value)
-              LogBookEnchanting.db.char.general.enchanting.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBook:LB_i18n("Delete character"), string.format(LogBook:LB_i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
-                _LBE_Settings.DeleteCharacterEntry(value)
-              end)
-            end,
-          }
+          deleteCharacterData = LB_CustomConfig:CreateDeleteChararterConfig(_LBE_Settings.CreateCharactersDropdown(), _LBE_Settings.DeleteCharacterEntry, currentCharacters, 1)
         },
       },
     },
@@ -96,4 +200,27 @@ function _LBE_Settings.DeleteCharacterEntry(characterKey)
   LogBookEnchanting.db.global.characters[character] = {}
   LogBookEnchanting.db.global.data.characters[character] = false
   ReloadUI()
+end
+
+function _LBE_Settings:CreateKeyDownDropdownConfig(order)
+  return {
+    type = "group",
+    order = order,
+    inline = true,
+    name = "",
+    args = {
+      pressKeyDown = {
+        type = "select",
+        order = 1,
+        width = 1.2,
+        name = LogBook:LB_i18n("Press key to show"),
+        values = LB_CustomConfig:KeyDownDropdownConfig(),
+        disabled = false,
+        get = function() return LogBookEnchanting.db.char.general.enchanting.pressKeyDown end,
+        set = function(info, value)
+          LogBookEnchanting.db.char.general.enchanting.pressKeyDown = value
+        end,
+      }
+    }
+  }
 end

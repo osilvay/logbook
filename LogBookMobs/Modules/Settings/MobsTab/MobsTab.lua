@@ -54,18 +54,18 @@ function LBM_Settings:Initialize()
       },
       maintenance_header = {
         type = "header",
-        order = 5,
+        order = 98,
         name = "|cffc1c1f1" .. LogBook:LB_i18n("Maintenance") .. "|r",
       },
       maintenance = {
         type = "group",
-        order = 6,
+        order = 99,
         inline = true,
         name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
         args = {
           deleteCharacterData = {
             type = "select",
-            order = 2,
+            order = 90,
             width = "full",
             name = LogBook:LB_i18n("Character"),
             desc = LogBook:LB_i18n("Character name."),

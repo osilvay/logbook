@@ -16,6 +16,7 @@ Locale\Locales.xml
 Modules\CriticsEventHandler.lua
 Modules\Init.lua
 Modules\VersionCheck.lua
+Modules\Database.lua
 
 Modules\Settings\SettingsDefaults.lua
 Modules\Settings\CriticsTab\CriticsTab.lua

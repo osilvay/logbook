@@ -16,6 +16,9 @@ local LBM_TrackMobs = LB_ModuleLoader:ImportModule("LBM_TrackMobs")
 ---@type LBZ_TrackZones
 local LBZ_TrackZones = LB_ModuleLoader:ImportModule("LBZ_TrackZones")
 
+---@type LBE_Database
+local LBE_Database = LB_ModuleLoader:ImportModule("LBE_Database")
+
 local MaxLootReadyCount = 0
 local LootingInProgress = false
 local Loots = {}
@@ -106,12 +109,12 @@ function LBL_TrackLoot:ProcessLootReady()
             loot = {
               Mobs = {}
             }
-            loot.Name = lootName
+            loot.ItemName = lootName
             loot.Quality = lootQuality
             loot.Quantity = 0
             loot.Type = slotType
-            loot.Link = lootLink
-            loot.ID = itemID
+            loot.ItemLink = lootLink
+            loot.ItemID = itemID
             loot.Time = GetTime()
             loot.IsQuestItem = IsQuestItem
             loot.IsTradeSkill = IsTradeSkill
@@ -143,13 +146,13 @@ function LBL_TrackLoot:ProcessLootReady()
 
           mob.Quantity = mobQuantity
           mob.GUIDType = guidType
-          mob.isCreature = guidType == "Creature" or guidType == "Vehicle"
-          if not mob.isCreature then
+          mob.IsCreature = guidType == "Creature" or guidType == "Vehicle"
+          if not mob.IsCreature then
             mob.Name = GameTooltipTextLeft1:GetText()
           end
           loot.Quantity = loot.Quantity + mobQuantity
 
-          if mob.isCreature then
+          if mob.IsCreature then
             local mobDetails = LBM_TrackMobs:GetMobDetailsByGUID(mob.GUID) or {}
             --LogBook:Dump(mobDetails)
             if mobDetails ~= nil and mobDetails.mobIndex ~= nil then
@@ -160,11 +163,13 @@ function LBL_TrackLoot:ProcessLootReady()
           if IsTradeSkill then
             if TradeSkillInfo.name == "Enchanting" and IsItemLocked then
               ItemLockedInfo.Quantity = loot.Quantity
+              ItemLockedInfo.Quality = loot.Quality
               ItemLockedInfo.Items = 1
-              TradeSkillInfo.from[ItemLockedInfo.itemID] = ItemLockedInfo
+              TradeSkillInfo.from[ItemLockedInfo.ItemID] = ItemLockedInfo
               loot.TradeSkillInfo = TradeSkillInfo
             elseif TradeSkillInfo.name == "Mining" or TradeSkillInfo.name == "Herbalism" or TradeSkillInfo.name == "Fishing" then
               local ItemFrom = {
+                Quality = loot.Quality,
                 Quantity = loot.Quantity,
                 Items = 1,
               }
@@ -196,7 +201,7 @@ function LBL_TrackLoot:ProcessLootClosed()
       -- process mobs
       if loot.Mobs then
         for i, mob in pairs(loot.Mobs) do
-          if not mob.isCreature then
+          if not mob.IsCreature then
             --LogBook:Debug("Loot from : " .. mob.GUID)
           end
         end
@@ -285,7 +290,7 @@ end
 ---@param loot table
 function LBL_TrackLoot:StoreItemDetails(loot)
   if loot then
-    local itemID = loot.ID
+    local itemID = loot.ItemID
     local savedLoot = LogBookLoot.db.global.data.loot[itemID]
 
     --corrections
@@ -330,8 +335,11 @@ function LBL_TrackLoot:StoreItemDetails(loot)
             else
               local newItems = (currentFrom[currentItemID].Items or 0) + (savedFrom[currentItemID].Items or 0)
               local newQuantity = (currentFrom[currentItemID].Quantity or 0) + (savedFrom[currentItemID].Quantity or 0)
+              local newEssences = (currentFrom[currentItemID].Quantity or 0) + (savedFrom[currentItemID].Essences or 0)
+
               savedFrom[currentItemID].Items = newItems
               savedFrom[currentItemID].Quantity = newQuantity
+              savedFrom[currentItemID].Essences = newEssences
             end
           end
         elseif TradeSkillInfo.name == "Mining" or TradeSkillInfo.name == "Herbalism" or TradeSkillInfo.name == "Fishing" then
@@ -352,10 +360,20 @@ function LBL_TrackLoot:StoreItemDetails(loot)
           end
         end
         savedTradeSkillInfo.from = savedFrom
+        savedTradeSkillInfo.name = currentTradeSkillInfo.name
+        savedTradeSkillInfo.spellID = currentTradeSkillInfo.spellID
+
+        local _, itemLink, itemQuality, itemLevel, itemMinLevel = GetItemInfo(itemID)
+        if savedTradeSkillInfo.Quality == nil then savedTradeSkillInfo.Quality = itemQuality end
+        if savedTradeSkillInfo.ItemLink == nil then savedTradeSkillInfo.Quality = itemLink end
+        if savedTradeSkillInfo.ItemLevel == nil then savedTradeSkillInfo.Quality = itemLevel end
+        if savedTradeSkillInfo.ItemMinLevel == nil then savedTradeSkillInfo.Quality = itemMinLevel end
+
         loot.TradeSkillInfo = savedTradeSkillInfo
       end
     end
     LogBookLoot.db.global.data.loot[itemID] = loot
+    LBE_Database:UpdateDatabase(true)
   end
 end
 
@@ -415,8 +433,9 @@ function LBL_TrackLoot:ProcessItemLocked(bagOrSlotIndex, slotIndex)
     --LogBook:Dump(containerInfo)
     IsItemLocked = true
     ItemLockedInfo = {
-      itemName = containerInfo.itemName,
-      itemID = containerInfo.itemID
+      ItemName = containerInfo.itemName,
+      ItemID = containerInfo.itemID,
+      Quality = containerInfo.quality,
     }
   end
 end

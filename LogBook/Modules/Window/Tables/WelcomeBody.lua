@@ -56,13 +56,13 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
   local modules1 = 1
   C_Timer.NewTicker(0.05, function()
     if modules1 == 1 then
-      LB_WelcomeBody:drawLootContainer(row1)
+      LB_WelcomeBody:drawCriticsContainer(row1)
       LB_WelcomeBody:drawSeparator(row1, 10)
     elseif modules1 == 2 then
-      LB_WelcomeBody:drawFishingContainer(row1)
+      LB_WelcomeBody:drawEnchantingContainer(row1)
       LB_WelcomeBody:drawSeparator(row1, 10)
     elseif modules1 == 3 then
-      LB_WelcomeBody:drawCriticsContainer(row1)
+      LB_WelcomeBody:drawFishingContainer(row1)
     end
     modules1 = modules1 + 1
   end, 3)
@@ -78,13 +78,13 @@ function LB_WelcomeBody:ContainerBodyFrame(containerTable, parentFrame)
   local modules2 = 1
   C_Timer.NewTicker(0.05, function()
     if modules2 == 1 then
-      LB_WelcomeBody:drawZonesContainer(row2)
+      LB_WelcomeBody:drawLootContainer(row2)
       LB_WelcomeBody:drawSeparator(row2, 10)
     elseif modules2 == 2 then
       LB_WelcomeBody:drawMobsContainer(row2)
       LB_WelcomeBody:drawSeparator(row2, 10)
     elseif modules2 == 3 then
-      LB_WelcomeBody:drawEnchantingContainer(row2)
+      LB_WelcomeBody:drawZonesContainer(row2)
     end
     modules2 = modules2 + 1
   end, 3)
