@@ -4,6 +4,9 @@ local LBC_CriticsTooltip = LB_ModuleLoader:CreateModule("LBC_CriticsTooltip")
 ---@type LB_CustomColors
 local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 
+---@type LB_CustomFunctions
+local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
+
 local GameTooltip = GameTooltip
 
 ---@type string
@@ -11,6 +14,8 @@ local hitLineLeft, hitCritLineLeft, healLineLeft, healCritLineLeft
 
 function LBC_CriticsTooltip.AddHighestHitsToTooltip(self, slot)
   if (not slot) then return end
+  if not LB_CustomFunctions:IsKeyPressed(LogBookCritics.db.char.general.critics.pressKeyDown) then return end
+  if not LogBookCritics.db.char.general.critics.tooltipsEnabled then return end
 
   hitLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIT_NORMAL"), LogBookCritics:LBC_i18n("Hit:"))
   hitCritLineLeft = LB_CustomColors:Colorize(LB_CustomColors:CustomColors("HIT_CRITICAL"), LogBookCritics:LBC_i18n("Hit crit.:"))
@@ -31,8 +36,8 @@ function LBC_CriticsTooltip.AddHighestHitsToTooltip(self, slot)
       end
       local titleText = LogBookCritics:MessageWithAddonColor(LogBookCritics:LBC_i18n("Critics"))
 
+      GameTooltip:AddLine(" ")
       if isShowTitle then
-        GameTooltip:AddLine(" ")
         titleText = string.format("%s", titleText)
         GameTooltip:AddDoubleLine(titleText, itemIDText)
       end

@@ -15,6 +15,6 @@ local LBE_EnchantingTooltip = LB_ModuleLoader:ImportModule("LBE_EnchantingToolti
 
 ---initialize track crit
 function LBE_TrackEnchanting:Initialize()
-  -- tooltip hook
-  hooksecurefunc(GameTooltip, "SetBagItem", LBE_EnchantingTooltip.AddEnchantingTooltip)
+  -- tooltip hooks
+  LBE_EnchantingTooltip:Initialize()
 end

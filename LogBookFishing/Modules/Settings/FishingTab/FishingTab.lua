@@ -16,6 +16,12 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors");
 ---@type LB_CustomPopup
 local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
 
+---@type LB_CustomConfig
+local LB_CustomConfig = LB_ModuleLoader:ImportModule("LB_CustomConfig")
+
+---@type LBF_Database
+local LBF_Database = LB_ModuleLoader:ImportModule("LBF_Database")
+
 LBF_Settings.fishing_tab = { ... }
 local optionsDefaults = LBF_SettingsDefaults:Load()
 local currentCharacters = {}
@@ -27,11 +33,9 @@ function LBF_Settings:Initialize()
     order = 4,
     type = "group",
     args = {
-      fishing_header = {
-        type = "header",
-        order = 1,
-        name = "|cffc1c1f1" .. LogBookFishing:LBF_i18n("Fishing settings") .. "|r",
-      },
+      stats_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Stats"), 0, LogBookFishing:GetAddonColor()),
+      stats = LB_CustomConfig:CreateStatsConfig("LogBookFishing", LBF_Database:GetNumEntries(), 0.1),
+      fishing_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Settings"), 1, LogBookFishing:GetAddonColor()),
       tracking = {
         type = "group",
         order = 2,
@@ -52,33 +56,60 @@ function LBF_Settings:Initialize()
           },
         },
       },
-      maintenance_header = {
-        type = "header",
-        order = 98,
-        name = "|cffc1c1f1" .. LogBook:LB_i18n("Maintenance") .. "|r",
+      tooltip_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Tooltips"), 3, LogBookFishing:GetAddonColor()),
+      toltips = {
+        type = "group",
+        order = 4,
+        inline = true,
+        name = " ",
+        args = {
+          tooltipsEnabled = {
+            type = "toggle",
+            order = 1,
+            name = LogBookFishing:LBF_i18n("Enable tooltips"),
+            desc = LogBookFishing:LBF_i18n("Toggle showing fishing tooltips."),
+            width = "full",
+            disabled = false,
+            get = function() return LogBookFishing.db.char.general.fishing.tooltipsEnabled end,
+            set = function(info, value)
+              LogBookFishing.db.char.general.fishing.tooltipsEnabled = value
+            end,
+          },
+          showTitle = {
+            type = "toggle",
+            order = 2,
+            name = LogBookFishing:LBF_i18n("Show title"),
+            desc = LogBookFishing:LBF_i18n("Toggle showing title."),
+            width = "full",
+            disabled = function() return (not LogBookFishing.db.char.general.fishing.tooltipsEnabled); end,
+            get = function() return LogBookFishing.db.char.general.fishing.showTitle end,
+            set = function(info, value)
+              LogBookFishing.db.char.general.fishing.showTitle = value
+            end,
+          },
+          showItemID = {
+            type = "toggle",
+            order = 3,
+            name = LogBookFishing:LBF_i18n("Show ItemID"),
+            desc = LogBookFishing:LBF_i18n("Toggle showing item ids."),
+            width = "full",
+            disabled = function() return (not LogBookFishing.db.char.general.fishing.tooltipsEnabled); end,
+            get = function() return LogBookFishing.db.char.general.fishing.showItemID end,
+            set = function(info, value)
+              LogBookFishing.db.char.general.fishing.showItemID = value
+            end,
+          },
+          pressKeyDownGroup = _LBF_Settings:CreateKeyDownDropdownConfig(5)
+        },
       },
+      maintenance_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Maintenance"), 98, LogBookFishing:GetAddonColor()),
       maintenance = {
         type = "group",
         order = 99,
         inline = true,
-        name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
+        name = "",
         args = {
-          deleteCharacterData = {
-            type = "select",
-            order = 90,
-            width = "full",
-            name = LogBook:LB_i18n("Character"),
-            desc = LogBook:LB_i18n("Character name."),
-            values = _LBF_Settings.CreateCharactersDropdown(),
-            disabled = false,
-            get = function() return nil end,
-            set = function(info, value)
-              LogBookFishing.db.char.general.enchanting.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBook:LB_i18n("Delete character"), string.format(LogBook:LB_i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
-                _LBF_Settings.DeleteCharacterEntry(value)
-              end)
-            end,
-          }
+          deleteCharacterData = LB_CustomConfig:CreateDeleteChararterConfig(_LBF_Settings.CreateCharactersDropdown(), _LBF_Settings.DeleteCharacterEntry, currentCharacters, 1)
         },
       },
     },
@@ -96,4 +127,27 @@ function _LBF_Settings.DeleteCharacterEntry(characterKey)
   LogBookFishing.db.global.characters[character] = {}
   LogBookFishing.db.global.data.characters[character] = false
   ReloadUI()
+end
+
+function _LBF_Settings:CreateKeyDownDropdownConfig(order)
+  return {
+    type = "group",
+    order = order,
+    inline = true,
+    name = "",
+    args = {
+      pressKeyDown = {
+        type = "select",
+        order = 1,
+        width = 1.2,
+        name = LogBook:LB_i18n("Press key to show"),
+        values = LB_CustomConfig:KeyDownDropdownConfig(),
+        disabled = false,
+        get = function() return LogBookFishing.db.char.general.fishing.pressKeyDown end,
+        set = function(info, value)
+          LogBookFishing.db.char.general.fishing.pressKeyDown = value
+        end,
+      }
+    }
+  }
 end

@@ -8,6 +8,7 @@ local LBF_EventHandler = LB_ModuleLoader:ImportModule("LBF_EventHandler");
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions");
 
 local L = LibStub("AceLocale-3.0"):GetLocale("LogBookFishing")
+local AddonColor = "ffa27be0"
 
 function LogBookFishing:OnInitialize()
   LogBookFishing.db = LibStub("AceDB-3.0"):New("LogBookFishingDB", LBF_SettingsDefaults:Load(), true)
@@ -34,4 +35,9 @@ end
 
 function LogBookFishing:Print(message)
   print("|cffffffffLog|r|cff57b6ffBook|r|cffa27be0Fishing|r: " .. message)
+end
+
+---Gets addon color
+function LogBookFishing:GetAddonColor()
+  return AddonColor
 end

@@ -16,6 +16,12 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors");
 ---@type LB_CustomPopup
 local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
 
+---@type LB_CustomConfig
+local LB_CustomConfig = LB_ModuleLoader:ImportModule("LB_CustomConfig")
+
+---@type LBM_Database
+local LBM_Database = LB_ModuleLoader:ImportModule("LBM_Database")
+
 LBM_Settings.mobs_tab = { ... }
 local optionsDefaults = LBM_SettingsDefaults:Load()
 local currentCharacters = {}
@@ -27,11 +33,9 @@ function LBM_Settings:Initialize()
     order = 6,
     type = "group",
     args = {
-      mobs_header = {
-        type = "header",
-        order = 1,
-        name = "|cffc1c1f1" .. LogBookMobs:LBM_i18n("Mobs settings") .. "|r",
-      },
+      stats_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Stats"), 0, LogBookMobs:GetAddonColor()),
+      stats = LB_CustomConfig:CreateStatsConfig("LogBookMobs", LBM_Database:GetNumEntries(), 0.1),
+      mobs_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Settings"), 1, LogBookMobs:GetAddonColor()),
       tracking = {
         type = "group",
         order = 2,
@@ -52,33 +56,60 @@ function LBM_Settings:Initialize()
           },
         },
       },
-      maintenance_header = {
-        type = "header",
-        order = 98,
-        name = "|cffc1c1f1" .. LogBook:LB_i18n("Maintenance") .. "|r",
+      tooltip_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Tooltips"), 3, LogBookMobs:GetAddonColor()),
+      toltips = {
+        type = "group",
+        order = 4,
+        inline = true,
+        name = " ",
+        args = {
+          tooltipsEnabled = {
+            type = "toggle",
+            order = 1,
+            name = LogBookMobs:LBM_i18n("Enable tooltips"),
+            desc = LogBookMobs:LBM_i18n("Toggle showing mobs tooltips."),
+            width = "full",
+            disabled = false,
+            get = function() return LogBookMobs.db.char.general.mobs.tooltipsEnabled end,
+            set = function(info, value)
+              LogBookMobs.db.char.general.mobs.tooltipsEnabled = value
+            end,
+          },
+          showTitle = {
+            type = "toggle",
+            order = 2,
+            name = LogBookMobs:LBM_i18n("Show title"),
+            desc = LogBookMobs:LBM_i18n("Toggle showing title."),
+            width = "full",
+            disabled = function() return (not LogBookMobs.db.char.general.mobs.tooltipsEnabled); end,
+            get = function() return LogBookMobs.db.char.general.mobs.showTitle end,
+            set = function(info, value)
+              LogBookMobs.db.char.general.mobs.showTitle = value
+            end,
+          },
+          showItemID = {
+            type = "toggle",
+            order = 3,
+            name = LogBookMobs:LBM_i18n("Show ItemID"),
+            desc = LogBookMobs:LBM_i18n("Toggle showing item ids."),
+            width = "full",
+            disabled = function() return (not LogBookMobs.db.char.general.mobs.tooltipsEnabled); end,
+            get = function() return LogBookMobs.db.char.general.mobs.showItemID end,
+            set = function(info, value)
+              LogBookMobs.db.char.general.mobs.showItemID = value
+            end,
+          },
+          pressKeyDownGroup = _LBM_Settings:CreateKeyDownDropdownConfig(5)
+        },
       },
+      maintenance_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Maintenance"), 98, LogBookMobs:GetAddonColor()),
       maintenance = {
         type = "group",
         order = 99,
         inline = true,
-        name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
+        name = "",
         args = {
-          deleteCharacterData = {
-            type = "select",
-            order = 90,
-            width = "full",
-            name = LogBook:LB_i18n("Character"),
-            desc = LogBook:LB_i18n("Character name."),
-            values = _LBM_Settings.CreateCharactersDropdown(),
-            disabled = false,
-            get = function() return nil end,
-            set = function(info, value)
-              LogBookMobs.db.char.general.enchanting.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBook:LB_i18n("Delete character"), string.format(LogBook:LB_i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
-                _LBM_Settings.DeleteCharacterEntry(value)
-              end)
-            end,
-          }
+          deleteCharacterData = LB_CustomConfig:CreateDeleteChararterConfig(_LBM_Settings.CreateCharactersDropdown(), _LBM_Settings.DeleteCharacterEntry, currentCharacters, 1)
         },
       },
     },
@@ -96,4 +127,27 @@ function _LBM_Settings.DeleteCharacterEntry(characterKey)
   LogBookMobs.db.global.characters[character] = {}
   LogBookMobs.db.global.data.characters[character] = false
   ReloadUI()
+end
+
+function _LBM_Settings:CreateKeyDownDropdownConfig(order)
+  return {
+    type = "group",
+    order = order,
+    inline = true,
+    name = "",
+    args = {
+      pressKeyDown = {
+        type = "select",
+        order = 1,
+        width = 1.2,
+        name = LogBook:LB_i18n("Press key to show"),
+        values = LB_CustomConfig:KeyDownDropdownConfig(),
+        disabled = false,
+        get = function() return LogBookMobs.db.char.general.mobs.pressKeyDown end,
+        set = function(info, value)
+          LogBookMobs.db.char.general.mobs.pressKeyDown = value
+        end,
+      }
+    }
+  }
 end

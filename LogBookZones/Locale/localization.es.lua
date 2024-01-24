@@ -2,14 +2,15 @@ local L = LibStub("AceLocale-3.0"):NewLocale("LogBookZones", "esES", false)
 
 if not L then return end
 
+L["Total"] = "Total"
+L["Saved values"] = "Valores guardados"
 L["Zones"] = "Zonas"
-L["Zones settings"] = "Configuración de zonas"
 L["Tracking"] = "Seguimiento"
 L["Enable tracking"] = "Habilitar seguimiento"
 L["Toggle tracking zones."] = "Alterna el seguimiento de zonas."
 L["Zone tracking during flight"] = "Seguimiento de zonas durante el vuelo"
 L["Toggle zone tracking during flights."] = "Alternar el seguimiento de zonas durante los vuelos."
-L["Zone changes in chat box"] = "Cambios de zona en el recuadro de chat"
+L["Zone changes in chat box"] = "Cambios de zona en el cuadro de chat"
 L["Show zone change messages in chat box."] = "Mostrar mensajes de cambio de zona en el chat."
 L["Zone changes on screen"] = "Cambios de zona en pantalla"
 L["Show zone change messages on screen."] = "Mostrar mensajes de cambio de zona en pantalla."

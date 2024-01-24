@@ -2,31 +2,35 @@
 local LBF_SettingsDefaults = LB_ModuleLoader:CreateModule("LBF_SettingsDefaults");
 
 function LBF_SettingsDefaults:Load()
-	return {
-		global = {
-			data = {
-				characters = {
-				},
-				fishing = { -- all fishing
-				},
-				locale = {
-				}
-			},
-			characters = {
-				char = {
-					info = {
-					},
-					fishing = { -- personal fishing
-					},
-				},
-			},
-		},
-		char = {
-			general = {
-				fishing = {
-					trackingEnabled = true,
-				},
-			},
-		},
-	}
+  return {
+    global = {
+      data = {
+        characters = {
+        },
+        fishing = { -- all fishing
+        },
+        locale = {
+        }
+      },
+      characters = {
+        char = {
+          info = {
+          },
+          fishing = { -- personal fishing
+          },
+        },
+      },
+    },
+    char = {
+      general = {
+        fishing = {
+          trackingEnabled = true,
+          tooltipsEnabled = true,
+          showTitle = true,
+          showItemID = true,
+          pressKeyDown = "2_alt",
+        },
+      },
+    },
+  }
 end

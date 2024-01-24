@@ -22,6 +22,12 @@ local LBZ_Track = LB_ModuleLoader:ImportModule("LBZ_Track");
 ---@type LB_Settings
 local LB_Settings = LB_ModuleLoader:ImportModule("LB_Settings");
 
+---@type LB_CustomConfig
+local LB_CustomConfig = LB_ModuleLoader:ImportModule("LB_CustomConfig")
+
+---@type LBZ_Database
+local LBZ_Database = LB_ModuleLoader:ImportModule("LBZ_Database")
+
 LBZ_Settings.zones_tab = { ... }
 local optionsDefaults = LBZ_SettingsDefaults:Load()
 local currentCharacters = {}
@@ -33,14 +39,12 @@ function LBZ_Settings:Initialize()
     order = 7,
     type = "group",
     args = {
-      zones_header = {
-        type = "header",
-        order = 0,
-        name = "|cffc1c1f1" .. LogBookZones:LBZ_i18n("Zones settings") .. "|r",
-      },
+      stats_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Stats"), 0, LogBookZones:GetAddonColor()),
+      stats = LB_CustomConfig:CreateStatsConfig("LogBookZones", LBZ_Database:GetNumEntries(), 0.1),
+      zones_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Settings"), 1, LogBookZones:GetAddonColor()),
       tracking = {
         type = "group",
-        order = 1,
+        order = 2,
         inline = true,
         name = LogBookZones:LBZ_i18n("Tracking"),
         args = {
@@ -138,33 +142,14 @@ function LBZ_Settings:Initialize()
           },
         },
       },
-      maintenance_header = {
-        type = "header",
-        order = 98,
-        name = "|cffc1c1f1" .. LogBook:LB_i18n("Maintenance") .. "|r",
-      },
+      maintenance_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Maintenance"), 98, LogBookZones:GetAddonColor()),
       maintenance = {
         type = "group",
         order = 99,
         inline = true,
-        name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
+        name = "",
         args = {
-          deleteCharacterData = {
-            type = "select",
-            order = 90,
-            width = "full",
-            name = LogBook:LB_i18n("Character"),
-            desc = LogBook:LB_i18n("Character name."),
-            values = _LBZ_Settings.CreateCharactersDropdown(),
-            disabled = false,
-            get = function(info) return nil end,
-            set = function(info, value)
-              LogBookZones.db.char.general.zones.deleteCharacterData = value
-              LB_CustomPopup:CreatePopup(LogBook:LB_i18n("Delete character"), string.format(LogBook:LB_i18n("Are you sure you want to delete the character %s?"), currentCharacters[value]), function()
-                _LBZ_Settings.DeleteCharacterEntry(value)
-              end)
-            end,
-          }
+          deleteCharacterData = LB_CustomConfig:CreateDeleteChararterConfig(_LBZ_Settings.CreateCharactersDropdown(), _LBZ_Settings.DeleteCharacterEntry, currentCharacters, 1)
         },
       },
     },

@@ -8,6 +8,7 @@ local LBZ_EventHandler = LB_ModuleLoader:ImportModule("LBZ_EventHandler");
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions");
 
 local L = LibStub("AceLocale-3.0"):GetLocale("LogBookZones")
+local AddonColor = "ff4fe388"
 
 function LogBookZones:OnInitialize()
   LogBookZones.db = LibStub("AceDB-3.0"):New("LogBookZonesDB", LBZ_SettingsDefaults:Load(), true)
@@ -34,4 +35,9 @@ end
 
 function LogBookZones:Print(message)
   print("|cffffffffLog|r|cff57b6ffBook|r|cff4fe368Zones|r: " .. message)
+end
+
+---Gets addon color
+function LogBookZones:GetAddonColor()
+  return AddonColor
 end

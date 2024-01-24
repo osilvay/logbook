@@ -91,8 +91,7 @@ function LB_CustomConfig:CreateMemoryConfig(addonToCheck, numEntries, order)
         width = 1,
         hidden = false,
         name = function()
-          --local addonStats = LB_CustomFunctions:UpdateMemoryUsageForAddon(addonToCheck)
-          return LB_CustomColors:ColorizeByValue(tostring(addonStats["totalMemInKb"]) .. " KB", addonStats["totalMemInKb"], 1024)
+          return LB_CustomColors:ColorizeByValue(tostring(addonStats["totalMemInKb"]), addonStats["totalMemInKb"], 4096) .. " KB"
         end
       },
       memoryUsageMb = {
@@ -108,8 +107,7 @@ function LB_CustomConfig:CreateMemoryConfig(addonToCheck, numEntries, order)
         width = 1,
         hidden = false,
         name = function()
-          --local addonStats = LB_CustomFunctions:UpdateMemoryUsageForAddon(addonToCheck)
-          return LB_CustomColors:ColorizeByValue(tostring(addonStats["totalMemInMb"]) .. " MB", addonStats["totalMemInMb"], 1)
+          return LB_CustomColors:ColorizeByValue(tostring(addonStats["totalMemInMb"]), addonStats["totalMemInMb"], 4) .. " MB"
         end
       }
     }

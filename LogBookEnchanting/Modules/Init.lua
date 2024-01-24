@@ -16,7 +16,7 @@ local updateDbTimeout
 function LBE_Init:Initialize()
   LBE_Track:Initialize()
   LBE_EnchantingWindow:Initialize()
-
+  LBE_Database:Initialize()
   if LogBookEnchanting.db.char.general.enchanting.autoUpdateDb then
     C_Timer.After(0.1, function()
       LBE_Database:StartAutoUpdateDatabase()

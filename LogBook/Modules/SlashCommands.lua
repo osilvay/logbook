@@ -72,7 +72,7 @@ function LB_SlashCommands.HandleCommands(input)
     LB_SlashCommands:OpenLootWindow()
   elseif command == "zones" and zonesModuleLoaded then
     LB_SlashCommands:OpenZonesWindow()
-  elseif command == "zones" and zonesModuleLoaded then
+  elseif command == "fishing" and fishingModuleLoaded then
     LB_SlashCommands:OpenFishingWindow()
   elseif command == "mobs" and mobsModuleLoaded then
     LB_SlashCommands:OpenMobsWindow()

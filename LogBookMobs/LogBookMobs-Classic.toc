@@ -16,6 +16,7 @@ Locale\Locales.xml
 Modules\MobsEventHandler.lua
 Modules\Init.lua
 Modules\VersionCheck.lua
+Modules\Database.lua
 
 Modules\Settings\SettingsDefaults.lua
 Modules\Settings\MobsTab\MobsTab.lua

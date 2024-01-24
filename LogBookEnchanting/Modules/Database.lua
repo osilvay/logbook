@@ -10,6 +10,12 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 local essences = {}
 local items = {}
 
+function LBE_Database:Initialize()
+  C_Timer.After(0.1, function()
+    LBE_Database:UpdateDatabase(false)
+  end)
+end
+
 local updateDbTimeoutTicker = nil
 ---Starts auto update database
 function LBE_Database:StartAutoUpdateDatabase()
@@ -20,7 +26,6 @@ function LBE_Database:StartAutoUpdateDatabase()
     updateDbTimeoutTicker = C_Timer.NewTicker(updateDbTimeout * 60, function()
       LBE_Database:UpdateDatabase()
     end)
-    LBE_Database:UpdateDatabase() -- first execution
   end
 end
 
@@ -39,7 +44,6 @@ end
 function LBE_Database:UpdateDatabase(silent)
   if silent == nil then silent = false end
   local lootDb = LogBookLoot.db.global.data.loot
-  local enchantingDb = {}
   essences = {}
   items = {}
 

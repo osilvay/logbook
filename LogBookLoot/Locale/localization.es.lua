@@ -2,11 +2,18 @@ local L = LibStub("AceLocale-3.0"):NewLocale("LogBookLoot", "esES", false)
 
 if not L then return end
 
+L["Total"] = "Total"
+L["Saved values"] = "Valores guardados"
 L["Loot"] = "Botín"
-L["Loot settings"] = "Configuración del botín"
 L["Tracking"] = "Seguimiento"
 L["Enable tracking"] = "Habilitar seguimiento"
-L["Toggle tracking loot."] = "Alternar el seguimiento del botín."
+L["Toggle tracking loot."] = "Habilita el seguimiento del botín."
+L["Enable tooltips"] = "Habilitar mensajes emergentes"
+L["Toggle showing loot tooltips."] = "Habilita mostrar mensajes emergentes sobre botín."
+L["Show title"] = "Mostrar título"
+L["Toggle showing title."] = "Habilita mostrar el título."
+L["Show ItemID"] = "Mostrar ItemID"
+L["Toggle showing item ids."] = "Habilita mostrar el ID de objetos."
 L["Disabled"] = "Deshabilitado"
 L["Enabled"] = "Habilitado"
 L["|c%s%s|r loot tracking"] = "Seguimiento de botín |c%s%s|r"

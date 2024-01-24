@@ -331,12 +331,18 @@ function LB_CustomFunctions:UpdateMemoryUsageForAddonList(addonList)
   end
 end
 
+local lastGarbageCollectorTime = 0
 ---Update memory usage
 ---@param addonList table
 ---@return table list
 function LB_CustomFunctions:UpdateMemoryUsageFromList(addonList)
-  collectgarbage()
-  UpdateAddOnMemoryUsage()
+  local garbageCollectorTime = GetServerTime()
+  local diff = difftime(garbageCollectorTime, lastGarbageCollectorTime)
+  if diff > 60 * 15 then
+    collectgarbage()
+    UpdateAddOnMemoryUsage()
+    lastGarbageCollectorTime = GetServerTime()
+  end
 
   local memInKb = 0
   local totalMem = 0

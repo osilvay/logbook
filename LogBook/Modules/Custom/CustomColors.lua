@@ -61,6 +61,9 @@ function LB_CustomColors:CustomColors(color_index)
     VALUE_LOW = "FF64e464",
     VALUE_MEDIUM = "ffe4a436",
     VALUE_HIGH = "ffe43434",
+    VALUE_LOW_DEC = "FF459E45",
+    VALUE_MEDIUM_DEC = "FFA3772A",
+    VALUE_HIGH_DEC = "FF9F2323",
     HIT_CRITICAL = LB_CustomColors:RgbToHex(LogBookCritics.db.char.general.critics.hitCriticalColor, "ffc1c1c1"),
     HIT_NORMAL = LB_CustomColors:RgbToHex(LogBookCritics.db.char.general.critics.hitNormalColor, "ff919191"),
     HEAL_CRITICAL = LB_CustomColors:RgbToHex(LogBookCritics.db.char.general.critics.healCriticalColor, "ffc1f1c1"),
@@ -71,7 +74,8 @@ function LB_CustomColors:CustomColors(color_index)
     LOWEST_HEAL = LB_CustomColors:RgbToHex(LogBookCritics.db.char.general.critics.lowestHealColor, "FFE04040"),
     HIGHEST_ATTACK = LB_CustomColors:RgbToHex(LogBookCritics.db.char.general.critics.highestAttackColor, "FF40E068"),
     LOWEST_ATTACK = LB_CustomColors:RgbToHex(LogBookCritics.db.char.general.critics.lowestAttackColor, "FFE04040"),
-    UNDEFINED = "FF999999",
+    UNDEFINED = "ffa1a1a1",
+    UNDEFINED_DEC = "ff666666",
     ZERO = "FF991E15",
     ATTACK_NORMAL = LB_CustomColors:RgbToHex(LogBookCritics.db.char.general.critics.attackNormalColor, "FFAAC0CF"),
     ATTACK_CRITICAL = LB_CustomColors:RgbToHex(LogBookCritics.db.char.general.critics.attackCriticalColor, "FFEDF4F9"),
@@ -185,12 +189,25 @@ end
 function LB_CustomColors:ColorizeByValue(message, value, maxValue)
   local indexValue = tonumber(format("%.2f", maxValue / 3))
   if value < indexValue then
-    return LB_CustomColors:Colorize(LB_CustomColors:CustomColors("VALUE_LOW"), message)
+    return LB_CustomColors:ColorizeDecimal(message, LB_CustomColors:CustomColors("VALUE_LOW"), LB_CustomColors:CustomColors("VALUE_LOW_DEC"))
   elseif value >= indexValue and value < indexValue * 2 then
-    return LB_CustomColors:Colorize(LB_CustomColors:CustomColors("VALUE_MEDIUM"), message)
+    return LB_CustomColors:ColorizeDecimal(message, LB_CustomColors:CustomColors("VALUE_MEDIUM"), LB_CustomColors:CustomColors("VALUE_MEDIUM_DEC"))
   elseif value >= indexValue * 2 then
-    return LB_CustomColors:Colorize(LB_CustomColors:CustomColors("VALUE_HIGH"), message)
+    return LB_CustomColors:ColorizeDecimal(message, LB_CustomColors:CustomColors("VALUE_HIGH"), LB_CustomColors:CustomColors("VALUE_HIGH_DEC"))
   else
-    return LB_CustomColors:Colorize(LB_CustomColors:CustomColors("UNDEFINED"), message)
+    return LB_CustomColors:ColorizeDecimal(message, LB_CustomColors:CustomColors("UNDEFINED"), LB_CustomColors:CustomColors("UNDEFINED_DEC"))
   end
+end
+
+function LB_CustomColors:ColorizeDecimal(textValue, color1, color2)
+  local percentageValues = {}
+  local percentageIndex = 1
+  for value in string.gmatch(textValue, "([^.]+)") do
+    percentageValues[percentageIndex] = value
+    percentageIndex = percentageIndex + 1
+  end
+
+  local separator = "|cffc1c1c1.|r"
+  if percentageValues[2] == nil then separator = "" end
+  return string.format("|c%s%s|r%s|c%s%s|r", color1, percentageValues[1], separator, color2, percentageValues[2] or "")
 end

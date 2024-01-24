@@ -16,6 +16,7 @@ Locale\Locales.xml
 Modules\ZonesEventHandler.lua
 Modules\Init.lua
 Modules\VersionCheck.lua
+Modules\Database.lua
 
 Modules\Settings\SettingsDefaults.lua
 Modules\Settings\ZonesTab\ZonesTab.lua

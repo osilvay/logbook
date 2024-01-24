@@ -36,7 +36,7 @@ function LBE_Settings:Initialize()
     args = {
       stats_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Stats"), 0, LogBookEnchanting:GetAddonColor()),
       stats = LB_CustomConfig:CreateStatsConfig("LogBookEnchanting", LBE_Database:GetNumEntries(), 0.1),
-      enchanting_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Settings"), 1, LogBookCritics:GetAddonColor()),
+      enchanting_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Settings"), 1, LogBookEnchanting:GetAddonColor()),
       tracking = {
         type = "group",
         order = 2,

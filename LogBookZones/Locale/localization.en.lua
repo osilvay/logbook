@@ -2,8 +2,9 @@ local L = LibStub("AceLocale-3.0"):NewLocale("LogBookZones", "enUS", true)
 
 if not L then return end
 
+L["Total"] = true
+L["Saved values"] = true
 L["Zones"] = true
-L["Zones settings"] = true
 L["Tracking"] = true
 L["Enable tracking"] = true
 L["Toggle tracking zones."] = true

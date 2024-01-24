@@ -8,6 +8,7 @@ local LBM_EventHandler = LB_ModuleLoader:ImportModule("LBM_EventHandler");
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions");
 
 local L = LibStub("AceLocale-3.0"):GetLocale("LogBookMobs")
+local AddonColor = "ff5be3de"
 
 function LogBookMobs:OnInitialize()
   LogBookMobs.db = LibStub("AceDB-3.0"):New("LogBookMobsDB", LBM_SettingsDefaults:Load(), true)
@@ -34,4 +35,9 @@ end
 
 function LogBookMobs:Print(message)
   print("|cffffffffLog|r|cff57b6ffBook|r|cff5be3deMobs|r: " .. message)
+end
+
+---Gets addon color
+function LogBookMobs:GetAddonColor()
+  return AddonColor
 end
