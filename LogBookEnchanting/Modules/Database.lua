@@ -56,14 +56,14 @@ function LBE_Database:UpdateDatabase(silent)
     -- si es encantamiento la proceso
     if isTradeSkill and tradeSkillInfo ~= nil and tradeSkillName == "Enchanting" then
       local _, eItemLink, eItemQuality, eItemLevel, eItemMinLevel = GetItemInfo(itemID)
+
       currentEssence.Quality                                      = eItemQuality
       currentEssence.ItemLink                                     = eItemLink
       currentEssence.ItemLevel                                    = eItemLevel
       currentEssence.ItemMinLevel                                 = eItemMinLevel
 
-      local from                                                  = tradeSkillInfo.from
-
       -- leo objetos de esencias
+      local from                                                  = tradeSkillInfo.from or {}
       for currentItemID, itemInEssence in pairs(from) do
         local _, itemLink, itemQuality, itemLevel, itemMinLevel = GetItemInfo(currentItemID)
         itemInEssence.Quality = itemQuality
@@ -101,7 +101,7 @@ end
 ---Item exists in database
 ---@param itemID number
 ---@return table|nil itemInfo
-function LBE_Database:ItemExistsInItemsDatabase(itemID)
+function LBE_Database:EntryExistsInItemsDatabase(itemID)
   if itemID == nil then return end
   if items[itemID] ~= nil then
     return items[itemID]
@@ -113,7 +113,7 @@ end
 ---Item exists in essences database
 ---@param itemID number
 ---@return table|nil itemInfo
-function LBE_Database:ItemExistsInEssencesDatabase(itemID)
+function LBE_Database:EntryExistsInEssencesDatabase(itemID)
   if itemID == nil then return end
   if essences[itemID] ~= nil then
     return essences[itemID]
@@ -131,7 +131,7 @@ function LBE_Database:UpdateItemWithEssences(currentItemID, itemInEssence, curre
     ItemName = itemInEssence.ItemName,
     ItemID = itemInEssence.ItemID,
     Quality = itemInEssence.Quality,
-    Quantity = itemInEssence.Essences,
+    Quantity = itemInEssence.Quantity,
     ItemLink = itemInEssence.ItemLink,
     ItemLevel = itemInEssence.ItemLevel,
     ItemMinLevel = itemInEssence.ItemMinLevel,
@@ -142,7 +142,7 @@ function LBE_Database:UpdateItemWithEssences(currentItemID, itemInEssence, curre
   local savedEssences = savedItem.Essences or {}
   local currentEssenceItemID = currentEssence.ItemID
   local currentSavedEssence = savedEssences[currentEssenceItemID] or {}
-  local newQuantity = (itemInEssence.Essences or 0) + (currentSavedEssence.Quantity or 0)
+  local newQuantity = (itemInEssence.Quantity or 0) + (currentSavedEssence.Quantity or 0)
 
   savedEssences[currentEssenceItemID] = {
     Items = itemInEssence.Items,

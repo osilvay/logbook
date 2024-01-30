@@ -335,11 +335,8 @@ function LBL_TrackLoot:StoreItemDetails(loot)
             else
               local newItems = (currentFrom[currentItemID].Items or 0) + (savedFrom[currentItemID].Items or 0)
               local newQuantity = (currentFrom[currentItemID].Quantity or 0) + (savedFrom[currentItemID].Quantity or 0)
-              local newEssences = (currentFrom[currentItemID].Quantity or 0) + (savedFrom[currentItemID].Essences or 0)
-
               savedFrom[currentItemID].Items = newItems
               savedFrom[currentItemID].Quantity = newQuantity
-              savedFrom[currentItemID].Essences = newEssences
             end
           end
         elseif TradeSkillInfo.name == "Mining" or TradeSkillInfo.name == "Herbalism" or TradeSkillInfo.name == "Fishing" then

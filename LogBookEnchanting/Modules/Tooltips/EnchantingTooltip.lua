@@ -111,8 +111,8 @@ end
 ---@param item table
 function LBE_EnchantingTooltip.ShowTooltip(item)
   local itemID = item.itemID
-  local dbItemInfo = LBE_Database:ItemExistsInItemsDatabase(itemID)
-  local dbEssenceInfo = LBE_Database:ItemExistsInEssencesDatabase(itemID)
+  local dbItemInfo = LBE_Database:EntryExistsInItemsDatabase(itemID)
+  local dbEssenceInfo = LBE_Database:EntryExistsInEssencesDatabase(itemID)
 
   local isEssence, isItem = false, false
   if dbItemInfo == nil and dbEssenceInfo == nil then
@@ -123,7 +123,7 @@ function LBE_EnchantingTooltip.ShowTooltip(item)
     isItem = true
   end
 
-  --LogBook:Debug(string.format("%s - %s", tostring(isEssence), tostring(isItem)))
+  --LogBook:Debug(string.format("isEssence = %s - isItem = %s", tostring(isEssence), tostring(isItem)))
   if (not isEssence == nil and not isItem == nil) or (isEssence and isItem) then return end
 
   local isShowItemID = LogBookEnchanting.db.char.general.enchanting.showItemID
@@ -158,6 +158,7 @@ function LBE_EnchantingTooltip.ShowTooltip(item)
     local numDifferentEssences = LB_CustomFunctions:TableLength(essencesInItem)
     local totalEssences = 0
     local list = {}
+
     for _, currentEssenceInfo in pairs(essencesInItem) do
       table.insert(list, currentEssenceInfo)
       totalEssences = totalEssences + currentEssenceInfo.Quantity
