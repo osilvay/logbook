@@ -1,5 +1,5 @@
----@class LBE_EnchantingTooltip
-local LBE_EnchantingTooltip = LB_ModuleLoader:CreateModule("LBE_EnchantingTooltip")
+---@class LBL_LootTooltip
+local LBL_LootTooltip = LB_ModuleLoader:CreateModule("LBL_LootTooltip")
 
 ---@type LB_CustomColors
 local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
@@ -7,20 +7,19 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 ---@type LB_CustomFunctions
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 
----@type LBE_Database
-local LBE_Database = LB_ModuleLoader:ImportModule("LBE_Database")
+---@type LBL_Database
+local LBL_Database = LB_ModuleLoader:ImportModule("LBL_Database")
 
 local GameTooltip = GameTooltip
 
-function LBE_EnchantingTooltip:Initialize()
-  hooksecurefunc(GameTooltip, "SetBagItem", LBE_EnchantingTooltip.SetBagItem)
-  hooksecurefunc(GameTooltip, "SetInventoryItem", LBE_EnchantingTooltip.SetInventoryItem)
-  hooksecurefunc(GameTooltip, "SetAuctionItem", LBE_EnchantingTooltip.SetAuctionItem)
+function LBL_LootTooltip:Initialize()
+  hooksecurefunc(GameTooltip, "SetBagItem", LBL_LootTooltip.SetBagItem)
+  hooksecurefunc(GameTooltip, "SetInventoryItem", LBL_LootTooltip.SetInventoryItem)
+  hooksecurefunc(GameTooltip, "SetAuctionItem", LBL_LootTooltip.SetAuctionItem)
   if GameTooltip.SetItemKey then
-    hooksecurefunc(GameTooltip, "SetItemKey", LBE_EnchantingTooltip.SetItemKey)
+    hooksecurefunc(GameTooltip, "SetItemKey", LBL_LootTooltip.SetItemKey)
   end
-  hooksecurefunc(GameTooltip, "SetHyperlink", LBE_EnchantingTooltip.SetHyperlink)
-
+  hooksecurefunc(GameTooltip, "SetHyperlink", LBL_LootTooltip.SetHyperlink)
   --[[
   SetBuybackItem
   SetMerchantItem
@@ -35,9 +34,10 @@ function LBE_EnchantingTooltip:Initialize()
   ]]
 end
 
-function LBE_EnchantingTooltip.SetBagItem(self, bag, slot)
+function LBL_LootTooltip.SetBagItem(self, bag, slot)
   if (not slot) then return end
   if not LB_CustomFunctions:IsKeyPressed(LogBookEnchanting.db.char.general.enchanting.pressKeyDown) then return end
+  --[[
   if not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled then return end
 
   local itemLocation = ItemLocation:CreateFromBagAndSlot(bag, slot)
@@ -45,53 +45,62 @@ function LBE_EnchantingTooltip.SetBagItem(self, bag, slot)
     local item = {
       itemID = C_Item.GetItemID(itemLocation)
     }
-    LBE_EnchantingTooltip.ShowTooltip(item)
-    GameTooltip:Show()
+    LBL_LootTooltip.ShowTooltip(item)
   end
-end
-
-function LBE_EnchantingTooltip.SetInventoryItem(self, unit, slot)
-  if (not slot) then return end
-  if not LB_CustomFunctions:IsKeyPressed(LogBookEnchanting.db.char.general.enchanting.pressKeyDown) then return end
-  if not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled then return end
-  local item = {
-    itemID = GetInventoryItemID(unit, slot)
-  }
-  LBE_EnchantingTooltip.ShowTooltip(item)
+  ]]
   GameTooltip:Show()
 end
 
-function LBE_EnchantingTooltip.SetAuctionItem(self, type, index)
+function LBL_LootTooltip.SetInventoryItem(self, unit, slot)
+  if (not slot) then return end
+  if not LB_CustomFunctions:IsKeyPressed(LogBookEnchanting.db.char.general.enchanting.pressKeyDown) then return end
+  if not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled then return end
+  --[[
+  local item = {
+    itemID = GetInventoryItemID(unit, slot)
+  }
+  LBL_LootTooltip.ShowTooltip(item)
+  ]]
+  GameTooltip:Show()
+end
+
+function LBL_LootTooltip.SetAuctionItem(self, type, index)
   if (not index) then return end
   if not LB_CustomFunctions:IsKeyPressed(LogBookEnchanting.db.char.general.enchanting.pressKeyDown) then return end
   if not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled then return end
+  --[[
   local _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, itemID, _ = GetAuctionItemInfo(type, index);
   local item = {
     itemID = itemID
   }
-  LBE_EnchantingTooltip.ShowTooltip(item)
+  LBL_LootTooltip.ShowTooltip(item)
+  ]]
   GameTooltip:Show()
 end
 
-function LBE_EnchantingTooltip.SetItemKey(self, itemID, itemLevel, itemSuffix)
+function LBL_LootTooltip.SetItemKey(self, itemID, itemLevel, itemSuffix)
   if not LB_CustomFunctions:IsKeyPressed(LogBookEnchanting.db.char.general.enchanting.pressKeyDown) then return end
+  --[[
   local info = C_TooltipInfo.GetItemKey(itemID, itemLevel, itemSuffix)
   if info == nil then return end
   local item = {
     itemID = itemID
   }
-  LBE_EnchantingTooltip.ShowTooltip(item)
+  LBL_LootTooltip.ShowTooltip(item)
+  ]]
   GameTooltip:Show()
 end
 
-function LBE_EnchantingTooltip.SetHyperlink(self, itemLink)
+function LBL_LootTooltip.SetHyperlink(self, itemLink)
   if not LB_CustomFunctions:IsKeyPressed(LogBookEnchanting.db.char.general.enchanting.pressKeyDown) then return end
+  --[[
   local itemID = GetItemInfoFromHyperlink(itemLink)
   if itemID == nil then return end
   local item = {
     itemID = itemID
   }
-  LBE_EnchantingTooltip.ShowTooltip(item)
+  LBL_LootTooltip.ShowTooltip(item)
+  ]]
   GameTooltip:Show()
 end
 
@@ -99,8 +108,9 @@ end
 ---@param list table
 ---@param totalEntries number
 ---@param numEntries number
-function LBE_EnchantingTooltip.ProcessEntryList(list, totalEntries, numEntries)
+function LBL_LootTooltip.ProcessEntryList(list, totalEntries, numEntries)
   local index = 1
+  --[[
   for _, currentItemInfo in pairs(list) do
     local quantity = currentItemInfo.Quantity
     local percentage = string.format("%.1f", (quantity * 100) / totalEntries)
@@ -129,12 +139,14 @@ function LBE_EnchantingTooltip.ProcessEntryList(list, totalEntries, numEntries)
       index = index + 1
     end
   end
+  ]]
 end
 
 ---Show tooltip
 ---@param item table
-function LBE_EnchantingTooltip.ShowTooltip(item)
+function LBL_LootTooltip.ShowTooltip(item)
   local itemID = item.itemID
+  --[[
   local dbItemInfo = LBE_Database:EntryExistsInItemsDatabase(itemID)
   local dbEssenceInfo = LBE_Database:EntryExistsInEssencesDatabase(itemID)
 
@@ -175,7 +187,7 @@ function LBE_EnchantingTooltip.ShowTooltip(item)
       GameTooltip:AddLine(" ")
       GameTooltip:AddDoubleLine(titleText, itemIDText)
     end
-    LBE_EnchantingTooltip.ProcessEntryList(list, totalItems, numItems)
+    LBL_LootTooltip.ProcessEntryList(list, totalItems, numItems)
   elseif isItem then
     local currentItem = LogBookEnchanting.db.global.data.items[itemID] or {}
     local essencesInItem = currentItem.Essences or {}
@@ -194,7 +206,8 @@ function LBE_EnchantingTooltip.ShowTooltip(item)
         GameTooltip:AddLine(" ")
         GameTooltip:AddDoubleLine(titleText, itemIDText)
       end
-      LBE_EnchantingTooltip.ProcessEntryList(list, totalEssences, numDifferentEssences)
+      LBL_LootTooltip.ProcessEntryList(list, totalEssences, numDifferentEssences)
     end
   end
+  ]]
 end

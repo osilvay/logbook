@@ -21,6 +21,8 @@ Modules\Database.lua
 Modules\Settings\SettingsDefaults.lua
 Modules\Settings\LootTab\LootTab.lua
 
+Modules\Tooltips\LootTooltip.lua
+
 Modules\Track\Track.lua
 Modules\Track\TrackLoot.lua
 Modules\Track\TrackEventHandler.lua
