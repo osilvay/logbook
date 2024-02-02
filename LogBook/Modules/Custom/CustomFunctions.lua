@@ -382,6 +382,18 @@ function LB_CustomFunctions:TableLength(T)
 end
 
 ---Count table entries
+---@param T table
+---@return boolean isEmpty
+function LB_CustomFunctions:TableIsEmpty(T)
+  local count = LB_CustomFunctions:TableLength(T) or 0
+  if count == 0 then
+    return false
+  else
+    return true
+  end
+end
+
+---Count table entries
 ---@param keyNeeded string
 ---@return boolean pressed
 function LB_CustomFunctions:IsKeyPressed(keyNeeded)

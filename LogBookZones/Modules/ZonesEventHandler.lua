@@ -26,6 +26,8 @@ function _LBZ_EventHandler:PlayerLogin()
       LogBookZones.db.global.characters[LogBookZones.key] = {
         zones = {
         },
+        paths = {
+        }
       }
     end
   end

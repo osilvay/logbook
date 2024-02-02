@@ -16,8 +16,10 @@ function LBZ_SettingsDefaults:Load()
         char = {
           info = {
           },
-          zones = { -- personal zones
+          zones = {
           },
+          paths = {
+          }
         },
       },
     },
@@ -30,6 +32,7 @@ function LBZ_SettingsDefaults:Load()
           showZoneMessagesOnScreen = true,
           autoTrackingEnabled = true,
           timeAutoTracking = 5,
+          enablePathOverlay = true
         },
       },
     },

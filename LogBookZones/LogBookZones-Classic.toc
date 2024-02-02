@@ -17,6 +17,7 @@ Modules\ZonesEventHandler.lua
 Modules\Init.lua
 Modules\VersionCheck.lua
 Modules\Database.lua
+Modules\WorldMapOverlay.lua
 
 Modules\Settings\SettingsDefaults.lua
 Modules\Settings\ZonesTab\ZonesTab.lua
@@ -29,6 +30,7 @@ Modules\Window\ZonesWindow.lua
 Modules\Window\Tables\ZonesHeader.lua
 Modules\Window\Tables\ZonesFilter.lua
 Modules\Window\Tables\ZonesBody.lua
+
 
 # Main
 LogBookZones.lua

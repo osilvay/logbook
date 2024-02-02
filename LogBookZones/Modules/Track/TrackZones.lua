@@ -57,6 +57,7 @@ function LBZ_TrackZones:SetNewZone(zoneName, currentSubZone)
 
   local worldMapInfo = C_Map.GetMapInfo(parentMapInfo.parentMapID)
   if worldMapInfo == nil then return end
+  local posX, posY = LBZ_TrackZones:GetPlayerMapPositionNormalized(mapID)
 
   zone = {
     mapID = mapID,
@@ -64,14 +65,22 @@ function LBZ_TrackZones:SetNewZone(zoneName, currentSubZone)
     continent = parentMapInfo.name,
     name = zoneName,
     reaction = LBZ_TrackZones:GetReactionZone(),
-    subzone = currentSubZone
+    subzone = currentSubZone,
+    x = posX,
+    y = posY
   }
-
   if zone ~= nil then
     LBZ_TrackZones:StoreZone(zone)
     LBZ_TrackZones:StorePersonalZone(zone)
+    LBZ_TrackZones:StoreMap(zone)
   end
   CurrentZone = zone
+end
+
+---Get and Stores current location in DB
+---@param zone  table
+function LBZ_TrackZones:StoreMap(zone)
+  if zone.mapID == nil then return end
 end
 
 ---Get and Stores current location in DB
@@ -93,7 +102,6 @@ function LBZ_TrackZones:StoreZone(zone)
     savedSubzones = {}
   end
 
-
   local currentSubzone = zone.subzone
   table.insert(savedSubzones, currentSubzone)
   zone.subzones = LB_CustomFunctions:RemoveDuplicationsInTable(savedSubzones)
@@ -103,7 +111,7 @@ end
 local MapRects = {}
 local TempVec2D = CreateVector2D(0, 0)
 ---Get current player position
----@param mapID number
+---@param mapID number?
 ---@return number x,number y
 function LBZ_TrackZones:GetPlayerMapPosition(mapID)
   if mapID then
@@ -121,6 +129,22 @@ function LBZ_TrackZones:GetPlayerMapPosition(mapID)
     TempVec2D:Subtract(mapRect[1])
     return (tonumber(string.format("%.5f", TempVec2D.y / mapRect[2].y)) * 100),
         (tonumber(string.format("%.5f", TempVec2D.x / mapRect[2].x)) * 100)
+  end
+  return 0, 0
+end
+
+---Get current player position
+---@param mapID number?
+---@return number? x,number? y
+function LBZ_TrackZones:GetPlayerMapPositionNormalized(mapID)
+  if mapID ~= nil then
+    ---@type Vector2DMixin?
+    local position = C_Map.GetPlayerMapPosition(mapID, "player")
+    if position ~= nil then
+      local x = tonumber(string.format("%.5f", position.x))
+      local y = tonumber(string.format("%.5f", position.y))
+      return x, y
+    end
   end
   return 0, 0
 end
@@ -206,6 +230,7 @@ function LBZ_TrackZones:StorePersonalZone(zone)
     currentZones.zones = {}
   end
 
+  -- zones
   local zoneString = string.format("%s - %s - %s", zone.continent, zone.name, zone.subzone)
   local zoneValue = 0
   if currentZones.zones[zoneString] ~= nil then
@@ -213,6 +238,18 @@ function LBZ_TrackZones:StorePersonalZone(zone)
   end
   zoneValue = zoneValue + 1
   LogBookZones.db.global.characters[LogBookZones.key].zones[zoneString] = zoneValue
+
+  -- paths
+  if LogBookZones.db.global.characters[LogBookZones.key].paths == nil then
+    LogBookZones.db.global.characters[LogBookZones.key].paths = {}
+  end
+  local savedOverlay = LogBookZones.db.global.characters[LogBookZones.key].paths[zone.mapID] or {}
+  local newCoordinatesKey = string.format("%s,%s", zone.x, zone.y)
+  local coordinateValue = savedOverlay[newCoordinatesKey] or {}
+  if type(coordinateValue) ~= "table" then coordinateValue = {} end
+  table.insert(coordinateValue, GetServerTime())
+  savedOverlay[newCoordinatesKey] = coordinateValue
+  LogBookZones.db.global.characters[LogBookZones.key].paths[zone.mapID] = savedOverlay
 end
 
 ---Get current personal zone
@@ -243,7 +280,6 @@ function LBZ_TrackZones:GetCurrentPersonalZone()
   --LogBook:Debug(currentZone .. " - " .. currentSubZone)
   if currentSubZone == nil or currentSubZone == "" then currentSubZone = UNKNOWN end
   local mapID = C_Map.GetBestMapForUnit("player")
-  local mapPos = mapID and C_Map.GetPlayerMapPosition(mapID, "player")
   if not mapID then mapID = 0 end
   local mapInfo = C_Map.GetMapInfo(mapID)
   if mapInfo == nil then return end

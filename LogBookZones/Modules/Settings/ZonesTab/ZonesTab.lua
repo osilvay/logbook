@@ -142,6 +142,27 @@ function LBZ_Settings:Initialize()
           },
         },
       },
+      overlay_header = LB_CustomConfig:CreateHeaderConfig(LogBookZones:LBZ_i18n("Path overlay"), 3, LogBookZones:GetAddonColor()),
+      overlay = {
+        type = "group",
+        order = 4,
+        inline = true,
+        name = "",
+        args = {
+          enablePathOverlay = {
+            type = "toggle",
+            order = 2,
+            name = LogBookZones:LBZ_i18n("Enable path overlay"),
+            desc = LogBookZones:LBZ_i18n("Enable path overlay in world map."),
+            width = 2,
+            disabled = false,
+            get = function() return LogBookZones.db.char.general.zones.enablePathOverlay end,
+            set = function(info, value)
+              LogBookZones.db.char.general.zones.enablePathOverlay = value
+            end,
+          },
+        },
+      },
       maintenance_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Maintenance"), 98, LogBookZones:GetAddonColor()),
       maintenance = {
         type = "group",
