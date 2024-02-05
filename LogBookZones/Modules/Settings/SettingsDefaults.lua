@@ -31,7 +31,7 @@ function LBZ_SettingsDefaults:Load()
           showZoneMessagesInChat = true,
           showZoneMessagesOnScreen = true,
           autoTrackingEnabled = true,
-          timeAutoTracking = 5,
+          timeAutoTracking = 30,
           enablePathOverlay = true
         },
       },

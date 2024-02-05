@@ -387,9 +387,9 @@ end
 function LB_CustomFunctions:TableIsEmpty(T)
   local count = LB_CustomFunctions:TableLength(T) or 0
   if count == 0 then
-    return false
-  else
     return true
+  else
+    return false
   end
 end
 

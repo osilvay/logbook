@@ -26,19 +26,3 @@ function LBZ_Database:GetNumEntries()
     [LogBookZones:LBZ_i18n("Overlay paths")] = totalPaths,
   }
 end
-
----Build zones overlay
----@return table overlay
-function LBZ_Database:BuildZonesOverlayData()
-  local result = {}
-  local paths = LogBookZones.db.global.data.zones or {}
-  if LB_CustomFunctions:TableIsEmpty(paths) then return {} end
-  for mapID, pathData in pairs(paths) do
-    for coordinates, values in pairs(pathData) do
-      for _, timestamp in pairs(pathData) do
-        LogBook:Debug("timestamp = " .. tostring(timestamp))
-      end
-    end
-  end
-  return result
-end

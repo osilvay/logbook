@@ -126,8 +126,8 @@ function LBZ_Settings:Initialize()
               timeAutoTracking = {
                 type = "range",
                 order = 2,
-                name = LogBookZones:LBZ_i18n("Time (in minutes)"),
-                desc = LogBookZones:LBZ_i18n("Time in minutes to check automatic zone changes."),
+                name = LogBookZones:LBZ_i18n("Time (in seconds)"),
+                desc = LogBookZones:LBZ_i18n("Time in seconds to check automatic zone changes."),
                 width = "full",
                 min = 5,
                 max = 60,

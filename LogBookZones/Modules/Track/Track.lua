@@ -61,7 +61,7 @@ function LBZ_Track:StartAutomaticTracking()
   if LogBookZones.db.char.general.zones.autoTrackingEnabled then
     --LogBook:Debug(string.format("Starting automatic tracking each %d minutes", timeToTrack))
     if automaticTrackingTicker == nil then
-      automaticTrackingTicker = C_Timer.NewTicker(timeToTrack * 60, function()
+      automaticTrackingTicker = C_Timer.NewTicker(timeToTrack, function()
         if not LogBookZones.db.char.general.zones.autoTrackingEnabled then
           --LogBook:Debug(string.format("Cancelling automatic tracking..."))
           if automaticTrackingTicker ~= nil then
@@ -70,9 +70,8 @@ function LBZ_Track:StartAutomaticTracking()
           automaticTrackingTicker = nil
         end
         autoTrackingIteration = autoTrackingIteration + 1
-        --LogBook:Debug(string.format("Automatic tracking iteration : %d", autoTrackingIteration))
+        --(string.format("Automatic tracking iteration : %d", autoTrackingIteration))
         LBZ_TrackZones:ZoneChanged(false)
-
         timeToTrack = LogBookZones.db.char.general.zones.timeAutoTracking
       end)
     else

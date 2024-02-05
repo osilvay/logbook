@@ -22,6 +22,21 @@ function LB_CustomColors:CustomClassColors(color_index)
   return customClassColors[color_index]
 end
 
+function LB_CustomColors:CustomClassBrightColors(color_index)
+  local customClassColors = {
+    DRUID = "FFFC9F4E",
+    HUNTER = "FFCDEDA1",
+    MAGE = "FF70D9F6",
+    PALADIN = "FFFBB8D6",
+    PRIEST = "FFFFFFFF",
+    ROGUE = "FFF6EF90",
+    SHAMAN = "FF2F91F3",
+    WARLOCK = "FFAAACF6",
+    WARRIOR = "FFE3BE97",
+  };
+  return customClassColors[color_index]
+end
+
 ---Custom quality colors
 ---@param quality_index string
 ---@return string color

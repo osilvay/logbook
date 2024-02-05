@@ -10,6 +10,12 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 ---@type LB_CustomSounds
 local LB_CustomSounds = LB_ModuleLoader:ImportModule("LB_CustomSounds")
 
+---@type LBZ_Database
+local LBZ_Database = LB_ModuleLoader:ImportModule("LBZ_Database")
+
+---@type LBZ_WorldMapOverlay
+local LBZ_WorldMapOverlay = LB_ModuleLoader:ImportModule("LBZ_WorldMapOverlay")
+
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 local UNKNOWN = UNKNOWN
@@ -35,6 +41,12 @@ end
 
 ZoneTable = {}
 CurrentZone = 0
+
+---@type number?
+local lastX = 0.0
+---@type number?
+local lastY = 0.0
+
 ---Sets new zone
 ---@param zoneName  string
 function LBZ_TrackZones:SetNewZone(zoneName, currentSubZone)
@@ -59,6 +71,9 @@ function LBZ_TrackZones:SetNewZone(zoneName, currentSubZone)
   if worldMapInfo == nil then return end
   local posX, posY = LBZ_TrackZones:GetPlayerMapPositionNormalized(mapID)
 
+  if posX == lastX and posY == lastY then
+    return
+  end
   zone = {
     mapID = mapID,
     world = worldMapInfo.name,
@@ -72,15 +87,11 @@ function LBZ_TrackZones:SetNewZone(zoneName, currentSubZone)
   if zone ~= nil then
     LBZ_TrackZones:StoreZone(zone)
     LBZ_TrackZones:StorePersonalZone(zone)
-    LBZ_TrackZones:StoreMap(zone)
+    lastX = posX
+    lastY = posY
+    LBZ_WorldMapOverlay:UpdateWorldMapOverlay(zone.mapID)
   end
   CurrentZone = zone
-end
-
----Get and Stores current location in DB
----@param zone  table
-function LBZ_TrackZones:StoreMap(zone)
-  if zone.mapID == nil then return end
 end
 
 ---Get and Stores current location in DB
