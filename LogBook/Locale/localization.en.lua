@@ -67,3 +67,4 @@ L["Press key to show"] = true
 L["more"] = true
 L["Character"] = true
 L["Character name."] = true
+L["All"] = true

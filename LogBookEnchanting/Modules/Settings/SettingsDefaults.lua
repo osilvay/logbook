@@ -33,7 +33,9 @@ function LBE_SettingsDefaults:Load()
           showTitle = true,
           updateDbTimeout = 15,
           itemsToShow = 5,
-          pressKeyDown = "2_alt"
+          pressKeyDown = "2_alt",
+          showExpectedEssences = true,
+          showRealEssences = true
         },
       },
     },

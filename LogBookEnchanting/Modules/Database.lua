@@ -192,3 +192,213 @@ function LBE_Database:UpdateEssenceWithItems(itemID, itemInEssence, currentEssen
   savedEssence.Items = savedItems
   return savedEssence
 end
+
+--[[
+    https://wowwiki-archive.fandom.com/wiki/Disenchanting_tables
+    UNCOMMON
+
+  5-15	[Strange Dust]	80,00 %	1-2x	[Lesser Magic Essence]	20,00 %	1-2x			1-2x
+  16-20	[Strange Dust]	75,00 %	2-3x	[Greater Magic Essence]	20,00 %	1-2x	[Small Glimmering Shard]	5,00 %	1-2x
+  21-25	[Strange Dust]	75,00 %	4-6x	[Lesser Astral Essence]	15,00 %	1-2x	[Small Glimmering Shard]	10,00 %	1-2x
+  26-30	[Soul Dust]	75,00 %	1-2x	[Greater Astral Essence]	20,00 %	1-2x	[Large Glimmering Shard]	5,00 %	1-2x
+
+  26-30	[Strange Dust]	20,00 %	1-2x	[Lesser Magic Essence]	80,00 %	1-2x			
+  21-25	[Strange Dust]	20,00 %	2-3x	[Greater Magic Essence]	75,00 %	1-2x	[Small Glimmering Shard]	5,00 %	1x
+  16-20	[Strange Dust]	15,00 %	4-6x	[Lesser Astral Essence]	75,00 %	1-2x	[Small Glimmering Shard]	10,00 %	1x
+  26-30	[Soul Dust]	20,00 %	1-2x	[Greater Astral Essence]	75,00 %	1-2x	[Large Glimmering Shard]	5,00 %	1x
+
+  RARE
+  1-25 	[Small Glimmering Shard] 	100% 	1x
+  26-30 	[Large Glimmering Shard] 	100% 	1x
+  31-35 	[Small Glowing Shard] 	100% 	1x
+
+  [10940] = { --strange-dust
+  [11083] = { --soul-dust
+  [10938] = { -- lesser-magic-essence
+  [10939] = { -- greater-magic-essence
+  [10998] = { --lesser-astral-essence
+  [11082] = { --greater-astral-essence
+  [10978] = { --small-glimmering-shard
+  [11084] = { --large-glimmering-shard
+  [11138] = { --small-glowing-shard
+]]
+function LBE_Database:GetExpectedDisenchantData()
+  return {
+    UNCOMMON = {
+      [LogBookEnchanting:LBE_i18n("Armor")] = {
+        {
+          MinILevel = 5,
+          MaxILevel = 15,
+          ItemIDs = {
+            [10940] = { --strange-dust
+              Percent = 80,
+              QuantityText = "1-2x"
+            },
+            [10938] = { -- lesser-magic-essence
+              Percent = 20,
+              QuantityText = "1-2x"
+            },
+          }
+        },
+        {
+          MinILevel = 16,
+          MaxILevel = 20,
+          ItemIDs = {
+            [10940] = { --strange-dust
+              Percent = 75,
+              QuantityText = "2-3x"
+            },
+            [10939] = { -- greater-magic-essence
+              Percent = 20,
+              QuantityText = "1-2x"
+            },
+            [10978] = { --small-glimmering-shard
+              Percent = 5,
+              QuantityText = "1-2x"
+            }
+          }
+        },
+        {
+          MinILevel = 21,
+          MaxILevel = 25,
+          ItemIDs = {
+            [10940] = { --strange-dust
+              Percent = 75,
+              QuantityText = "4-6x"
+            },
+            [10998] = { -- lesser-astral-essence
+              Percent = 15,
+              QuantityText = "1-2x"
+            },
+            [10978] = { --small-glimmering-shard
+              Percent = 10,
+              QuantityText = "1-2x"
+            }
+          }
+        },
+        {
+          MinILevel = 26,
+          MaxILevel = 30,
+          ItemIDs = {
+            [11083] = { --soul-dust
+              Percent = 75,
+              QuantityText = "1-2x"
+            },
+            [11082] = { -- greater-astral-essence
+              Percent = 20,
+              QuantityText = "1-2x"
+            },
+            [11084] = { --large-glimmering-shard
+              Percent = 5,
+              QuantityText = "1-2x"
+            }
+          }
+        },
+      },
+      [LogBookEnchanting:LBE_i18n("Weapon")] = {
+        {
+          MinILevel = 5,
+          MaxILevel = 15,
+          ItemIDs = {
+            [10940] = { --strange-dust
+              Percent = 20,
+              QuantityText = "1-2x"
+            },
+            [10938] = { -- lesser-magic-essence
+              Percent = 80,
+              QuantityText = "1-2x"
+            },
+          }
+        },
+        {
+          MinILevel = 16,
+          MaxILevel = 20,
+          ItemIDs = {
+            [10940] = { --strange-dust
+              Percent = 20,
+              QuantityText = "2-3x"
+            },
+            [10939] = { -- greater-magic-essence
+              Percent = 75,
+              QuantityText = "1-2x"
+            },
+            [10978] = { --small-glimmering-shard
+              Percent = 5,
+              QuantityText = "1x"
+            }
+          }
+        },
+        {
+          MinILevel = 21,
+          MaxILevel = 25,
+          ItemIDs = {
+            [10940] = { --strange-dust
+              Percent = 15,
+              QuantityText = "4-6x"
+            },
+            [10998] = { -- lesser-astral-essence
+              Percent = 75,
+              QuantityText = "1-2x"
+            },
+            [10978] = { --small-glimmering-shard
+              Percent = 10,
+              QuantityText = "1x"
+            }
+          }
+        },
+        {
+          MinILevel = 26,
+          MaxILevel = 30,
+          ItemIDs = {
+            [11083] = { --soul-dust
+              Percent = 20,
+              QuantityText = "1-2x"
+            },
+            [11082] = { -- greater-astral-essence
+              Percent = 75,
+              QuantityText = "1-2x"
+            },
+            [11084] = { --large-glimmering-shard
+              Percent = 5,
+              QuantityText = "1x"
+            }
+          }
+        },
+      }
+    },
+    RARE = {
+      [LogBook:LB_i18n("All")] = {
+        {
+          MinILevel = 1,
+          MaxILevel = 25,
+          ItemIDs = {
+            [10978] = {
+              Percent = 100,
+              QuantityText = "1x"
+            },
+          },
+        },
+        {
+          MinILevel = 26,
+          MaxILevel = 30,
+          ItemIDs = {
+            [11084] = {
+              Percent = 100,
+              QuantityText = "1x"
+            },
+          },
+        },
+        {
+          MinILevel = 31,
+          MaxILevel = 35,
+          ItemIDs = {
+            [11138] = {
+              Percent = 100,
+              QuantityText = "1x"
+            },
+          },
+        },
+      },
+    },
+  }
+end

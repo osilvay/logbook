@@ -117,7 +117,31 @@ function LBE_Settings:Initialize()
               LogBookEnchanting.db.char.general.enchanting.itemsToShow = value
             end,
           },
-          pressKeyDownGroup = _LBE_Settings:CreateKeyDownDropdownConfig(5)
+          showExpectedEssences = {
+            type = "toggle",
+            order = 5,
+            name = LogBookEnchanting:LBE_i18n("Show expected essences"),
+            desc = LogBookEnchanting:LBE_i18n("Toggle showing of expected essences on items."),
+            width = "full",
+            disabled = function() return (not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled); end,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.showExpectedEssences end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.showExpectedEssences = value
+            end,
+          },
+          showRealEssences = {
+            type = "toggle",
+            order = 6,
+            name = LogBookEnchanting:LBE_i18n("Show real essences"),
+            desc = LogBookEnchanting:LBE_i18n("Toggle showing of real essences on items."),
+            width = "full",
+            disabled = function() return (not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled); end,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.showRealEssences end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.showRealEssences = value
+            end,
+          },
+          pressKeyDownGroup = _LBE_Settings:CreateKeyDownDropdownConfig(7)
         },
       },
       database_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Database"), 88, LogBookEnchanting:GetAddonColor()),
