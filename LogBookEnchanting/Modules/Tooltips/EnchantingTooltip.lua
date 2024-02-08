@@ -26,7 +26,6 @@ function LBE_EnchantingTooltip:Initialize()
     hooksecurefunc(GameTooltip, "SetItemKey", LBE_EnchantingTooltip.SetItemKey)
   end
   hooksecurefunc(GameTooltip, "SetHyperlink", LBE_EnchantingTooltip.SetHyperlink)
-
   --[[
   SetBuybackItem
   SetMerchantItem
@@ -173,8 +172,9 @@ function LBE_EnchantingTooltip.ShowTooltip(item)
     isStored = true
   end
 
+  local _, _, itemQuality, _, _, itemType, _, _, _, _, _, _, _, _, _, _, _ = GetItemInfo(itemID)
+  if itemQuality < 2 then return end
   if isEssence == false and isItem == false then
-    local _, _, _, _, _, itemType, _, _, _, _, _, _, _, _, _, _, _ = GetItemInfo(itemID)
     --(string.format("%s = itemType", tostring(itemType)))
     if itemType == LogBookEnchanting:LBE_i18n("Armor") or itemType == LogBookEnchanting:LBE_i18n("Weapon") then
       isItem = true

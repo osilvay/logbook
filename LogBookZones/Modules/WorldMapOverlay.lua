@@ -129,7 +129,7 @@ end
 
 local minNormalizedIntensity = 0.20
 local maxNormalizedIntensity = 0.60
-local intensitySteps = 6
+local intensitySteps = 5
 ---Build zones overlay
 ---@param mapID number?
 ---@return table overlay
