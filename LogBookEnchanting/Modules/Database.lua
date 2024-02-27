@@ -194,33 +194,54 @@ function LBE_Database:UpdateEssenceWithItems(itemID, itemInEssence, currentEssen
 end
 
 --[[
-    https://wowwiki-archive.fandom.com/wiki/Disenchanting_tables
-    UNCOMMON
+  https://wowwiki-archive.fandom.com/wiki/Disenchanting_tables
 
-  5-15	[Strange Dust]	80,00 %	1-2x	[Lesser Magic Essence]	20,00 %	1-2x			1-2x
-  16-20	[Strange Dust]	75,00 %	2-3x	[Greater Magic Essence]	20,00 %	1-2x	[Small Glimmering Shard]	5,00 %	1-2x
-  21-25	[Strange Dust]	75,00 %	4-6x	[Lesser Astral Essence]	15,00 %	1-2x	[Small Glimmering Shard]	10,00 %	1-2x
-  26-30	[Soul Dust]	75,00 %	1-2x	[Greater Astral Essence]	20,00 %	1-2x	[Large Glimmering Shard]	5,00 %	1-2x
+  UNCOMMON
 
-  26-30	[Strange Dust]	20,00 %	1-2x	[Lesser Magic Essence]	80,00 %	1-2x			
-  21-25	[Strange Dust]	20,00 %	2-3x	[Greater Magic Essence]	75,00 %	1-2x	[Small Glimmering Shard]	5,00 %	1x
-  16-20	[Strange Dust]	15,00 %	4-6x	[Lesser Astral Essence]	75,00 %	1-2x	[Small Glimmering Shard]	10,00 %	1x
-  26-30	[Soul Dust]	20,00 %	1-2x	[Greater Astral Essence]	75,00 %	1-2x	[Large Glimmering Shard]	5,00 %	1x
+  Armor
+  5-15     [Strange Dust]    80 %    1-2x    [Lesser Magic Essence]      20 %    1-2x
+  16-20    [Strange Dust]    75 %    2-3x    [Greater Magic Essence]     20 %    1-2x    [Small Glimmering Shard]    5 %    1-2x
+  21-25    [Strange Dust]    75 %    4-6x    [Lesser Astral Essence]     15 %    1-2x    [Small Glimmering Shard]    10 %   1-2x
+  26-30    [Soul Dust]       75 %    1-2x    [Greater Astral Essence]    20 %    1-2x    [Large Glimmering Shard]    5 %    1-2x
+  31-35    [Soul Dust]       75 %    2-5x    [Lesser Mystic Essence]     20 %    1-2x    [Small Glowing Shard]       5 %    1-2x
+  36-40    [Vision Dust]     75 %    1-2x    [Greater Mystic Essence]    20 %    1-2x    [Large Glowing Shard]       5 %    1-2x
+  41-45    [Vision Dust]     75 %    2-5x    [Lesser Nether Essence]     20 %    1-2x    [Small Radiant Shard]       5 %    1-2x
+
+  Weapon
+  26-30    [Strange Dust]    20 %    1-2x    [Lesser Magic Essence]      80 %    1-2x
+  21-25    [Strange Dust]    20 %    2-3x    [Greater Magic Essence]     75 %    1-2x    [Small Glimmering Shard]    5 %    1x
+  16-20    [Strange Dust]    15 %    4-6x    [Lesser Astral Essence]     75 %    1-2x    [Small Glimmering Shard]    10 %   1x
+  26-30    [Soul Dust]       20 %    1-2x    [Greater Astral Essence]    75 %    1-2x    [Large Glimmering Shard]    5 %    1x
+  31-35    [Soul Dust]       20 %    2-5x    [Lesser Mystic Essence]     75 %    1-2x    [Small Glowing Shard]       5 %    1x
+  36-40    [Vision Dust]     20 %    1-2x    [Greater Mystic Essence]    75 %    1-2x    [Large Glowing Shard]       5 %    1x
+  41-45    [Vision Dust]     20 %    2-5x    [Lesser Nether Essence]     75 %    1-2x    [Small Radiant Shard]       5 %    1x
 
   RARE
-  1-25 	[Small Glimmering Shard] 	100% 	1x
-  26-30 	[Large Glimmering Shard] 	100% 	1x
-  31-35 	[Small Glowing Shard] 	100% 	1x
+
+  1-25     [Small Glimmering Shard]     100 %     1x
+  26-30    [Large Glimmering Shard]     100 %     1x
+  31-35    [Small Glowing Shard]        100 %     1x
+  36-40    [Large Glowing Shard]        100 %    1x
+  41-45    [Small Radiant Shard]        100 %    1x
 
   [10940] = { --strange-dust
   [11083] = { --soul-dust
-  [10938] = { -- lesser-magic-essence
-  [10939] = { -- greater-magic-essence
+  [11137] = { --vision-dust
+
+  [10938] = { --lesser-magic-essence
   [10998] = { --lesser-astral-essence
+  [11134] = { --lesser-mystic-essence
+  [11174] = { --lesser-nether-essence
+
+  [10939] = { --greater-magic-essence
   [11082] = { --greater-astral-essence
+  [11135] = { --greater-mystic-essence
+
   [10978] = { --small-glimmering-shard
   [11084] = { --large-glimmering-shard
   [11138] = { --small-glowing-shard
+  [11139] = { --large-glowing-shard
+  [11177] = { --small-radiant-shard
 ]]
 function LBE_Database:GetExpectedDisenchantData()
   return {
@@ -294,6 +315,60 @@ function LBE_Database:GetExpectedDisenchantData()
             }
           }
         },
+        {
+          MinILevel = 31,
+          MaxILevel = 35,
+          ItemIDs = {
+            [11083] = { --soul-dust
+              Percent = 75,
+              QuantityText = "2-5x"
+            },
+            [11134] = { --lesser-mystic-essence
+              Percent = 20,
+              QuantityText = "1-2x"
+            },
+            [11138] = { --small-glowing-shard
+              Percent = 5,
+              QuantityText = "1x"
+            }
+          }
+        },
+        {
+          MinILevel = 36,
+          MaxILevel = 40,
+          ItemIDs = {
+            [11137] = { --vision-dust
+              Percent = 75,
+              QuantityText = "1-2x"
+            },
+            [11135] = { --greater-mystic-essence
+              Percent = 20,
+              QuantityText = "1-2x"
+            },
+            [11139] = { --large-glowing-shard
+              Percent = 5,
+              QuantityText = "1x"
+            }
+          }
+        },
+        {
+          MinILevel = 41,
+          MaxILevel = 45,
+          ItemIDs = {
+            [11083] = { --vision-dust
+              Percent = 75,
+              QuantityText = "2-5x"
+            },
+            [11174] = { --lesser-nether-essence
+              Percent = 20,
+              QuantityText = "1-2x"
+            },
+            [11177] = { --small-radiant-shard
+              Percent = 5,
+              QuantityText = "1x"
+            }
+          }
+        },
       },
       [LogBookEnchanting:LBE_i18n("Weapon")] = {
         {
@@ -364,6 +439,60 @@ function LBE_Database:GetExpectedDisenchantData()
             }
           }
         },
+        {
+          MinILevel = 31,
+          MaxILevel = 35,
+          ItemIDs = {
+            [11083] = { --soul-dust
+              Percent = 20,
+              QuantityText = "2-5x"
+            },
+            [11134] = { --lesser-mystic-essence
+              Percent = 75,
+              QuantityText = "1-2x"
+            },
+            [11138] = { --small-glowing-shard
+              Percent = 5,
+              QuantityText = "1x"
+            }
+          }
+        },
+        {
+          MinILevel = 36,
+          MaxILevel = 40,
+          ItemIDs = {
+            [11083] = { --vision-dust
+              Percent = 20,
+              QuantityText = "1-2x"
+            },
+            [11135] = { --greater-mystic-essence
+              Percent = 75,
+              QuantityText = "1-2x"
+            },
+            [11139] = { --large-glowing-shard
+              Percent = 5,
+              QuantityText = "1x"
+            }
+          }
+        },
+        {
+          MinILevel = 41,
+          MaxILevel = 45,
+          ItemIDs = {
+            [11083] = { --vision-dust
+              Percent = 20,
+              QuantityText = "2-5x"
+            },
+            [11174] = { --lesser-nether-essence
+              Percent = 75,
+              QuantityText = "1-2x"
+            },
+            [11177] = { --small-radiant-shard
+              Percent = 5,
+              QuantityText = "1x"
+            }
+          }
+        },
       }
     },
     RARE = {
@@ -393,6 +522,26 @@ function LBE_Database:GetExpectedDisenchantData()
           MaxILevel = 35,
           ItemIDs = {
             [11138] = {
+              Percent = 100,
+              QuantityText = "1x"
+            },
+          },
+        },
+        {
+          MinILevel = 36,
+          MaxILevel = 40,
+          ItemIDs = {
+            [11139] = {
+              Percent = 100,
+              QuantityText = "1x"
+            },
+          },
+        },
+        {
+          MinILevel = 41,
+          MaxILevel = 45,
+          ItemIDs = {
+            [11177] = {
               Percent = 100,
               QuantityText = "1x"
             },

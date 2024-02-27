@@ -14,9 +14,6 @@ local GameTooltip = GameTooltip
 
 local PercentByQualityAndLevel = {}
 
-
-
-
 function LBE_EnchantingTooltip:Initialize()
   PercentByQualityAndLevel = LBE_Database:GetExpectedDisenchantData()
   hooksecurefunc(GameTooltip, "SetBagItem", LBE_EnchantingTooltip.SetBagItem)
@@ -173,7 +170,7 @@ function LBE_EnchantingTooltip.ShowTooltip(item)
   end
 
   local _, _, itemQuality, _, _, itemType, _, _, _, _, _, _, _, _, _, _, _ = GetItemInfo(itemID)
-  if itemQuality < 2 then return end
+  if itemQuality == nil or itemType == nil or itemQuality < 2 then return end
   if isEssence == false and isItem == false then
     --(string.format("%s = itemType", tostring(itemType)))
     if itemType == LogBookEnchanting:LBE_i18n("Armor") or itemType == LogBookEnchanting:LBE_i18n("Weapon") then
@@ -232,8 +229,10 @@ function LBE_EnchantingTooltip.ProcessIsItem(itemID, isShowTitle, titleText, ite
 
   if LogBookEnchanting.db.char.general.enchanting.showExpectedEssences then
     local itemExpectedData = LBE_EnchantingTooltip.ProcessIsItemExpectedData(itemID) or {}
-    table.sort(itemExpectedData, function(a, b) return a.ItemQuality < b.ItemQuality end)
     --LogBook:Dump(itemExpectedData)
+    if LB_CustomFunctions:TableLength(itemExpectedData) > 0 then
+      table.sort(itemExpectedData, function(a, b) return a.ItemQuality ~= nil and b.ItemQuality ~= nil and a.ItemQuality < b.ItemQuality end)
+    end
 
     GameTooltip:AddLine(string.format("|cff999999%s|r", LogBookEnchanting:LBE_i18n("Expected")))
     if LB_CustomFunctions:TableLength(itemExpectedData) == 0 then
