@@ -22,6 +22,9 @@ function LB_CustomColors:CustomClassColors(color_index)
   return customClassColors[color_index]
 end
 
+---Custom bright colors
+---@param color_index string
+---@return string
 function LB_CustomColors:CustomClassBrightColors(color_index)
   local customClassColors = {
     DRUID = "FFFC9F4E",
@@ -103,6 +106,17 @@ function LB_CustomColors:CustomColors(color_index)
     DISABLED = "FFE02000",
   };
   return customColors[color_index]
+end
+
+function LB_CustomColors:CustomUnitClassificationColors(color_index)
+  local customUnitClassificationColors = {
+    rare = "FF926BC9",
+    rareelite = "FFA967BD",
+    boss = "FFCA435E",
+    elite = "FFDB7AC0",
+    normal = "FF84C19E"
+  };
+  return customUnitClassificationColors[color_index]
 end
 
 ---Converts hex to rgb

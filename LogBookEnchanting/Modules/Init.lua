@@ -10,6 +10,9 @@ local LBE_EnchantingWindow = LB_ModuleLoader:ImportModule("LBE_EnchantingWindow"
 ---@type LBE_Database
 local LBE_Database = LB_ModuleLoader:ImportModule("LBE_Database")
 
+---@type LBE_EnchantingTooltip
+local LBE_EnchantingTooltip = LB_ModuleLoader:ImportModule("LBE_EnchantingTooltip")
+
 local updateDbTimeout
 
 -- called by the PLAYER_LOGIN event handler
@@ -17,6 +20,8 @@ function LBE_Init:Initialize()
   LBE_Track:Initialize()
   LBE_EnchantingWindow:Initialize()
   LBE_Database:Initialize()
+  LBE_EnchantingTooltip:Initialize()
+
   if LogBookEnchanting.db.char.general.enchanting.autoUpdateDb then
     C_Timer.After(0.1, function()
       LBE_Database:StartAutoUpdateDatabase()

@@ -2,9 +2,9 @@ local L = LibStub("AceLocale-3.0"):NewLocale("LogBookLoot", "enUS", true)
 
 if not L then return end
 
+L["Loot"] = true
 L["Total"] = true
 L["Saved values"] = true
-L["Loot"] = true
 L["Tracking"] = true
 L["Enable tracking"] = true
 L["Toggle tracking loot."] = true
@@ -14,6 +14,13 @@ L["Show title"] = true
 L["Toggle showing title."] = true
 L["Show ItemID"] = true
 L["Toggle showing item ids."] = true
+L["Auto update Database"] = true
+L["Toggle update database automatically."] = true
+L["Database update time"] = true
+L["Sets how often the enchanting database is updated (in minutes)."] = true
+L["Manual database update"] = true
+L["Update loot database manually."] = true
+L["loots"] = true
 L["Disabled"] = true
 L["Enabled"] = true
 L["|c%s%s|r loot tracking"] = true
@@ -29,3 +36,5 @@ L["Loot list"] = true
 L["Filter"] = true
 L["Back"] = true
 L["Settings"] = true
+L["Items to show"] = true
+L["Items to show in tooltip."] = true

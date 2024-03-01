@@ -99,10 +99,80 @@ function LBL_Settings:Initialize()
               LogBookLoot.db.char.general.loot.showItemID = value
             end,
           },
+          itemsToShow = {
+            type = "range",
+            order = 4,
+            name = LogBookLoot:LBL_i18n("Items to show"),
+            desc = LogBookLoot:LBL_i18n("Items to show in tooltip."),
+            width = "full",
+            min = 1,
+            max = 20,
+            step = 1,
+            disabled = function() return (not LogBookLoot.db.char.general.loot.tooltipsEnabled); end,
+            get = function() return LogBookLoot.db.char.general.loot.itemsToShow end,
+            set = function(info, value)
+              LogBookLoot.db.char.general.loot.itemsToShow = value
+            end,
+          },
           pressKeyDownGroup = _LBL_Settings:CreateKeyDownDropdownConfig(5)
         },
       },
-      maintenance_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Maintenance"), 98, LogBookFishing:GetAddonColor()),
+      database_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Database"), 88, LogBookLoot:GetAddonColor()),
+      database = {
+        type = "group",
+        order = 89,
+        inline = true,
+        name = "",
+        args = {
+          autoUpdateDb = {
+            type = "toggle",
+            order = 1,
+            name = LogBookLoot:LBL_i18n("Auto update Database"),
+            desc = LogBookLoot:LBL_i18n("Toggle update database automatically."),
+            width = "full",
+            disabled = false,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.autoUpdateDb end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.autoUpdateDb = value
+              if value then
+                C_Timer.After(0.1, function()
+                  LBL_Database:StartAutoUpdateDatabase()
+                end)
+              else
+                C_Timer.After(0.1, function()
+                  LBL_Database:CancelAutoUpdateDatabase()
+                end)
+              end
+            end,
+          },
+          updateDbTimeout = {
+            type = "range",
+            order = 2,
+            name = LogBookLoot:LBL_i18n("Database update time"),
+            desc = LogBookLoot:LBL_i18n("Sets how often the enchanting database is updated (in minutes)."),
+            width = "full",
+            min = 5,
+            max = 60,
+            step = 1,
+            disabled = function() return (not LogBookEnchanting.db.char.general.enchanting.autoUpdateDb); end,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.updateDbTimeout end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.updateDbTimeout = value
+            end,
+          },
+          separator_1 = LB_CustomFrames:Spacer(2.5, false),
+          executeUpdateDb = {
+            type = "execute",
+            order = 3,
+            name = LogBookLoot:LBL_i18n("Manual database update"),
+            desc = LogBookLoot:LBL_i18n("Update loot database manually."),
+            width = "full",
+            disabled = false,
+            func = function() return LBL_Database:UpdateDatabase() end,
+          },
+        }
+      },
+      maintenance_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Maintenance"), 98, LogBookLoot:GetAddonColor()),
       maintenance = {
         type = "group",
         order = 99,

@@ -29,6 +29,8 @@ function LBL_SettingsDefaults:Load()
           showTitle = true,
           showItemID = true,
           pressKeyDown = "2_alt",
+          updateDbTimeout = 15,
+          itemsToShow = 5,
         },
       },
     },

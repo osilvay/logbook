@@ -37,6 +37,16 @@ function LogBookLoot:Print(message)
   print("|cffffffffLog|r|cff57b6ffBook|r|cffe38d4fLoot|r: " .. message)
 end
 
+---Return addon colored
+---@param message? string
+function LogBookLoot:MessageWithAddonColor(message)
+  if message == nil then
+    return AddonColor
+  else
+    return string.format("|c%s%s|r", AddonColor, message)
+  end
+end
+
 ---Gets addon color
 function LogBookLoot:GetAddonColor()
   return AddonColor

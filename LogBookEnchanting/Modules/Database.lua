@@ -11,7 +11,7 @@ local essences = {}
 local items = {}
 
 function LBE_Database:Initialize()
-  C_Timer.After(0.1, function()
+  C_Timer.After(1, function()
     LBE_Database:UpdateDatabase(false)
   end)
 end

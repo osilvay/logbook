@@ -176,7 +176,7 @@ function LBE_Settings:Initialize()
             type = "range",
             order = 2,
             name = LogBookEnchanting:LBE_i18n("Database update time"),
-            desc = LogBookEnchanting:LBE_i18n("Sets how often the enchanting database is updated."),
+            desc = LogBookEnchanting:LBE_i18n("Sets how often the enchanting database is updated (in minutes)."),
             width = "full",
             min = 5,
             max = 60,

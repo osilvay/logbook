@@ -104,14 +104,14 @@ function LBL_TrackLoot:ProcessLootReady()
         --if guidType ~= "Item" then
         if not LBL_TrackLoot:PartOfPreviousLoot(sources[j]) then
           local loot = Loots[itemID]
-          local Mobs
+          local Mobs = {}
           if loot == nil then
             loot = {
               Mobs = {}
             }
             loot.ItemName = lootName
             loot.Quality = lootQuality
-            loot.Quantity = 0
+            loot.Quantity = lootQuantity
             loot.Type = slotType
             loot.ItemLink = lootLink
             loot.ItemID = itemID
@@ -127,15 +127,12 @@ function LBL_TrackLoot:ProcessLootReady()
 
           local mobGUID = sources[j]
 
-          if Mobs == nil then
-            Mobs = {}
-          end
-
           local mob = Mobs[mobGUID] or {}
           if next(mob) == nil then
             mob.GUID = mobGUID
           end
 
+          --[[
           local mobQuantity
           if #sources > 2
           then
@@ -143,14 +140,15 @@ function LBL_TrackLoot:ProcessLootReady()
           else
             mobQuantity = lootQuantity
           end
-
           mob.Quantity = mobQuantity
+          loot.Quantity = loot.Quantity + mobQuantity
+          ]]
+
           mob.GUIDType = guidType
           mob.IsCreature = guidType == "Creature" or guidType == "Vehicle"
           if not mob.IsCreature then
             mob.Name = GameTooltipTextLeft1:GetText()
           end
-          loot.Quantity = loot.Quantity + mobQuantity
 
           if mob.IsCreature then
             local mobDetails = LBM_TrackMobs:GetMobDetailsByGUID(mob.GUID) or {}
