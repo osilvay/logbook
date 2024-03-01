@@ -41,7 +41,7 @@ function LB_CustomColors:CustomClassBrightColors(color_index)
 end
 
 ---Custom quality colors
----@param quality_index string
+---@param quality_index number
 ---@return string color
 function LB_CustomColors:CustomQualityColors(quality_index)
   local customQualityColors = {
@@ -113,6 +113,7 @@ function LB_CustomColors:CustomUnitClassificationColors(color_index)
     rare = "FF926BC9",
     rareelite = "FFA967BD",
     boss = "FFCA435E",
+    worldboss = "FFCE885C",
     elite = "FFDB7AC0",
     normal = "FF84C19E"
   };

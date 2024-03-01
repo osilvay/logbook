@@ -31,6 +31,25 @@ function LBL_SettingsDefaults:Load()
           pressKeyDown = "2_alt",
           updateDbTimeout = 15,
           itemsToShow = 5,
+          unitClassification = {
+            ["1_normal"] = true,
+            ["2_rare"] = true,
+            ["3_elite"] = true,
+            ["4_rareelite"] = true,
+            ["5_boss"] = true,
+            ["6_worldboss"] = true,
+          },
+          itemQuality = {
+            ["0"] = false,
+            ["1"] = false,
+            ["2"] = false,
+            ["3"] = false,
+            ["4"] = false,
+            ["5"] = false,
+            ["6"] = false,
+            ["7"] = false,
+            ["8"] = false
+          }
         },
       },
     },

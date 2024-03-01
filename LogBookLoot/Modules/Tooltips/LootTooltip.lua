@@ -101,9 +101,47 @@ end
 function LBL_LootTooltip.ProcessEntryList(results)
   local totalEntries = results.Total or 0
   local mobNames = results.MobNames or {}
-  local numItems = LB_CustomFunctions:TableLength(mobNames)
   local index = 0
-  for mobName, mobNameData in pairs(mobNames) do
+
+  local list = {}
+
+  -- filter by unit classification
+  local unitClassifications = LogBookLoot.db.char.general.loot.unitClassification or {}
+  local unitClassificationList = {}
+
+  for k, unitClassificationValue in pairs(unitClassifications) do
+    local unitClassificationKey = {}
+    local unitClassificationIndex = 1
+    for value in string.gmatch(k, "([^_]+)") do
+      unitClassificationKey[unitClassificationIndex] = value
+      unitClassificationIndex = unitClassificationIndex + 1
+    end
+    if unitClassificationValue then
+      table.insert(unitClassificationList, unitClassificationKey[2])
+    end
+  end
+
+  for mobName, currentMob in pairs(mobNames) do
+    currentMob.Name = currentMob
+
+    local filterPassed = false
+    if LB_CustomFunctions:TableHasValue(unitClassificationList, currentMob.Quality) then
+      filterPassed = true
+    end
+
+    if filterPassed then
+      table.insert(list, {
+        Name = mobName,
+        Quantity = currentMob.Quantity,
+        Percent = currentMob.Percent,
+        Quality = currentMob.Quality,
+      })
+    end
+  end
+  table.sort(list, function(a, b) return a.Quantity > b.Quantity end)
+  local numItems = LB_CustomFunctions:TableLength(list)
+
+  for _, mobNameData in pairs(list) do
     local percentageValues = {}
     local percentageIndex = 1
     for value in string.gmatch(mobNameData.Percent, "([^.]+)") do
@@ -115,7 +153,7 @@ function LBL_LootTooltip.ProcessEntryList(results)
     local unit_icon = "|TInterface\\AddOns\\LogBook\\Images\\" .. mobNameData.Quality .. ":16:16|t"
 
     local percentageText = string.format("|cfff1f1f1%s|r|cffc1c1c1.|r|cffa1a1a1%s|r", percentageValues[1], percentageValues[2] or "0")
-    local leftTextLine = string.format("%s |c%s%s|r |cff91c1f1x|r |cff6191f1%d|r", unit_icon, unitColor, mobName, mobNameData.Quantity)
+    local leftTextLine = string.format("%s |c%s%s|r |cff91c1f1x|r |cff6191f1%d|r", unit_icon, unitColor, mobNameData.Name, mobNameData.Quantity)
     local rightTextLine = string.format("%s", percentageText) .. "|cfff1b131%|r"
     GameTooltip:AddDoubleLine(leftTextLine, rightTextLine)
 
@@ -137,6 +175,19 @@ function LBL_LootTooltip.ShowTooltip(item)
   local results = currentItem.Result or {}
   local mobNames = results.MobNames or {}
   local numItems = LB_CustomFunctions:TableLength(mobNames)
+  if numItems == 0 then return end
+
+  -- filter by item quality
+  local itemQualities = LogBookLoot.db.char.general.loot.itemQuality or {}
+  local itemQualityList = {}
+
+  for k, itemQualityValue in pairs(itemQualities) do
+    if itemQualityValue then
+      table.insert(itemQualityList, k)
+    end
+  end
+
+  if not LB_CustomFunctions:TableHasValue(itemQualityList, tostring(currentItem.Quality)) then return end
 
   local isShowItemID = LogBookLoot.db.char.general.loot.showItemID
   local isShowTitle = LogBookLoot.db.char.general.loot.showTitle

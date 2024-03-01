@@ -89,9 +89,6 @@ function LBL_TrackLoot:ProcessLootReady()
         lootName = "Copper"
         lootQuality = -1
         --LogBook:Debug("Money : " .. tostring(lootQuantity))
-      elseif slotType == 1 --LOOT_SLOT_ITEM / Enum.LootSlotType.Item
-      then
-        lootQuality = lootQuality + 1
       end
 
       local sources = { GetLootSourceInfo(i) }
@@ -131,18 +128,6 @@ function LBL_TrackLoot:ProcessLootReady()
           if next(mob) == nil then
             mob.GUID = mobGUID
           end
-
-          --[[
-          local mobQuantity
-          if #sources > 2
-          then
-            mobQuantity = sources[j + 1]
-          else
-            mobQuantity = lootQuantity
-          end
-          mob.Quantity = mobQuantity
-          loot.Quantity = loot.Quantity + mobQuantity
-          ]]
 
           mob.GUIDType = guidType
           mob.IsCreature = guidType == "Creature" or guidType == "Vehicle"

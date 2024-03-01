@@ -20,6 +20,8 @@ Modules\Database.lua
 
 Modules\Settings\SettingsDefaults.lua
 Modules\Settings\LootTab\LootTab.lua
+Modules\Settings\LootTab\ConfigGroups.lua
+Modules\Settings\LootTab\groups\TooltipGroup.lua
 
 Modules\Tooltips\LootTooltip.lua
 

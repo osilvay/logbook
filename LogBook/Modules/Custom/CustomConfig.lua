@@ -189,3 +189,30 @@ function LB_CustomConfig:KeyDownDropdownConfig()
     ["8_shiftControl"] = LogBook:LB_i18n("Shift + Control"),
   }
 end
+
+---Create key drop down config group
+---@param order number
+---@param disabled? boolean
+---@return table
+function LB_CustomConfig:CreateKeyDownDropdownConfig(order, disabled)
+  return {
+    type = "group",
+    order = order,
+    inline = true,
+    name = "",
+    args = {
+      pressKeyDown = {
+        type = "select",
+        order = 1,
+        width = 1,
+        name = LogBook:LB_i18n("Press key to show"),
+        values = LB_CustomConfig:KeyDownDropdownConfig(),
+        disabled = false,
+        get = function() return LogBookLoot.db.char.general.loot.pressKeyDown end,
+        set = function(info, value)
+          LogBookLoot.db.char.general.loot.pressKeyDown = value
+        end,
+      }
+    }
+  }
+end
