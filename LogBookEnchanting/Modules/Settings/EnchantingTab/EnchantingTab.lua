@@ -154,8 +154,8 @@ function LBE_Settings:Initialize()
           autoUpdateDb = {
             type = "toggle",
             order = 1,
-            name = LogBookEnchanting:LBE_i18n("Auto update Database"),
-            desc = LogBookEnchanting:LBE_i18n("Toggle update database automatically."),
+            name = LogBook:LB_i18n("Auto update database"),
+            desc = LogBook:LB_i18n("Toggle update database automatically."),
             width = "full",
             disabled = false,
             get = function() return LogBookEnchanting.db.char.general.enchanting.autoUpdateDb end,
@@ -175,8 +175,8 @@ function LBE_Settings:Initialize()
           updateDbTimeout = {
             type = "range",
             order = 2,
-            name = LogBookEnchanting:LBE_i18n("Database update time"),
-            desc = LogBookEnchanting:LBE_i18n("Sets how often the enchanting database is updated (in minutes)."),
+            name = LogBook:LB_i18n("Database update time"),
+            desc = LogBook:LB_i18n("Sets how often the database is updated (in minutes)."),
             width = "full",
             min = 5,
             max = 60,
@@ -191,8 +191,8 @@ function LBE_Settings:Initialize()
           executeUpdateDb = {
             type = "execute",
             order = 3,
-            name = LogBookEnchanting:LBE_i18n("Manual database update"),
-            desc = LogBookEnchanting:LBE_i18n("Update enchanting database manually."),
+            name = LogBook:LB_i18n("Manual database update"),
+            desc = LogBook:LB_i18n("Update database manually."),
             width = "full",
             disabled = false,
             func = function() return LBE_Database:UpdateDatabase() end,

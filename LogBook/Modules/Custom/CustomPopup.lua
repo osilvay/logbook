@@ -6,7 +6,7 @@ _LB_CustomPopup.popup = nil
 
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
-local isOpened
+local isOpened = false
 local _CreateNoteWindow, _CreateContainer, _CreateDescription, _CreateButtonContainer, _CreateSeparator, _CreateAcceptButton, _CreateCancelButton
 local title, description, _acceptFn
 
@@ -18,6 +18,9 @@ function LB_CustomPopup:CreatePopup(customTitle, customDescription, customAccept
   if not _LB_CustomPopup.popup then
     _LB_CustomPopup.popup = _CreatePopupWindow()
     _LB_CustomPopup.popup:Hide()
+  else
+    _LB_CustomPopup.popup:ReleaseChildren()
+    LB_CustomPopup:CreateWindowContent(_LB_CustomPopup.popup)
   end
   C_Timer.After(0.1, function()
     LB_CustomPopup:ShowPopup()
@@ -28,29 +31,45 @@ function LB_CustomPopup:ShowPopup()
   if not _LB_CustomPopup.popup:IsShown() then
     _LB_CustomPopup.popup:Show()
     isOpened = true
+    --LogBook:Debug("ShowPopup " .. tostring(isOpened))
   else
+    _LB_CustomPopup.popup:Hide()
+    isOpened = false
+    --LogBook:Debug("ShowPopup " .. tostring(isOpened))
+  end
+end
+
+function LB_CustomPopup:CancelPopup()
+  --LogBook:Debug("Cancel popup")
+  if _LB_CustomPopup.popup then
     _LB_CustomPopup.popup:Hide()
     isOpened = false
   end
 end
 
 function LB_CustomPopup:IsOpened()
+  --LogBook:Debug("IsOpened " .. tostring(isOpened))
   return isOpened
 end
 
-_CreatePopupWindow     = function()
+_CreatePopupWindow = function()
   ---@type AceGUIWindow
   local popup = AceGUI:Create("Window")
   popup:Show()
   popup:SetTitle(title)
   popup:SetWidth(400)
-  popup:SetHeight(130)
+  popup:SetHeight(140)
   popup:EnableResize(false)
   popup.frame:Raise()
   popup:SetCallback("OnClose", function()
     popup:Hide()
   end)
+  LB_CustomPopup:CreateWindowContent(popup)
 
+  return popup
+end
+
+function LB_CustomPopup:CreateWindowContent(popup)
   local container = _CreateContainer()
   popup:AddChild(container)
 
@@ -59,8 +78,6 @@ _CreatePopupWindow     = function()
 
   local buttonContainer = _CreateButtonContainer()
   container:AddChild(buttonContainer)
-
-  return popup
 end
 
 ---Create container
@@ -69,7 +86,7 @@ _CreateContainer       = function()
   ---@type AceGUISimpleGroup
   local container = AceGUI:Create("SimpleGroup")
   container:SetWidth(400)
-  container:SetHeight(130)
+  container:SetHeight(140)
   container:SetLayout('Flow')
   container:SetAutoAdjustHeight(false)
   return container
@@ -81,12 +98,12 @@ _CreateDescription     = function()
   ---@type AceGUISimpleGroup
   local descContainer = AceGUI:Create("SimpleGroup")
   descContainer:SetWidth(400)
-  descContainer:SetHeight(40)
+  descContainer:SetHeight(60)
   descContainer:SetLayout('Flow')
   descContainer:SetAutoAdjustHeight(false)
 
-  -- Separator
-  descContainer:AddChild(_CreateSeparator(10, 40))
+  -- Separator <-
+  descContainer:AddChild(_CreateSeparator(10, 60))
 
   ---@type AceGUILabel
   local desc = AceGUI:Create("Label")
@@ -95,8 +112,8 @@ _CreateDescription     = function()
   desc:SetFullHeight(true)
   descContainer:AddChild(desc)
 
-  -- Separator
-  descContainer:AddChild(_CreateSeparator(10, 40))
+  -- Separator ->
+  descContainer:AddChild(_CreateSeparator(10, 60))
 
   return descContainer
 end

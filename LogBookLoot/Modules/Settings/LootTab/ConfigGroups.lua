@@ -4,6 +4,9 @@ local LBL_ConfigGroups = LB_ModuleLoader:CreateModule("LBL_ConfigGroups");
 ---@type LBL_TooltipGroup
 local LBL_TooltipGroup = LB_ModuleLoader:ImportModule("LBL_TooltipGroup")
 
+---@type LBL_DatabaseGroup
+local LBL_DatabaseGroup = LB_ModuleLoader:ImportModule("LBL_DatabaseGroup")
+
 ---Get
 ---@param key string
 ---@param method string
@@ -11,6 +14,8 @@ local LBL_TooltipGroup = LB_ModuleLoader:ImportModule("LBL_TooltipGroup")
 function LBL_ConfigGroups:Get(key, method)
   if key == "tooltips" then
     return LBL_ConfigGroups:Method(LBL_TooltipGroup, method)
+  elseif key == "database" then
+    return LBL_ConfigGroups:Method(LBL_DatabaseGroup, method)
   end
   return {}
 end

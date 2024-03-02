@@ -1,9 +1,6 @@
 ---@class LBL_TooltipGroup
 local LBL_TooltipGroup = LB_ModuleLoader:CreateModule("LBL_TooltipGroup");
 
----@type LBL_Settings
-local LBL_Settings = LB_ModuleLoader:ImportModule("LBL_Settings");
-
 ---@type LB_CustomConfig
 local LB_CustomConfig = LB_ModuleLoader:ImportModule("LB_CustomConfig")
 

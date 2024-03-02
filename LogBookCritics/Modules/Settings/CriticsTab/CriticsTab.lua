@@ -106,10 +106,10 @@ function LBC_Settings:Initialize()
 
         },
       },
-      tooltip_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Tooltips"), 2, LogBookCritics:GetAddonColor()),
+      tooltip_header = LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Tooltips"), 3, LogBookCritics:GetAddonColor()),
       toltips = {
         type = "group",
-        order = 3,
+        order = 4,
         inline = true,
         name = " ",
         args = {

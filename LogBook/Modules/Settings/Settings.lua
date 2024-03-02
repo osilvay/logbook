@@ -25,6 +25,9 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 ---@type LB_SettingsDefaults
 local LB_SettingsDefaults = LB_ModuleLoader:ImportModule("LB_SettingsDefaults");
 
+---@type LB_CustomPopup
+local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup");
+
 -- Forward declaration
 LB_Settings.tabs = { ... }
 
@@ -59,6 +62,9 @@ function LB_Settings:DrawSettingsFrame()
   logBookSettingsFrame:Hide()
   logBookSettingsFrame:SetCallback("OnClose", function(widget)
     PlaySound(840)
+    if LB_CustomPopup:IsOpened() then
+      LB_CustomPopup:CancelPopup()
+    end
   end)
 
   logBookSettingsFrame:Hide()

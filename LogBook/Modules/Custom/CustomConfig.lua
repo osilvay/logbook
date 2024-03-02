@@ -30,12 +30,12 @@ function LB_CustomConfig:CreateDeleteChararterConfig(characterList, deleteCharac
         type = "select",
         order = 1,
         width = "full",
-        name = LogBook:LB_i18n("Delete character data") .. " |cffff3300(" .. LogBook:LB_i18n("Reload required") .. ")|r",
+        name = LogBook:LB_i18n("Delete character data"),
         values = characterList,
         disabled = false,
         get = function() return nil end,
         set = function(info, value)
-          LB_CustomPopup:CreatePopup(LogBook:LB_i18n("Delete character"), string.format(LogBook:LB_i18n("Are you sure you want to delete the character %s?"), currentCharacterList[value]) .. " |cffff3300" .. LogBook:LB_i18n("Reload required") .. "|r...", function()
+          LB_CustomPopup:CreatePopup(LogBook:LB_i18n("Delete character"), LogBook:LB_i18n("Are you sure you want to delete this character?") .. "\n\n" .. currentCharacterList[value] .. "\n\n|cffff3300" .. LogBook:LB_i18n("This operation can not be undone...") .. "|r", function()
             deleteCharacterFn(value)
           end)
         end,
@@ -137,10 +137,21 @@ end
 ---@return table config
 function LB_CustomConfig:CreateHeaderConfig(header, order, color)
   if color == nil then color = "fff1c100" end
-  return {
-    type = "header",
+  -- LB_CustomFrames:Spacer(order, hidden)
+  return
+  {
+    type = "group",
     order = order,
-    name = string.format("|c%s%s|r", color, header),
+    inline = true,
+    name = "",
+    args = {
+      spacer_1 = LB_CustomFrames:Spacer(1, false),
+      header = {
+        type = "header",
+        order = 2,
+        name = string.format("|c%s%s|r", color, header),
+      }
+    }
   }
 end
 
