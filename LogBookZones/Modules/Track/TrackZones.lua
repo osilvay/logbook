@@ -307,3 +307,9 @@ function LBZ_TrackZones:GetCurrentPersonalZone()
   }
   return string.format("%s - %s - %s", zoneResult.continent, zoneResult.name, zoneResult.subzone)
 end
+
+---Get current mapid
+---@return number?
+function LBZ_TrackZones:GetCurrentPersonalMapID()
+  return C_Map.GetBestMapForUnit("player")
+end

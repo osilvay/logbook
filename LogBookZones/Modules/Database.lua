@@ -26,3 +26,10 @@ function LBZ_Database:GetNumEntries()
     [LogBookZones:LBZ_i18n("Overlay paths")] = totalPaths,
   }
 end
+
+---Get zone info from zone index
+---@param zoneIndex string
+---@return table
+function LBZ_Database:GetZoneInfoFromZoneIndex(zoneIndex)
+  return LogBookZones.db.global.data.zones[zoneIndex] or {}
+end

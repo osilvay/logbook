@@ -16,6 +16,9 @@ local LBM_TrackMobs = LB_ModuleLoader:ImportModule("LBM_TrackMobs")
 ---@type LBZ_TrackZones
 local LBZ_TrackZones = LB_ModuleLoader:ImportModule("LBZ_TrackZones")
 
+---@type LBL_Database
+local LBL_Database = LB_ModuleLoader:ImportModule("LBL_Database")
+
 ---@type LBE_Database
 local LBE_Database = LB_ModuleLoader:ImportModule("LBE_Database")
 
@@ -24,7 +27,7 @@ local LootingInProgress = false
 local Loots = {}
 local RecentLoots = {}
 local TradeskillUsed = nil
-local CopperPerSilver = 10
+local CopperPerSilver = 100
 local SilverPerGold = 100
 local TradeSkillInfo = {}
 local IsTradeSkill = false
@@ -89,6 +92,9 @@ function LBL_TrackLoot:ProcessLootReady()
         lootName = "Copper"
         lootQuality = -1
         --LogBook:Debug("Money : " .. tostring(lootQuantity))
+      elseif slotType == 1 --LOOT_SLOT_ITEM / Enum.LootSlotType.Item
+      then
+        lootQuality = lootQuality + 1
       end
 
       local sources = { GetLootSourceInfo(i) }
@@ -129,6 +135,17 @@ function LBL_TrackLoot:ProcessLootReady()
             mob.GUID = mobGUID
           end
 
+          local mobQuantity
+          if #sources > 2
+          then
+            mobQuantity = sources[j + 1]
+          else
+            mobQuantity = lootQuantity
+          end
+          --LogBook:Debug("lootQuantity = " .. tostring(lootQuantity))
+          --LogBook:Debug("mobQuantity = " .. tostring(mobQuantity))
+
+          mob.Quantity = mobQuantity
           mob.GUIDType = guidType
           mob.IsCreature = guidType == "Creature" or guidType == "Vehicle"
           if not mob.IsCreature then
@@ -150,8 +167,9 @@ function LBL_TrackLoot:ProcessLootReady()
               ItemLockedInfo.Items = 1
               TradeSkillInfo.from[ItemLockedInfo.ItemID] = ItemLockedInfo
               loot.TradeSkillInfo = TradeSkillInfo
-            elseif TradeSkillInfo.name == "Mining" or TradeSkillInfo.name == "Herbalism" or TradeSkillInfo.name == "Fishing" then
+            elseif TradeSkillInfo.name == "Mining" or TradeSkillInfo.name == "Herbalism" or TradeSkillInfo.name == "Fishing" or TradeSkillInfo.name == "Skinning" then
               local ItemFrom = {
+                MapID = LBZ_TrackZones:GetCurrentPersonalMapID(),
                 Quality = loot.Quality,
                 Quantity = loot.Quantity,
                 Items = 1,
@@ -160,6 +178,7 @@ function LBL_TrackLoot:ProcessLootReady()
               if zoneIndex == nil then zoneIndex = UNKNOWN end
               ItemFrom.ZoneIndex = zoneIndex
               ItemLockedInfo.Quantity = loot.Quantity
+              ItemLockedInfo.Quality = loot.Quality
               ItemLockedInfo.Items = 1
               TradeSkillInfo.from[zoneIndex] = ItemFrom
               loot.TradeSkillInfo = TradeSkillInfo
@@ -278,9 +297,15 @@ function LBL_TrackLoot:StoreItemDetails(loot)
 
     --corrections
     if savedLoot then
+      if savedLoot.Quantity > 999999 then
+        savedLoot.Quantity = 0
+      end
+
       -- quantity
       local currentQuantity = (savedLoot.Quantity or 0) + (loot.Quantity or 0)
+      LogBook:Debug(loot.ItemID .. " - " .. loot.ItemName .. ": " .. tostring(loot.Quantity or 0) .. " + " .. (savedLoot.Quantity or 0) .. " = " .. tostring(currentQuantity))
       loot.Quantity = currentQuantity
+
 
       -- mobs
       local savedMobs = savedLoot.Mobs
@@ -322,22 +347,28 @@ function LBL_TrackLoot:StoreItemDetails(loot)
               savedFrom[currentItemID].Quantity = newQuantity
             end
           end
-        elseif TradeSkillInfo.name == "Mining" or TradeSkillInfo.name == "Herbalism" or TradeSkillInfo.name == "Fishing" then
+        elseif TradeSkillInfo.name == "Mining" or TradeSkillInfo.name == "Herbalism" or TradeSkillInfo.name == "Fishing" or TradeSkillInfo.name == "Skinning" then
           for currentZoneIndex, currentCurrentZone in pairs(currentFrom) do
             if savedFrom[currentZoneIndex] == nil then
               savedFrom[currentZoneIndex] = {
+                MapID = currentCurrentZone.MapID,
                 Items = currentCurrentZone.Items,
-                Quantity = currentCurrentZone.Quantity
+                Quantity = currentCurrentZone.Quantity,
+                Quality = currentCurrentZone.Quality
               }
             else
               local newItems = (currentFrom[currentZoneIndex].Items or 0) + (savedFrom[currentZoneIndex].Items or 0)
               local newQuantity = (currentFrom[currentZoneIndex].Quantity or 0) + (savedFrom[currentZoneIndex].Quantity or 0)
               savedFrom[currentZoneIndex] = {
+                MapID = currentFrom[currentZoneIndex].MapID,
                 Items = newItems,
-                Quantity = newQuantity
+                Quantity = newQuantity,
+                Quality = currentFrom[currentZoneIndex].Quality
               }
             end
           end
+        elseif TradeSkillInfo.name == "Skining" then
+
         end
         savedTradeSkillInfo.from = savedFrom
         savedTradeSkillInfo.name = currentTradeSkillInfo.name
@@ -351,9 +382,14 @@ function LBL_TrackLoot:StoreItemDetails(loot)
 
         loot.TradeSkillInfo = savedTradeSkillInfo
       end
+    else
+      LogBook:Debug(loot.ItemID .. " - " .. loot.ItemName .. ": " .. tostring(loot.Quantity or 0))
     end
     LogBookLoot.db.global.data.loot[itemID] = loot
-    LBE_Database:UpdateDatabase(true)
+    C_Timer.After(0.5, function()
+      LBE_Database:UpdateDatabase(true)
+      LBL_Database:UpdateDatabase(true)
+    end)
   end
 end
 

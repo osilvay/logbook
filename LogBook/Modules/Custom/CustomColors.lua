@@ -108,6 +108,9 @@ function LB_CustomColors:CustomColors(color_index)
   return customColors[color_index]
 end
 
+---Color by unit classification
+---@param color_index string
+---@return string
 function LB_CustomColors:CustomUnitClassificationColors(color_index)
   local customUnitClassificationColors = {
     rare = "FF926BC9",
@@ -116,6 +119,17 @@ function LB_CustomColors:CustomUnitClassificationColors(color_index)
     worldboss = "FFCE885C",
     elite = "FFDB7AC0",
     normal = "FF84C19E"
+  };
+  return customUnitClassificationColors[color_index]
+end
+
+function LB_CustomColors:CustomTradeskillColors(color_index)
+  local customUnitClassificationColors = {
+    Enchanting = "FFAE6BC9",
+    Herbalism = "FF84BD67",
+    Skinning = "FFCE885C",
+    Mining = "FFCA435E",
+    Fishing = "FF7A99DB",
   };
   return customUnitClassificationColors[color_index]
 end

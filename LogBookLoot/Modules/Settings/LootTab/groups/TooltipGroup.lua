@@ -7,6 +7,9 @@ local LB_CustomConfig = LB_ModuleLoader:ImportModule("LB_CustomConfig")
 ---@type LB_CustomColors
 local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 
+---@type LBL_Database
+local LBL_Database = LB_ModuleLoader:ImportModule("LBL_Database")
+
 function LBL_TooltipGroup:Header()
   return LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Tooltips"), 3, LogBookLoot:GetAddonColor())
 end
@@ -82,6 +85,7 @@ function LBL_TooltipGroup:Config()
         end,
         set = function(info, entry, value)
           LogBookLoot.db.char.general.loot[info[#info]][entry] = value
+          LBL_Database:UpdateDatabase(true)
         end,
       },
       itemQuality = {
@@ -99,6 +103,42 @@ function LBL_TooltipGroup:Config()
           LogBookLoot.db.char.general.loot[info[#info]][entry] = value
         end,
       },
+      --[[firstSortBy = {
+        type = "select",
+        order = 7,
+        width = 1,
+        name = LogBook:LB_i18n("First sort by"),
+        desc = LogBook:LB_i18n("First, sort by this value."),
+        values = {
+          ["1_none"] = LogBook:LB_i18n("None"),
+          ["2_unit_classfication"] = LogBookLoot:LBL_i18n("Unit classification"),
+          ["3_quantity"] = LogBookLoot:LBL_i18n("Quantity"),
+          ["4_name"] = LogBookLoot:LBL_i18n("Name"),
+        },
+        disabled = function() return (not LogBookLoot.db.char.general.loot.tooltipsEnabled); end,
+        get = function() return LogBookLoot.db.char.general.loot.firstSortBy end,
+        set = function(info, value)
+          LogBookLoot.db.char.general.loot.firstSortBy = value
+        end,
+      },
+      thenSortBy = {
+        type = "select",
+        order = 8,
+        width = 1,
+        name = LogBook:LB_i18n("Then sort by"),
+        desc = LogBook:LB_i18n("Then, sort by this value."),
+        values = {
+          ["1_none"] = LogBook:LB_i18n("None"),
+          ["2_unit_classfication"] = LogBookLoot:LBL_i18n("Unit classification"),
+          ["3_quantity"] = LogBookLoot:LBL_i18n("Quantity"),
+          ["4_name"] = LogBookLoot:LBL_i18n("Name"),
+        },
+        disabled = function() return (not LogBookLoot.db.char.general.loot.tooltipsEnabled); end,
+        get = function() return LogBookLoot.db.char.general.loot.thenSortBy end,
+        set = function(info, value)
+          LogBookLoot.db.char.general.loot.thenSortBy = value
+        end,
+      },]]
       pressKeyDownGroup = LB_CustomConfig:CreateKeyDownDropdownConfig(15, not LogBookLoot.db.char.general.loot.tooltipsEnabled)
     },
   }

@@ -7,6 +7,9 @@ local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 ---@type LB_CustomFunctions
 local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 
+---@type LBZ_Database
+local LBZ_Database = LB_ModuleLoader:ImportModule("LBZ_Database")
+
 local items = {}
 
 function LBL_Database:Initialize()
@@ -48,17 +51,28 @@ function LBL_Database:UpdateDatabase(silent)
   for itemID, currentLoot in pairs(lootDb) do
     local isTradeSkill = currentLoot["IsTradeSkill"] or false
     local mobs = currentLoot["Mobs"] or {}
-    if itemID ~= 0 and not LB_CustomFunctions:TableIsEmpty(mobs) then
+
+    if itemID ~= 0 then
       local processedMobs = {}
-      for mobIndex, mobData in pairs(mobs) do
-        table.insert(processedMobs, LBL_Database:UpdateMobsInItem(itemID, mobIndex, mobData))
+      if not LB_CustomFunctions:TableIsEmpty(mobs) then
+        for mobIndex, mobData in pairs(mobs) do
+          table.insert(processedMobs, LBL_Database:ProcessMobsInItem(itemID, mobIndex, mobData))
+        end
       end
-      local result = LBL_Database:ProcessMobsInItem(processedMobs)
+
+      local tradeskills = {}
+      local tradeSkillInfo = currentLoot["TradeSkillInfo"] or {}
+      if isTradeSkill and not LB_CustomFunctions:TableIsEmpty(tradeSkillInfo) then
+        tradeskills = LBL_Database:ProcessTradeSkillInItem(itemID, tradeSkillInfo)
+      end
+
+      local result = LBL_Database:ProcessResult(processedMobs, tradeskills)
       items[itemID] = {
         ItemName = currentLoot.ItemName,
         ItemLink = currentLoot.ItemLink,
         Quality = currentLoot.Quality,
         Mobs = processedMobs,
+        TradeSkill = tradeskills,
         Result = result
       }
     end
@@ -76,7 +90,7 @@ end
 ---@param mobIndex string
 ---@param mobData table
 ---@return table
-function LBL_Database:UpdateMobsInItem(itemID, mobIndex, mobData)
+function LBL_Database:ProcessMobsInItem(itemID, mobIndex, mobData)
   local mobIndexValues = {}
   local indexValue = 1
   for value in string.gmatch(mobIndex, "([^:]+)") do
@@ -101,32 +115,131 @@ function LBL_Database:UpdateMobsInItem(itemID, mobIndex, mobData)
   }
 end
 
+---Proccess tradeskills
+---@param itemID string
+---@param tradeSkillInfo table
+---@return table
+function LBL_Database:ProcessTradeSkillInItem(itemID, tradeSkillInfo)
+  local result = {}
+  if tradeSkillInfo ~= nil then
+    if tradeSkillInfo.name == "Herbalism" or tradeSkillInfo.name == "Mining" or tradeSkillInfo.name == "Fishing" or tradeSkillInfo.name == "Skinning" then
+      local from = tradeSkillInfo.from or {}
+      result[tradeSkillInfo.name] = {}
+      local zones = {}
+
+      for zoneIndex, zoneInfo in pairs(from) do
+        local zoneIndexValues = LB_CustomFunctions:SplitString(zoneIndex, "(%s+)- ")
+        if zoneInfo.Quantity > 999999 then zoneInfo.Quantity = 1 end
+        if zoneInfo.MapID == nil then
+          if zoneIndexValues[1] ~= nil and zoneIndexValues[2] ~= nil then
+            local savedZoneInfo = LBZ_Database:GetZoneInfoFromZoneIndex(zoneIndexValues[1] .. " - " .. zoneIndexValues[2])
+            zoneInfo.MapID = savedZoneInfo.mapID or nil
+          end
+        end
+
+        if zoneInfo.MapID ~= nil then
+          local zone = {
+            ZoneIndex = zoneIndex,
+            Continent = zoneIndexValues[1],
+            Zone = zoneIndexValues[2],
+            Subzone = zoneIndexValues[3],
+            MapID = zoneInfo.MapID,
+            Quantity = zoneInfo.Quantity
+          }
+          table.insert(zones, zone)
+        end
+      end
+      result[tradeSkillInfo.name] = {
+        Zones = zones
+      }
+    end
+  end
+  return result
+end
+
 ---Process mob results for item
 ---@param mobList table
+---@param tradeskills table
 ---@return table
-function LBL_Database:ProcessMobsInItem(mobList)
+function LBL_Database:ProcessResult(mobList, tradeskills)
   local result = {}
-  local mobNames = {}
+
+  -- process mobs
+  local processedMobNames = {}
   local totalEntries = 0
   for _, mobData in pairs(mobList) do
     local mobName = mobData.Name
     local quality = mobData.Quality
-    local savedMob = mobNames[mobData.Name] or {}
+    local savedMob = processedMobNames[mobData.Name] or {}
     local quantity = (savedMob.Quantity or 0) + (mobData.Quantity or 0)
 
-    mobNames[mobName] = {
+    processedMobNames[mobName] = {
       Quantity = quantity,
       Quality = quality
     }
     totalEntries = totalEntries + mobData.Quantity
   end
-  for mobName, mobData in pairs(mobNames) do
+
+  -- process tradeskills
+  local processedTradeskills = {}
+  local continents = {}
+
+  for tradeskill, tradeskillInfo in pairs(tradeskills) do
+    if tradeskill == "Mining" or tradeskill == "Herbalism" or tradeskill == "Fishing" or tradeskill == "Skinning" then
+      local zones = tradeskillInfo.Zones or {}
+      local savedContients = {}
+      for _, zoneInfo in pairs(zones) do
+        local zoneIndex = zoneInfo.Continent .. " - " .. zoneInfo.Zone
+        local parentMapID = continents[zoneIndex] or nil
+        if parentMapID == nil then
+          local mapInfo = C_Map.GetMapInfo(zoneInfo.MapID)
+          parentMapID = mapInfo.parentMapID
+          continents[zoneIndex] = parentMapID
+        end
+
+        local savedContinent = savedContients[parentMapID] or {}
+        local savedZone = savedContinent[zoneInfo.MapID] or {}
+        local quantity = (savedZone.Quantity or 0) + (zoneInfo.Quantity or 0)
+        savedContinent[zoneInfo.MapID] = {
+          MapID = zoneInfo.MapID,
+          ParentMapID = parentMapID,
+          Continent = zoneInfo.Continent,
+          Zone = zoneInfo.Zone,
+          Quantity = quantity,
+        }
+        savedContients[parentMapID] = savedContinent
+        totalEntries = totalEntries + zoneInfo.Quantity
+      end
+      processedTradeskills[tradeskill] = savedContients
+    end
+  end
+
+  -- process percentages
+  --- mobs
+  for mobName, mobData in pairs(processedMobNames) do
     local percent = string.format("%.2f", (mobData.Quantity * 100) / totalEntries)
-    mobNames[mobName]["Percent"] = percent
+    processedMobNames[mobName]["Percent"] = percent
+  end
+
+  --- tradeskills
+  for tradeskill, tradeskillData in pairs(processedTradeskills) do
+    if tradeskill == "Mining" or tradeskill == "Herbalism" or tradeskill == "Fishing" or tradeskill == "Skinning" then
+      for parentMapID, ContinentInfo in pairs(tradeskillData) do
+        local allZonesInfo = {}
+        for _, zoneInfo in pairs(ContinentInfo) do
+          local percent = string.format("%.2f", (zoneInfo.Quantity * 100) / totalEntries)
+          zoneInfo["Percent"] = percent
+          table.insert(allZonesInfo, zoneInfo)
+        end
+        tradeskillData[parentMapID] = allZonesInfo
+      end
+    end
+    processedTradeskills[tradeskill] = tradeskillData
   end
 
   result = {
-    MobNames = mobNames,
+    MobNames = processedMobNames,
+    Tradeskills = processedTradeskills,
     Total = totalEntries
   }
   return result

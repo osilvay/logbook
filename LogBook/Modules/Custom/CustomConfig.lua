@@ -149,7 +149,7 @@ function LB_CustomConfig:CreateHeaderConfig(header, order, color)
       header = {
         type = "header",
         order = 2,
-        name = string.format("|c%s%s|r", color, header),
+        name = string.format("|cff999999#######|r" .. " " .. "|c%s%s|r" .. " " .. "|cff999999######|r", color, header),
       }
     }
   }

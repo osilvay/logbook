@@ -28,9 +28,9 @@ function LBL_SettingsDefaults:Load()
           tooltipsEnabled = true,
           showTitle = true,
           showItemID = true,
-          pressKeyDown = "2_alt",
+          pressKeyDown = "1_none",
           updateDbTimeout = 15,
-          itemsToShow = 5,
+          itemsToShow = 10,
           unitClassification = {
             ["1_normal"] = true,
             ["2_rare"] = true,
@@ -41,15 +41,17 @@ function LBL_SettingsDefaults:Load()
           },
           itemQuality = {
             ["0"] = false,
-            ["1"] = false,
-            ["2"] = false,
-            ["3"] = false,
-            ["4"] = false,
-            ["5"] = false,
-            ["6"] = false,
-            ["7"] = false,
-            ["8"] = false
-          }
+            ["1"] = true,
+            ["2"] = true,
+            ["3"] = true,
+            ["4"] = true,
+            ["5"] = true,
+            ["6"] = true,
+            ["7"] = true,
+            ["8"] = true
+          },
+          firstSortBy = "3_quantity",
+          thenSortBy = "1_none"
         },
       },
     },

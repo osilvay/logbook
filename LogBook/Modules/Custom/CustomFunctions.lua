@@ -224,6 +224,31 @@ function LB_CustomFunctions:SortComplexTableByKey(tableToSort)
   return newList
 end
 
+---Sort multiple values
+---@param tableToSort any
+---@param ... table
+function LB_CustomFunctions:SortMultipleValues(tableToSort, ...)
+  local a = { ... }
+
+  table.sort(tableToSort, function(u, v)
+    local result = false
+    for i = 1, #a do
+      local j = a[i]
+      local name = j.name
+      local direction = j.direction
+      if u[name] ~= v[name] then
+        if direction == 'desc' then
+          result = u[name] > v[name]
+        else
+          result = u[name] < v[name]
+        end
+        break
+      end
+    end
+    return result
+  end)
+end
+
 ---Create table for a dropdown
 ---@param characters table
 ---@param withRealm boolean
@@ -414,4 +439,23 @@ function LB_CustomFunctions:IsKeyPressed(keyNeeded)
   else
     return true
   end
+end
+
+---Split string
+---@param text string
+---@param pattern string
+---@return table
+function LB_CustomFunctions:SplitString(text, pattern)
+  local outResults = {}
+  local theStart = 1
+  local theSplitStart, theSplitEnd = string.find(text, pattern, theStart)
+
+  while theSplitStart do
+    table.insert(outResults, string.sub(text, theStart, theSplitStart - 1))
+    theStart = theSplitEnd + 1
+    theSplitStart, theSplitEnd = string.find(text, pattern, theStart)
+  end
+
+  table.insert(outResults, string.sub(text, theStart))
+  return outResults
 end
