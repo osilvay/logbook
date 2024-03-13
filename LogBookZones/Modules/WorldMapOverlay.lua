@@ -181,18 +181,11 @@ function LBZ_WorldMapOverlay:BuildZonesOverlayData(mapID)
     local minIntensity = intensities[mapID].minIntensity
     local maxIntensity = intensities[mapID].maxIntensity
     local index = (maxIntensity - minIntensity) / intensitySteps
-    --if mapID == 1453 then
-    --  LogBook:Debug(string.format("%s = %s , %s", mapID, minIntensity, maxIntensity))
-    --end
     if newResult[mapID] == nil then newResult[mapID] = {} end
     for x, yData in pairs(mapData) do
       if newResult[mapID][x] == nil then newResult[mapID][x] = {} end
       for y, intensity in pairs(yData) do
         local newIntensity = ((intensity / index) * intensityStep) + minNormalizedIntensity
-        --if mapID == 1453 then
-        --  LogBook:Debug(string.format("%s , %s = %s (%s)", x, y, intensity, newIntensity))
-        --end
-        -- 0.20 > 0.50 (7) 0.05
         newResult[mapID][x][y] = newIntensity
       end
     end

@@ -98,10 +98,6 @@ function LBL_Database:ProcessMobsInItem(itemID, mobIndex, mobData)
     indexValue = indexValue + 1
   end
   local quantity = mobData.Quantity or 0
-
-  -- arreglo de cantidad
-  if quantity > 9999999 then quantity = 10000 end
-
   local mobQuality = LogBookMobs.db.global.data.mobs[mobIndex]["mobData"]["mobQuality"] or ""
 
   return {
@@ -122,14 +118,13 @@ end
 function LBL_Database:ProcessTradeSkillInItem(itemID, tradeSkillInfo)
   local result = {}
   if tradeSkillInfo ~= nil then
-    if tradeSkillInfo.name == "Herbalism" or tradeSkillInfo.name == "Mining" or tradeSkillInfo.name == "Fishing" or tradeSkillInfo.name == "Skinning" then
-      local from = tradeSkillInfo.from or {}
-      result[tradeSkillInfo.name] = {}
+    if tradeSkillInfo.Name == "Herbalism" or tradeSkillInfo.Name == "Mining" or tradeSkillInfo.Name == "Fishing" or tradeSkillInfo.Name == "Skinning" then
+      local from = tradeSkillInfo.From or {}
+      result[tradeSkillInfo.Name] = {}
       local zones = {}
 
       for zoneIndex, zoneInfo in pairs(from) do
         local zoneIndexValues = LB_CustomFunctions:SplitString(zoneIndex, "(%s+)- ")
-        if zoneInfo.Quantity > 999999 then zoneInfo.Quantity = 1 end
         if zoneInfo.MapID == nil then
           if zoneIndexValues[1] ~= nil and zoneIndexValues[2] ~= nil then
             local savedZoneInfo = LBZ_Database:GetZoneInfoFromZoneIndex(zoneIndexValues[1] .. " - " .. zoneIndexValues[2])
@@ -149,7 +144,7 @@ function LBL_Database:ProcessTradeSkillInItem(itemID, tradeSkillInfo)
           table.insert(zones, zone)
         end
       end
-      result[tradeSkillInfo.name] = {
+      result[tradeSkillInfo.Name] = {
         Zones = zones
       }
     end
@@ -189,7 +184,8 @@ function LBL_Database:ProcessResult(mobList, tradeskills)
       local zones = tradeskillInfo.Zones or {}
       local savedContients = {}
       for _, zoneInfo in pairs(zones) do
-        local zoneIndex = zoneInfo.Continent .. " - " .. zoneInfo.Zone
+        --LogBook:Dump(zoneInfo)
+        local zoneIndex = (zoneInfo.Continent or UNKNOWN) .. " - " .. (zoneInfo.Zone or UNKNOWN)
         local parentMapID = continents[zoneIndex] or nil
         if parentMapID == nil then
           local mapInfo = C_Map.GetMapInfo(zoneInfo.MapID)
@@ -217,7 +213,10 @@ function LBL_Database:ProcessResult(mobList, tradeskills)
   -- process percentages
   --- mobs
   for mobName, mobData in pairs(processedMobNames) do
-    local percent = string.format("%.2f", (mobData.Quantity * 100) / totalEntries)
+    local percent = string.format("%.2f", 0)
+    if totalEntries > 1 then
+      percent = string.format("%.2f", (mobData.Quantity * 100) / totalEntries)
+    end
     processedMobNames[mobName]["Percent"] = percent
   end
 
@@ -227,7 +226,11 @@ function LBL_Database:ProcessResult(mobList, tradeskills)
       for parentMapID, ContinentInfo in pairs(tradeskillData) do
         local allZonesInfo = {}
         for _, zoneInfo in pairs(ContinentInfo) do
-          local percent = string.format("%.2f", (zoneInfo.Quantity * 100) / totalEntries)
+          local percent = string.format("%.2f", 0)
+          if totalEntries > 1 then
+            percent = string.format("%.2f", (zoneInfo.Quantity * 100) / totalEntries)
+          end
+
           zoneInfo["Percent"] = percent
           table.insert(allZonesInfo, zoneInfo)
         end
@@ -260,4 +263,64 @@ function LBL_Database:GetNumEntries()
     [LogBookLoot:LBL_i18n("Total")] = LB_CustomFunctions:TableLength(lootDb),
     [LogBookLoot:LBL_i18n("Saved values")] = totals,
   }
+end
+
+---Ckean up database
+function LBL_Database:CleanUpDatabase()
+  local lootDb = LogBookLoot.db.global.data.loot
+  for _, currentLoot in pairs(lootDb) do
+    currentLoot.Quantity = 0
+    local mobs = currentLoot.Mobs or {}
+    for _, currentMob in pairs(mobs) do
+      currentMob.Quantity = 0
+    end
+
+    local tradeskillInfo = currentLoot.TradeSkillInfo or {}
+    local from = tradeskillInfo.From or {}
+    for _, currentFrom in pairs(from) do
+      currentFrom.Items = 0
+      currentFrom.Quantity = 0
+    end
+  end
+  LogBookLoot.db.global.data.loot = lootDb
+  C_Timer.After(1, function()
+    LBL_Database:UpdateDatabase(false)
+  end)
+end
+
+function LBL_Database:ConsolidateDatabase()
+  local lootDb = LogBookLoot.db.global.data.loot
+  for itemID, currentLoot in pairs(lootDb) do
+    local mobs = currentLoot.Mobs or {}
+    local tradeskillInfo = currentLoot.TradeSkillInfo or {}
+    local totalQuantity = 0
+    local mobQuantity = 0
+    local tradeskillQuantity = 0
+
+    -- process mobs
+    for _, currentMob in pairs(mobs) do
+      mobQuantity = mobQuantity + (currentMob.Quantity or 0)
+    end
+    -- process tradeskills
+    if tradeskillInfo.Name == "Enchanting" then
+      local froms = tradeskillInfo.From or {}
+      for _, curentFrom in pairs(froms) do
+        tradeskillQuantity = tradeskillQuantity + (curentFrom.Quantity or 0)
+      end
+      tradeskillInfo.Quantity = tradeskillQuantity
+    elseif tradeskillInfo.Name == "Mining" or tradeskillInfo.Name == "Herbalism"
+        or tradeskillInfo.Name == "Fishing" or tradeskillInfo.Name == "Skinning" then
+      local froms = tradeskillInfo.From or {}
+      for _, curentFrom in pairs(froms) do
+        tradeskillQuantity = tradeskillQuantity + (curentFrom.Quantity or 0)
+      end
+      tradeskillInfo.Quantity = tradeskillQuantity
+    end
+
+    -- result
+    currentLoot.Quantity = mobQuantity + tradeskillQuantity
+    --LogBook:Debug(string.format("%s > %s + %s = %s", tostring(itemID), tostring(mobQuantity), tostring(tradeskillQuantity), tostring(currentLoot.Quantity)))
+    LogBookLoot.db.global.data.loot[itemID] = currentLoot
+  end
+  LBL_Database:UpdateDatabase(false)
 end

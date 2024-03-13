@@ -102,6 +102,18 @@ function LBE_Settings:Initialize()
               LogBookEnchanting.db.char.general.enchanting.showItemID = value
             end,
           },
+          zeroValues = {
+            type = "toggle",
+            order = 3.1,
+            name = LogBookLoot:LBL_i18n("Show zero values"),
+            desc = LogBookLoot:LBL_i18n("Toggle showing zero values."),
+            width = "full",
+            disabled = function() return (not LogBookEnchanting.db.char.general.enchanting.tooltipsEnabled); end,
+            get = function() return LogBookEnchanting.db.char.general.enchanting.zeroValues end,
+            set = function(info, value)
+              LogBookEnchanting.db.char.general.enchanting.zeroValues = value
+            end,
+          },
           itemsToShow = {
             type = "range",
             order = 4,

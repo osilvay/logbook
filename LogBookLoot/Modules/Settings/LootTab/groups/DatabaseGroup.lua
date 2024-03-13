@@ -66,25 +66,49 @@ function LBL_DatabaseGroup:Config()
         order = 3,
         name = LogBook:LB_i18n("Manual update"),
         desc = LogBook:LB_i18n("Update database manually."),
-        width = 2,
+        icon = "Interface/AddOns/LogBook/Images/plus",
+        width = 1.05,
         disabled = false,
         func = function() return LBL_Database:UpdateDatabase() end,
       },
-      cleanUpDb = {
+      consolidateDb = {
         type = "execute",
         order = 4,
-        name = LogBook:LB_i18n("Clean up database"),
-        desc = LogBook:LB_i18n("Clean up all database."),
-        width = 1,
+        name = "|TInterface\\AddOns\\LogBook\\Images\\elite:16:16|t" .. LogBook:LB_i18n("Consolidate"),
+        desc = LogBook:LB_i18n("Consolidate quantities in database."),
+        width = 1.05,
         disabled = false,
-        func = function() return nil end,
+        func = function()
+          LB_CustomPopup:CreatePopup(
+            LogBook:LB_i18n("Consolidate database"),
+            LogBook:LB_i18n("Are you sure you want to consolidate the database?") .. "\n\n" .. " |cffff3300" .. LogBook:LB_i18n("This operation can not be undone...") .. "|r",
+            function()
+              LBL_Database:ConsolidateDatabase()
+            end)
+        end,
+      },
+      cleanUpDb = {
+        type = "execute",
+        order = 5,
+        name = LogBook:LB_i18n("Clean up"),
+        desc = LogBook:LB_i18n("Clean up all database."),
+        width = 1.05,
+        disabled = false,
+        func = function()
+          LB_CustomPopup:CreatePopup(
+            LogBook:LB_i18n("Clean up database"),
+            LogBook:LB_i18n("Are you sure you want to clean up entire database?") .. "\n\n" .. " |cffff3300" .. LogBook:LB_i18n("This operation can not be undone...") .. "|r",
+            function()
+              LBL_Database:CleanUpDatabase()
+            end)
+        end,
       },
       purgeDb = {
         type = "execute",
-        order = 5,
-        name = LogBook:LB_i18n("Purge database"),
+        order = 6,
+        name = LogBook:LB_i18n("Purge"),
         desc = LogBook:LB_i18n("Purge all database entries."),
-        width = 1,
+        width = 1.05,
         disabled = false,
         func = function()
           LB_CustomPopup:CreatePopup(

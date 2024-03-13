@@ -124,14 +124,14 @@ function LB_CustomColors:CustomUnitClassificationColors(color_index)
 end
 
 function LB_CustomColors:CustomTradeskillColors(color_index)
-  local customUnitClassificationColors = {
-    Enchanting = "FFAE6BC9",
-    Herbalism = "FF84BD67",
-    Skinning = "FFCE885C",
-    Mining = "FFCA435E",
-    Fishing = "FF7A99DB",
+  local customTradeskillColors = {
+    Enchanting = "FFBC78D7",
+    Herbalism = "FF91C677",
+    Skinning = "FFD6C97C",
+    Mining = "FFD14E68",
+    Fishing = "FF8AA5DF",
   };
-  return customUnitClassificationColors[color_index]
+  return customTradeskillColors[color_index]
 end
 
 ---Converts hex to rgb

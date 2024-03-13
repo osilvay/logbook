@@ -59,6 +59,10 @@ function LBL_TrackLoot:Initialize()
       spellID = { 7731, 7620, 7732, 18248 },
       professionName = LogBookLoot:LBL_i18n("Fishing")
     },
+    Leatherworking = {
+      spellID = { 3104, 3811, 10662, 2108 },
+      professionName = LogBookLoot:LBL_i18n("Leatherworking")
+    },
   }
 end
 
@@ -105,16 +109,15 @@ function LBL_TrackLoot:ProcessLootReady()
         local guidType = select(1, strsplit("-", sources[j]))
         --LogBook:Debug("guidType = " .. tostring(guidType))
         --if guidType ~= "Item" then
-        if not LBL_TrackLoot:PartOfPreviousLoot(sources[j]) then
+        if not LBL_TrackLoot:PartOfPreviousLoot(sources[j], itemID, IsTradeSkill) then
           local loot = Loots[itemID]
           local Mobs = {}
           if loot == nil then
-            loot = {
-              Mobs = {}
-            }
+            loot = {}
+            loot.Mobs = {}
             loot.ItemName = lootName
             loot.Quality = lootQuality
-            loot.Quantity = lootQuantity
+            loot.Quantity = tonumber(lootQuantity)
             loot.Type = slotType
             loot.ItemLink = lootLink
             loot.ItemID = itemID
@@ -140,7 +143,7 @@ function LBL_TrackLoot:ProcessLootReady()
           then
             mobQuantity = sources[j + 1]
           else
-            mobQuantity = lootQuantity
+            mobQuantity = tonumber(lootQuantity)
           end
           --LogBook:Debug("lootQuantity = " .. tostring(lootQuantity))
           --LogBook:Debug("mobQuantity = " .. tostring(mobQuantity))
@@ -161,26 +164,26 @@ function LBL_TrackLoot:ProcessLootReady()
           end
 
           if IsTradeSkill then
-            if TradeSkillInfo.name == "Enchanting" and IsItemLocked then
-              ItemLockedInfo.Quantity = loot.Quantity
+            if TradeSkillInfo.Name == "Enchanting" and IsItemLocked then
+              ItemLockedInfo.Quantity = tonumber(loot.Quantity)
               ItemLockedInfo.Quality = loot.Quality
               ItemLockedInfo.Items = 1
-              TradeSkillInfo.from[ItemLockedInfo.ItemID] = ItemLockedInfo
+              TradeSkillInfo.From[ItemLockedInfo.ItemID] = ItemLockedInfo
               loot.TradeSkillInfo = TradeSkillInfo
-            elseif TradeSkillInfo.name == "Mining" or TradeSkillInfo.name == "Herbalism" or TradeSkillInfo.name == "Fishing" or TradeSkillInfo.name == "Skinning" then
+            elseif TradeSkillInfo.Name == "Mining" or TradeSkillInfo.Name == "Herbalism" or TradeSkillInfo.Name == "Fishing" or TradeSkillInfo.Name == "Skinning" then
               local ItemFrom = {
                 MapID = LBZ_TrackZones:GetCurrentPersonalMapID(),
                 Quality = loot.Quality,
-                Quantity = loot.Quantity,
+                Quantity = tonumber(loot.Quantity),
                 Items = 1,
               }
               local zoneIndex = LBZ_TrackZones:GetCurrentPersonalZone()
               if zoneIndex == nil then zoneIndex = UNKNOWN end
               ItemFrom.ZoneIndex = zoneIndex
-              ItemLockedInfo.Quantity = loot.Quantity
+              ItemLockedInfo.Quantity = tonumber(loot.Quantity)
               ItemLockedInfo.Quality = loot.Quality
               ItemLockedInfo.Items = 1
-              TradeSkillInfo.from[zoneIndex] = ItemFrom
+              TradeSkillInfo.From[zoneIndex] = ItemFrom
               loot.TradeSkillInfo = TradeSkillInfo
             end
           end
@@ -223,33 +226,34 @@ function LBL_TrackLoot:ProcessLootClosed()
 end
 
 --Converts money string in copper
----@param item string
+---@param moneyString string
 ---@return number num
-function LBL_TrackLoot:LootNameToMoney(item)
+function LBL_TrackLoot:LootNameToMoney(moneyString)
   local i = 0
   local g, s, c = 0, 0, 0
   local money = 0
 
-  local gold = string.find(item, LogBookLoot:LBL_i18n("Gold"))
+  local gold = string.find(moneyString, LogBookLoot:LBL_i18n("Gold"))
   if gold then
-    g = tonumber(string.sub(item, 0, gold - 1)) or 0
-    item = string.sub(item, gold + string.len(LogBookLoot:LBL_i18n("Gold")), string.len(item))
+    g = tonumber(string.sub(moneyString, 0, gold - 1)) or 0
+    moneyString = string.sub(moneyString, gold + string.len(LogBookLoot:LBL_i18n("Gold")), string.len(moneyString))
     money = money + ((g or 0) * SilverPerGold * CopperPerSilver)
   end
 
-  local silver = string.find(item, LogBookLoot:LBL_i18n("Silver"))
+  local silver = string.find(moneyString, LogBookLoot:LBL_i18n("Silver"))
   if silver then
-    s = tonumber(string.sub(item, 0, silver - 1)) or 0
-    item = string.sub(item, silver + string.len(LogBookLoot:LBL_i18n("Silver")), string.len(item))
-    print(item)
+    s = tonumber(string.sub(moneyString, 0, silver - 1)) or 0
+    moneyString = string.sub(moneyString, silver + string.len(LogBookLoot:LBL_i18n("Silver")), string.len(moneyString))
     money = money + ((s or 0) * CopperPerSilver)
   end
 
-  local copper = string.find(item, LogBookLoot:LBL_i18n("Copper"))
+  local copper = string.find(moneyString, LogBookLoot:LBL_i18n("Copper"))
   if copper then
-    c = tonumber(string.sub(item, 0, copper - 1)) or 0
+    c = tonumber(string.sub(moneyString, 0, copper - 1)) or 0
     money = money + (c or 0)
   end
+  LogBook:Debug(moneyString .. " = " .. tostring(money))
+
   return money
 end
 
@@ -277,14 +281,18 @@ end
 
 ---Get itemId from itemLink
 ---@param guid string
----@return boolean itemLinkOrId
-function LBL_TrackLoot:PartOfPreviousLoot(guid)
-  for _, corpseGUID in pairs(RecentLoots) do
-    if corpseGUID == guid
-    then
-      return true
-    end
+---@param itemID number
+---@param isTradeskill boolean
+---@return boolean
+function LBL_TrackLoot:PartOfPreviousLoot(guid, itemID, isTradeskill)
+  local itemInLoot = guid .. "-" .. itemID
+  LogBook:Debug("Creature id" .. guid .. "-" .. itemID)
+
+  if isTradeskill then return false end
+  if LB_CustomFunctions:TableHasValue(RecentLoots, itemInLoot) then
+    return true
   end
+  table.insert(RecentLoots, itemInLoot)
   return false
 end
 
@@ -297,15 +305,10 @@ function LBL_TrackLoot:StoreItemDetails(loot)
 
     --corrections
     if savedLoot then
-      if savedLoot.Quantity > 999999 then
-        savedLoot.Quantity = 0
-      end
-
       -- quantity
-      local currentQuantity = (savedLoot.Quantity or 0) + (loot.Quantity or 0)
+      local currentQuantity = (tonumber(savedLoot.Quantity) or 0) + (tonumber(loot.Quantity) or 0)
       LogBook:Debug(loot.ItemID .. " - " .. loot.ItemName .. ": " .. tostring(loot.Quantity or 0) .. " + " .. (savedLoot.Quantity or 0) .. " = " .. tostring(currentQuantity))
       loot.Quantity = currentQuantity
-
 
       -- mobs
       local savedMobs = savedLoot.Mobs
@@ -330,12 +333,9 @@ function LBL_TrackLoot:StoreItemDetails(loot)
         savedTradeSkillInfo = {}
       end
       if loot.IsTradeSkill and currentTradeSkillInfo ~= nil then
-        local savedFrom = savedTradeSkillInfo.from
-        if savedFrom == nil then
-          savedFrom = {}
-        end
-        local currentFrom = currentTradeSkillInfo.from
-        if currentTradeSkillInfo.name == "Enchanting" then
+        local savedFrom = savedTradeSkillInfo.From or {}
+        local currentFrom = currentTradeSkillInfo.From
+        if currentTradeSkillInfo.Name == "Enchanting" then
           --LogBook:Dump(loot)
           for currentItemID, currentItemLockedInfo in pairs(currentFrom) do
             if savedFrom[currentItemID] == nil then
@@ -347,18 +347,18 @@ function LBL_TrackLoot:StoreItemDetails(loot)
               savedFrom[currentItemID].Quantity = newQuantity
             end
           end
-        elseif TradeSkillInfo.name == "Mining" or TradeSkillInfo.name == "Herbalism" or TradeSkillInfo.name == "Fishing" or TradeSkillInfo.name == "Skinning" then
+        elseif TradeSkillInfo.Name == "Mining" or TradeSkillInfo.Name == "Herbalism" or TradeSkillInfo.Name == "Fishing" or TradeSkillInfo.Name == "Skinning" then
           for currentZoneIndex, currentCurrentZone in pairs(currentFrom) do
             if savedFrom[currentZoneIndex] == nil then
               savedFrom[currentZoneIndex] = {
                 MapID = currentCurrentZone.MapID,
-                Items = currentCurrentZone.Items,
-                Quantity = currentCurrentZone.Quantity,
+                Items = tonumber(currentCurrentZone.Items),
+                Quantity = tonumber(currentCurrentZone.Quantity),
                 Quality = currentCurrentZone.Quality
               }
             else
-              local newItems = (currentFrom[currentZoneIndex].Items or 0) + (savedFrom[currentZoneIndex].Items or 0)
-              local newQuantity = (currentFrom[currentZoneIndex].Quantity or 0) + (savedFrom[currentZoneIndex].Quantity or 0)
+              local newItems = (tonumber(currentFrom[currentZoneIndex].Items) or 0) + (tonumber(savedFrom[currentZoneIndex].Items) or 0)
+              local newQuantity = (tonumber(currentFrom[currentZoneIndex].Quantity) or 0) + (tonumber(savedFrom[currentZoneIndex].Quantity) or 0)
               savedFrom[currentZoneIndex] = {
                 MapID = currentFrom[currentZoneIndex].MapID,
                 Items = newItems,
@@ -367,12 +367,12 @@ function LBL_TrackLoot:StoreItemDetails(loot)
               }
             end
           end
-        elseif TradeSkillInfo.name == "Skining" then
+        elseif TradeSkillInfo.Name == "Skining" then
 
         end
-        savedTradeSkillInfo.from = savedFrom
-        savedTradeSkillInfo.name = currentTradeSkillInfo.name
-        savedTradeSkillInfo.spellID = currentTradeSkillInfo.spellID
+        savedTradeSkillInfo.From = savedFrom
+        savedTradeSkillInfo.Name = currentTradeSkillInfo.Name
+        savedTradeSkillInfo.SpellID = currentTradeSkillInfo.SpellID
 
         local _, itemLink, itemQuality, itemLevel, itemMinLevel = GetItemInfo(itemID)
         if savedTradeSkillInfo.Quality == nil then savedTradeSkillInfo.Quality = itemQuality end
@@ -383,7 +383,7 @@ function LBL_TrackLoot:StoreItemDetails(loot)
         loot.TradeSkillInfo = savedTradeSkillInfo
       end
     else
-      LogBook:Debug(loot.ItemID .. " - " .. loot.ItemName .. ": " .. tostring(loot.Quantity or 0))
+      --LogBook:Debug(loot.ItemID .. " - " .. loot.ItemName .. ": " .. tostring(loot.Quantity or 0))
     end
     LogBookLoot.db.global.data.loot[itemID] = loot
     C_Timer.After(0.5, function()
@@ -400,10 +400,11 @@ function LBL_TrackLoot:ProcessUnitSpellCastSucceeded(unitTarget, spellID)
     if proffesionName ~= "" then
       IsTradeSkill = true
       TradeSkillInfo = {
-        name = proffesionName,
-        spellID = spellID,
-        from = {}
+        Name = proffesionName,
+        SpellID = spellID,
+        From = {}
       }
+      --LogBook:Dump(TradeSkillInfo)
     end
   end
 end

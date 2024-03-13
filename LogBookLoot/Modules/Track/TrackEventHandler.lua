@@ -30,7 +30,7 @@ end
 function _LBL_TrackEventHandler.ChatMsgLoot(_, text, notPlayerName, _, _, playerName)
   --LogBook:Debug(text)
   --LogBook:Debug(playerName)
-  --LBL_TrackLoot:ProcessChatMsgLoot(text, notPlayerName, playerName)
+  LBL_TrackLoot:ProcessChatMsgLoot(text, notPlayerName, playerName)
 end
 
 function _LBL_TrackEventHandler.ItemLocked(_, bagOrSlotIndex, slotIndex)

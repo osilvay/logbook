@@ -35,7 +35,8 @@ function LBE_SettingsDefaults:Load()
           itemsToShow = 5,
           pressKeyDown = "2_alt",
           showExpectedEssences = true,
-          showRealEssences = true
+          showRealEssences = true,
+          zeroValues = false
         },
       },
     },

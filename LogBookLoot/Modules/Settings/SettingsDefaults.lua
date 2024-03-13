@@ -28,6 +28,7 @@ function LBL_SettingsDefaults:Load()
           tooltipsEnabled = true,
           showTitle = true,
           showItemID = true,
+          zeroValues = true,
           pressKeyDown = "1_none",
           updateDbTimeout = 15,
           itemsToShow = 10,
@@ -50,8 +51,16 @@ function LBL_SettingsDefaults:Load()
             ["7"] = true,
             ["8"] = true
           },
-          firstSortBy = "3_quantity",
-          thenSortBy = "1_none"
+          tradeskillsEnabled = {
+            ["Enchanting"] = true,
+            ["Herbalism"] = true,
+            ["Skinning"] = true,
+            ["Mining"] = true,
+            ["Fishing"] = true,
+          },
+          quantitySort = "desc",
+          qualitySort = "desc",
+          nameSort = "asc",
         },
       },
     },
