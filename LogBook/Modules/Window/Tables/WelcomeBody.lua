@@ -16,6 +16,9 @@ local LB_WelcomeWindow = LB_ModuleLoader:ImportModule("LB_WelcomeWindow")
 ---@type LB_SlashCommands
 local LB_SlashCommands = LB_ModuleLoader:ImportModule("LB_SlashCommands")
 
+---@type LB_CustomMedias
+local LB_CustomMedias = LB_ModuleLoader:ImportModule("LB_CustomMedias")
+
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
 local bodyContainer
@@ -117,8 +120,8 @@ function LB_WelcomeBody:drawLootContainer(rowContainer)
   --Options button
   ---@type AceGUIInteractiveLabel
   local lootButton = AceGUI:Create("InteractiveLabel")
-  local lootIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red_a:64:64|t"
-  local lootIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_bag_10_red:64:64|t"
+  local lootIcon_a = " " .. LB_CustomMedias:GetMediaFileAsLink("loot_a", 64, 64)
+  local lootIcon = " " .. LB_CustomMedias:GetMediaFileAsLink("loot", 64, 64)
   local lootText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track loot and items crafted with trading skills."))
   local lootformatted = "%s\n\n%s\n"
   lootButton:SetWidth(135)
@@ -153,8 +156,8 @@ function LB_WelcomeBody:drawFishingContainer(rowContainer)
   --Options button
   ---@type AceGUIInteractiveLabel
   local fishingButton = AceGUI:Create("InteractiveLabel")
-  local fishingIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02_a:64:64|t"
-  local fishingIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_fishingpole_02:64:64|t"
+  local fishingIcon_a = " " .. LB_CustomMedias:GetMediaFileAsLink("fishing_a", 64, 64)
+  local fishingIcon = " " .. LB_CustomMedias:GetMediaFileAsLink("fishing", 64, 64)
   local fishingText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track fish from pools and wreckages."))
   local Fishingformatted = "%s\n\n%s\n"
   fishingButton:SetWidth(135)
@@ -189,8 +192,8 @@ function LB_WelcomeBody:drawCriticsContainer(rowContainer)
   --Options button
   ---@type AceGUIInteractiveLabel
   local criticsButton = AceGUI:Create("InteractiveLabel")
-  local criticsIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap_a:64:64|t"
-  local criticsIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\ability_thunderclap:64:64|t"
+  local criticsIcon_a = " " .. LB_CustomMedias:GetMediaFileAsLink("criticals_a", 64, 64)
+  local criticsIcon = " " .. LB_CustomMedias:GetMediaFileAsLink("criticals", 64, 64)
   local criticsText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track hits or healing, both normal and critical."))
   local Fishingformatted = "%s\n\n%s\n"
   criticsButton:SetWidth(135)
@@ -225,8 +228,8 @@ function LB_WelcomeBody:drawZonesContainer(rowContainer)
   --Options button
   ---@type AceGUIInteractiveLabel
   local zonesButton = AceGUI:Create("InteractiveLabel")
-  local zonesIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01_a:64:64|t"
-  local zonesIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Achievement_zones_01:64:64|t"
+  local zonesIcon_a = " " .. LB_CustomMedias:GetMediaFileAsLink("zones_a", 64, 64)
+  local zonesIcon = " " .. LB_CustomMedias:GetMediaFileAsLink("zones", 64, 64)
   local zonesText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track zones."))
   local zonesFormatted = "%s\n\n%s\n"
   zonesButton:SetWidth(135)
@@ -261,8 +264,8 @@ function LB_WelcomeBody:drawMobsContainer(rowContainer)
   --Options button
   ---@type AceGUIInteractiveLabel
   local mobsButton = AceGUI:Create("InteractiveLabel")
-  local mobsIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_head_murloc_01_a:64:64|t"
-  local mobsIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_misc_head_murloc_01:64:64|t"
+  local mobsIcon_a = " " .. LB_CustomMedias:GetMediaFileAsLink("mobs_a", 64, 64)
+  local mobsIcon = " " .. LB_CustomMedias:GetMediaFileAsLink("mobs", 64, 64)
   local mobsText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track mobs."))
   local mobsFormatted = "%s\n\n%s\n"
   mobsButton:SetWidth(135)
@@ -297,8 +300,8 @@ function LB_WelcomeBody:drawEnchantingContainer(rowContainer)
   --Options button
   ---@type AceGUIInteractiveLabel
   local enchantingButton = AceGUI:Create("InteractiveLabel")
-  local enchantingIcon_a = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_enchant_shardprismaticlarge_a:64:64|t"
-  local enchantingIcon = " " .. "|TInterface\\AddOns\\LogBook\\Images\\Inv_enchant_shardprismaticlarge:64:64|t"
+  local enchantingIcon_a = " " .. LB_CustomMedias:GetMediaFileAsLink("enchanting_a", 64, 64)
+  local enchantingIcon = " " .. LB_CustomMedias:GetMediaFileAsLink("enchanting", 64, 64)
   local enchantingText = string.format("|cffc1c1c1%s|r", LogBook:LB_i18n("Allows you to track enchanting."))
   local enchantingFormatted = "%s\n\n%s\n"
   enchantingButton:SetWidth(135)

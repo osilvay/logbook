@@ -14,6 +14,9 @@ local LB_WelcomeWindow = LB_ModuleLoader:ImportModule("LB_WelcomeWindow")
 ---@type LB_CustomColors
 local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 
+---@type LB_CustomMedias
+local LB_CustomMedias = LB_ModuleLoader:ImportModule("LB_CustomMedias")
+
 local _LibDBIcon = LibStub("LibDBIcon-1.0");
 
 function LB_MinimapIcon:Initialize()
@@ -25,7 +28,7 @@ function _LB_MinimapIcon:CreateDataBrokerObject()
   local LDBDataObject = LibStub("LibDataBroker-1.1"):NewDataObject("LogBook", {
     type = "data source",
     text = "ldbDisplayText",
-    icon = "Interface\\Icons\\Inv_scroll_11",
+    icon = LB_CustomMedias:GetMediaFile("logbook"),
 
     OnClick = function(_, button)
       --if (not LogBook.started) then return end

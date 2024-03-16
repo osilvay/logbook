@@ -117,75 +117,38 @@ function LBE_EnchantingTooltip.SetHyperlink(self, itemLink)
   GameTooltip:Show()
 end
 
----Create list of items in tooltip
----@param list table
----@param quantityItems number
----@param numEntries number
-function LBE_EnchantingTooltip.ProcessIsEssence(list, quantityItems, numEntries)
-  local index = 1
-  for _, currentItemInfo in pairs(list) do
-    local quantity = currentItemInfo.Quantity
-    local percentage = string.format("%.2f", 0)
-    if quantityItems > 1 then
-      percentage = string.format("%.2f", (quantity * 100) / quantityItems)
-    end
-
-    local percentageValues = {}
-    local percentageIndex = 1
-    for value in string.gmatch(percentage, "([^.]+)") do
-      percentageValues[percentageIndex] = value
-      percentageIndex = percentageIndex + 1
-    end
-
-    local _, itemLink = GetItemInfo(currentItemInfo.ItemID)
-    local newItemIcon = currentItemInfo.ItemIcon or GetItemIcon(currentItemInfo.ItemID)
-    local newItemLink = currentItemInfo.ItemLink or itemLink
-
-    if (quantity == 0 and LogBookEnchanting.db.char.general.enchanting.zeroValues) or quantity > 0 then
-      if newItemIcon ~= nil and newItemLink ~= nil then
-        local percentageText = string.format("|cfff1f1f1%s|r|cffc1c1c1|r.|cffa1a1a1%s|r", percentageValues[1], percentageValues[2] or "0")
-        local leftTextLine = string.format(" + |T%d:0|t %s |cff91c1f1x|r|cff6191f1%d|r", newItemIcon, newItemLink, quantity)
-        local rightTextLine = string.format("%s", percentageText) .. " |cfff1b131%|r"
-        GameTooltip:AddDoubleLine(leftTextLine, rightTextLine)
-        if index > LogBookEnchanting.db.char.general.enchanting.itemsToShow then
-          if numEntries > LogBookEnchanting.db.char.general.enchanting.itemsToShow then
-            GameTooltip:AddLine(string.format(" + %d %s...", (numEntries - LogBookEnchanting.db.char.general.enchanting.itemsToShow), LogBook:LB_i18n("more")))
-          end
-          break
-        end
-        index = index + 1
-      end
-    end
-  end
-end
-
 ---Show tooltip
 ---@param item table
 function LBE_EnchantingTooltip.ShowTooltip(item)
   local itemID = item.itemID
   local dbItemInfo = LBE_Database:EntryExistsInItemsDatabase(itemID)
   local dbEssenceInfo = LBE_Database:EntryExistsInEssencesDatabase(itemID)
+
+  --LogBook:Debug(itemID)
   if itemID == nil then return end
+
   local isEssence, isItem, isStored = false, false, false
   if dbItemInfo ~= nil then
     isItem = true
     isStored = true
-  elseif dbEssenceInfo ~= nil then
+  end
+  if dbEssenceInfo ~= nil then
     isEssence = true
     isStored = true
   end
 
   local _, _, itemQuality, _, _, itemType, _, _, _, _, _, _, _, _, _, _, _ = GetItemInfo(itemID)
-  if itemQuality == nil or itemType == nil or itemQuality < 2 then return end
-  if isEssence == false and isItem == false then
+  --LogBook:Debug(string.format("itemQuality = %s - itemType = %s", tostring(itemQuality), tostring(itemType)))
+  --if itemQuality == nil or itemType == nil or itemQuality < 2 then return end
+  if isItem and (itemType == LogBookEnchanting:LBE_i18n("Armor") or itemType == LogBookEnchanting:LBE_i18n("Weapon")) then
     --(string.format("%s = itemType", tostring(itemType)))
-    if itemType == LogBookEnchanting:LBE_i18n("Armor") or itemType == LogBookEnchanting:LBE_i18n("Weapon") then
-      isItem = true
-      isStored = false
-    end
+    isItem = true
+    isStored = false
   end
+
   --LogBook:Debug(string.format("%s = isEssence = %s, isItem = %s", tostring(itemID), tostring(isEssence), tostring(isItem)))
   --LogBook:Debug(string.format("isEssence = %s - isItem = %s", tostring(isEssence), tostring(isItem)))
+
   if (not isEssence and not isItem) or (isEssence and isItem) then return end
 
   local isShowItemID = LogBookEnchanting.db.char.general.enchanting.showItemID
@@ -203,7 +166,7 @@ function LBE_EnchantingTooltip.ShowTooltip(item)
     local quantityItems = 0
     local list = {}
     for _, currentItemInfo in pairs(itemsInEssence) do
-      if tonumber(currentItemInfo.Quantity) > 0 then
+      if (currentItemInfo.Quantity == 0 and LogBookEnchanting.db.char.general.enchanting.zeroValues) or currentItemInfo.Quantity > 0 then
         table.insert(list, currentItemInfo)
         quantityItems = quantityItems + currentItemInfo.Quantity
         numItems = numItems + 1
@@ -220,6 +183,52 @@ function LBE_EnchantingTooltip.ShowTooltip(item)
   elseif isItem then
     --LogBook:Debug("Process isItem...")
     LBE_EnchantingTooltip.ProcessIsItem(itemID, isShowTitle, titleText, itemIDText)
+  end
+end
+
+---Create list of items in tooltip
+---@param list table
+---@param quantityItems number
+---@param numEntries number
+function LBE_EnchantingTooltip.ProcessIsEssence(list, quantityItems, numEntries)
+  local index = 1
+  local currentPercent = 0
+
+  for _, currentItemInfo in pairs(list) do
+    --LogBook:Dump(currentItemInfo)
+    local quantity = currentItemInfo.Quantity
+    if (quantity == 0 and LogBookEnchanting.db.char.general.enchanting.zeroValues) or quantity > 0 then
+      if index > LogBookEnchanting.db.char.general.enchanting.itemsToShow then
+        if numEntries > LogBookEnchanting.db.char.general.enchanting.itemsToShow then
+          local remainingPercent = "0"
+          if currentPercent > 100 then currentPercent = 100 end
+          if currentPercent > 0 then
+            remainingPercent = string.format("%.2f", 100 - currentPercent)
+          end
+          local remaining = string.format("%.2f", (numEntries - LogBookEnchanting.db.char.general.enchanting.itemsToShow))
+          local leftTotal = string.format("%d %s...", remaining, LogBook:LB_i18n("more"))
+          local rightTotal = string.format("|cff919191%s|r", remainingPercent) .. " |cfff1b131%|r"
+          GameTooltip:AddDoubleLine(leftTotal, rightTotal)
+        end
+        break
+      end
+
+      -- draw item
+      local _, itemLink = GetItemInfo(currentItemInfo.ItemID)
+      local newItemIcon = currentItemInfo.ItemIcon or GetItemIcon(currentItemInfo.ItemID)
+      local newItemLink = currentItemInfo.ItemLink or itemLink
+      local percentage = string.format("%.2f", 0)
+      if quantityItems > 1 then
+        percentage = string.format("%.2f", (quantity * 100) / quantityItems)
+      end
+      currentPercent = currentPercent + tonumber(percentage)
+
+      local percentageText = string.format("|cfff1f1f1%s|r", percentage or "0")
+      local leftTextLine = string.format(" + |T%d:0|t %s |cff91c1f1x|r|cff6191f1%d|r", newItemIcon, newItemLink, quantity)
+      local rightTextLine = string.format("%s", percentageText) .. " |cfff1b131%|r"
+      GameTooltip:AddDoubleLine(leftTextLine, rightTextLine)
+      index = index + 1
+    end
   end
 end
 
@@ -254,13 +263,11 @@ function LBE_EnchantingTooltip.ProcessIsItem(itemID, isShowTitle, titleText, ite
         local itemLink = currentExpecteItem.ItemLink
         local itemIcon = GetItemIcon(currentExpecteItem.ItemID)
 
-        if itemLink ~= nil and itemIcon ~= nil then
-          local percentageText = string.format("|cfff1f1f1%s|r", percentage or "0")
-          local leftTextLine = string.format(" + |T%d:0|t %s |cff6191f1%s|r", itemIcon, itemLink, quantity)
-          local rightTextLine = string.format("%s", percentageText) .. " |cfff1b131%|r"
-          GameTooltip:AddDoubleLine(leftTextLine, rightTextLine)
-          expectedIndex = expectedIndex + 1
-        end
+        local percentageText = string.format("|cfff1f1f1%s|r", percentage or "0")
+        local leftTextLine = string.format(" + |T%d:0|t %s |cff6191f1%s|r", itemIcon, itemLink, quantity)
+        local rightTextLine = string.format("%s", percentageText) .. " |cfff1b131%|r"
+        GameTooltip:AddDoubleLine(leftTextLine, rightTextLine)
+        expectedIndex = expectedIndex + 1
       end
     end
   end
@@ -270,25 +277,29 @@ function LBE_EnchantingTooltip.ProcessIsItem(itemID, isShowTitle, titleText, ite
     table.sort(itemRealData, function(a, b) return a.ItemQuality < b.ItemQuality end)
 
     GameTooltip:AddLine(string.format("|cff999999%s|r", LogBookEnchanting:LBE_i18n("Real")))
-    if LB_CustomFunctions:TableLength(itemRealData) == 0 then
+    local noData = true
+    for _, currentRealItem in pairs(itemRealData) do
+      if currentRealItem.Quantity > 0 then noData = false end
+    end
+
+    if LB_CustomFunctions:TableLength(itemRealData) == 0 or noData then
       GameTooltip:AddLine(string.format(" |cffff3300%s|r", LogBookEnchanting:LBE_i18n("No data")))
     else
       local realIndex = 1
-      for _, currentExpecteItem in pairs(itemRealData) do
-        local quantityText = currentExpecteItem.QuantityText
-        local quantity = currentExpecteItem.Quantity
-        local percentage = string.format("%.2f", currentExpecteItem.Percent)
+      LogBook:Dump(itemRealData)
+      for _, currentRealItem in pairs(itemRealData) do
+        local quantityText = currentRealItem.QuantityText
+        local quantity = currentRealItem.Quantity
+        local percentage = string.format("%.2f", currentRealItem.Percent)
+        local itemLink = currentRealItem.ItemLink
+        local itemIcon = GetItemIcon(currentRealItem.ItemID)
 
-        local itemLink = currentExpecteItem.ItemLink
-        local itemIcon = GetItemIcon(currentExpecteItem.ItemID)
         if quantity ~= nil and ((tonumber(quantity) == 0 and LogBookEnchanting.db.char.general.enchanting.zeroValues) or tonumber(quantity) > 0) then
-          if itemLink ~= nil and itemIcon ~= nil then
-            local percentageText = string.format("|cfff1f1f1%s|r", percentage or "0")
-            local leftTextLine = string.format(" + |T%d:0|t %s |cff6191f1%s|r", itemIcon, itemLink, quantityText)
-            local rightTextLine = string.format("%s", percentageText) .. " |cfff1b131%|r"
-            GameTooltip:AddDoubleLine(leftTextLine, rightTextLine)
-            realIndex = realIndex + 1
-          end
+          local percentageText = string.format("|cfff1f1f1%s|r", percentage or "0")
+          local leftTextLine = string.format(" + |T%d:0|t %s |cff6191f1%s|r", itemIcon, itemLink, quantityText)
+          local rightTextLine = string.format("%s", percentageText) .. " |cfff1b131%|r"
+          GameTooltip:AddDoubleLine(leftTextLine, rightTextLine)
+          realIndex = realIndex + 1
         end
       end
     end
@@ -343,7 +354,10 @@ function LBE_EnchantingTooltip.ProcessIsItemRealData(itemID)
 
   for _, currentEssenceInfo in pairs(essencesInItem) do
     table.insert(list, currentEssenceInfo)
-    totalEssences = totalEssences + currentEssenceInfo.Quantity
+    local quantity = currentEssenceInfo.Quantity
+    if quantity ~= nil and ((tonumber(quantity) == 0 and LogBookEnchanting.db.char.general.enchanting.zeroValues) or tonumber(quantity) > 0) then
+      totalEssences = totalEssences + currentEssenceInfo.Quantity
+    end
   end
   table.sort(list, function(a, b) return a.Quantity < b.Quantity end)
 
@@ -353,7 +367,7 @@ function LBE_EnchantingTooltip.ProcessIsItemRealData(itemID)
     --LogBook:Debug(string.format("%s = %s", currentItemInfo.ItemID, itemLink))
     local quantity = currentItemInfo.Quantity
     local percentage = string.format("%.2f", 0)
-    if totalEssences > 1 then
+    if totalEssences > 0 then
       percentage = string.format("%.2f", (quantity * 100) / totalEssences)
     end
 

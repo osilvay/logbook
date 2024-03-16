@@ -13,6 +13,9 @@ local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames")
 ---@type LB_CustomPopup
 local LB_CustomPopup = LB_ModuleLoader:ImportModule("LB_CustomPopup")
 
+---@type LB_CustomMedias
+local LB_CustomMedias = LB_ModuleLoader:ImportModule("LB_CustomMedias")
+
 function LBL_DatabaseGroup:Header()
   return LB_CustomConfig:CreateHeaderConfig(LogBook:LB_i18n("Database"), 88, LogBookLoot:GetAddonColor())
 end
@@ -64,9 +67,8 @@ function LBL_DatabaseGroup:Config()
       executeUpdateDb = {
         type = "execute",
         order = 3,
-        name = LogBook:LB_i18n("Manual update"),
+        name = LB_CustomMedias:GetIconFileAsLink("update_a", 16, 16) .. " " .. LogBook:LB_i18n("Update"),
         desc = LogBook:LB_i18n("Update database manually."),
-        icon = "Interface/AddOns/LogBook/Images/plus",
         width = 1.05,
         disabled = false,
         func = function() return LBL_Database:UpdateDatabase() end,
@@ -74,7 +76,7 @@ function LBL_DatabaseGroup:Config()
       consolidateDb = {
         type = "execute",
         order = 4,
-        name = "|TInterface\\AddOns\\LogBook\\Images\\elite:16:16|t" .. LogBook:LB_i18n("Consolidate"),
+        name = LB_CustomMedias:GetIconFileAsLink("consolidate_a", 16, 16) .. " " .. LogBook:LB_i18n("Consolidate"),
         desc = LogBook:LB_i18n("Consolidate quantities in database."),
         width = 1.05,
         disabled = false,
@@ -90,7 +92,7 @@ function LBL_DatabaseGroup:Config()
       cleanUpDb = {
         type = "execute",
         order = 5,
-        name = LogBook:LB_i18n("Clean up"),
+        name = LB_CustomMedias:GetIconFileAsLink("cleanup_a", 16, 16) .. " " .. LogBook:LB_i18n("Clean up"),
         desc = LogBook:LB_i18n("Clean up all database."),
         width = 1.05,
         disabled = false,
@@ -106,7 +108,7 @@ function LBL_DatabaseGroup:Config()
       purgeDb = {
         type = "execute",
         order = 6,
-        name = LogBook:LB_i18n("Purge"),
+        name = LB_CustomMedias:GetIconFileAsLink("purge_a", 16, 16) .. " " .. LogBook:LB_i18n("Purge"),
         desc = LogBook:LB_i18n("Purge all database entries."),
         width = 1.05,
         disabled = false,

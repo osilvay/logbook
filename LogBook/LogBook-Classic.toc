@@ -36,6 +36,7 @@ Modules\Custom\CustomColors.lua
 Modules\Custom\CustomSounds.lua
 Modules\Custom\CustomPopup.lua
 Modules\Custom\CustomConfig.lua
+Modules\Custom\CustomMedias.lua
 
 # Main
 LogBook.lua

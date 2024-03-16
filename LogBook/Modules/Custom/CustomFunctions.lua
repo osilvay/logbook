@@ -4,6 +4,9 @@ local LB_CustomFunctions = LB_ModuleLoader:CreateModule("LB_CustomFunctions")
 ---@type LB_CustomColors
 local LB_CustomColors = LB_ModuleLoader:ImportModule("LB_CustomColors")
 
+---@type LB_CustomMedias
+local LB_CustomMedias = LB_ModuleLoader:ImportModule("LB_CustomMedias")
+
 ---Dump table to string
 ---@param o table
 ---@return string o
@@ -262,7 +265,7 @@ function LB_CustomFunctions:CreateCharacterDropdownList(characters, withRealm, w
       if info then
         local realm = LB_CustomColors:GetColoredFaction(info.faction, info.factionName)
         local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
-        local faction_icon = "|TInterface\\AddOns\\LogBook\\Images\\icon_" .. info.factionName .. ":16:16|t"
+        local faction_icon = LB_CustomMedias:GetMediaFileAsLink(info.factionName .. "_icon", 16, 16)
 
         local newKey = info.realm .. " - " .. info.name
         if not withRealm and not withFaction then

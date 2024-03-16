@@ -16,6 +16,9 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 ---@type LB_CustomFrames
 local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames")
 
+---@type LB_CustomMedias
+local LB_CustomMedias = LB_ModuleLoader:ImportModule("LB_CustomMedias")
+
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
 
@@ -36,7 +39,7 @@ function LB_WelcomeHeader:ContainerHeaderFrame(containerTable, parentFrame)
   --Options button
   ---@type AceGUIButton
   local settingsButton = AceGUI:Create("Button")
-  local settingsIcon = "|TInterface\\AddOns\\LogBook\\Images\\settings:16:16|t"
+  local settingsIcon = LB_CustomMedias:GetIconFileAsLink("settings_a", 16, 16)
   settingsButton:SetWidth(140)
   settingsButton:SetPoint("TOPRIGHT", parentFrame.frame, "TOPRIGHT", -20, -15)
   settingsButton:SetText(settingsIcon .. " " .. LogBook:LB_i18n('Settings'))

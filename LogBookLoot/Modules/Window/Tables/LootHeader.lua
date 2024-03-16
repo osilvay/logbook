@@ -16,6 +16,9 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 ---@type LB_CustomFrames
 local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames")
 
+---@type LB_CustomMedias
+local LB_CustomMedias = LB_ModuleLoader:ImportModule("LB_CustomMedias")
+
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
 
@@ -36,7 +39,7 @@ function LBL_LootHeader:ContainerHeaderFrame(containerTable, parentFrame)
   --Back button
   ---@type AceGUIButton
   local backButton = AceGUI:Create("Button")
-  local backIcon = "|TInterface\\AddOns\\LogBook\\Images\\back:16:16|t"
+  local backIcon = LB_CustomMedias:GetIconFileAsLink("back", 16, 16)
   backButton:SetWidth(140)
   backButton:SetPoint("TOPLEFT", parentFrame.frame, "TOPLEFT", 20, -15)
   backButton:SetText(backIcon .. " " .. LogBookLoot:LBL_i18n('Back'))
@@ -48,7 +51,7 @@ function LBL_LootHeader:ContainerHeaderFrame(containerTable, parentFrame)
   --Options button
   ---@type AceGUIButton
   local settingsButton = AceGUI:Create("Button")
-  local settingsIcon = "|TInterface\\AddOns\\LogBook\\Images\\settings:16:16|t"
+  local settingsIcon = LB_CustomMedias:GetIconFileAsLink("settings", 16, 16)
   settingsButton:SetWidth(140)
   settingsButton:SetPoint("TOPRIGHT", parentFrame.frame, "TOPRIGHT", -20, -15)
   settingsButton:SetText(settingsIcon .. " " .. LogBookLoot:LBL_i18n('Settings'))

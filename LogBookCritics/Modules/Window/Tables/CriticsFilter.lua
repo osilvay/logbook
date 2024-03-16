@@ -13,6 +13,9 @@ local LB_CustomFunctions = LB_ModuleLoader:ImportModule("LB_CustomFunctions")
 ---@type LB_CustomFrames
 local LB_CustomFrames = LB_ModuleLoader:ImportModule("LB_CustomFrames")
 
+---@type LB_CustomMedias
+local LB_CustomMedias = LB_ModuleLoader:ImportModule("LB_CustomMedias")
+
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
 
@@ -139,16 +142,17 @@ function LBC_CriticsFilter:CreateCharactersDropdown()
   }
   local characters = LogBookCritics.db.global.data.characters
   for k, v in pairs(characters) do
-    local info = LogBook.db.global.characters[k].info
-    if info then
-      local realm = LB_CustomColors:GetColoredFaction(info.faction, info.factionName)
-      local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
-      --local faction_icon = info.factionName and "|TInterface\\PVPFrame\\PVP-Currency-" .. info.factionName .. ":22:22|t" or ""
-      local faction_icon = "|TInterface\\AddOns\\LogBook\\Images\\icon_" .. info.factionName .. ":16:16|t"
-      if realm ~= nil and ((select_realm ~= "all" and select_realm == info.realm)) then
-        r[k] = string.format("%s %s", faction_icon, name)
-      elseif select_realm == "all" then
-        r[k] = string.format("%s %s |cffa1a1c1%s|r", faction_icon, name, info.realm)
+    if LogBook.db.global.characters[k] ~= nil and v then
+      local info = LogBook.db.global.characters[k].info
+      if info then
+        local realm = LB_CustomColors:GetColoredFaction(info.faction, info.factionName)
+        local name = LB_CustomColors:GetColoredClass(info.name, info.classFilename)
+        local faction_icon = LB_CustomMedias:GetMediaFileAsLink(info.factionName .. "_icon", 16, 16)
+        if realm ~= nil and ((select_realm ~= "all" and select_realm == info.realm)) then
+          r[k] = string.format("%s %s", faction_icon, name)
+        elseif select_realm == "all" then
+          r[k] = string.format("%s %s |cffa1a1c1%s|r", faction_icon, name, info.realm)
+        end
       end
     end
   end

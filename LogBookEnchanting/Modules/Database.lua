@@ -51,7 +51,7 @@ function LBE_Database:UpdateDatabase(silent)
   for itemID, currentEssence in pairs(lootDb) do
     local isTradeSkill = currentEssence["IsTradeSkill"] or false
     local tradeSkillInfo = currentEssence["TradeSkillInfo"] or {}
-    local tradeSkillName = tradeSkillInfo.name or ""
+    local tradeSkillName = tradeSkillInfo.Name or ""
 
     -- si es encantamiento la proceso
     if isTradeSkill and tradeSkillInfo ~= nil and tradeSkillName == "Enchanting" then
@@ -63,7 +63,7 @@ function LBE_Database:UpdateDatabase(silent)
       currentEssence.ItemMinLevel                                 = eItemMinLevel
 
       -- leo objetos de esencias
-      local from                                                  = tradeSkillInfo.from or {}
+      local from                                                  = tradeSkillInfo.From or {}
       for currentItemID, itemInEssence in pairs(from) do
         local _, itemLink, itemQuality, itemLevel, itemMinLevel = GetItemInfo(currentItemID)
         itemInEssence.Quality = itemQuality

@@ -19,6 +19,9 @@ local LBC_CriticsFilter = LB_ModuleLoader:ImportModule("LBC_CriticsFilter")
 ---@type LBC_CriticsWindow
 local LBC_CriticsWindow = LB_ModuleLoader:ImportModule("LBC_CriticsWindow")
 
+---@type LB_CustomMedias
+local LB_CustomMedias = LB_ModuleLoader:ImportModule("LB_CustomMedias")
+
 local LibStub = LibStub
 local AceGUI = LibStub("AceGUI-3.0")
 local bodyContainer
@@ -266,15 +269,16 @@ function LBC_CriticsBody:ContainerBodyFrame(containerTable, parentFrame)
         --Options button
         ---@type AceGUIInteractiveLabel
         local deleteButton = AceGUI:Create("InteractiveLabel")
-        local deleteIcon = "|TInterface\\AddOns\\LogBook\\Images\\delete_a:24:24|t"
+        local deleteIcon = LB_CustomMedias:GetIconFileAsLink("delete", 24, 24)
+        local deleteIcon_a = LB_CustomMedias:GetIconFileAsLink("delete_a", 24, 24)
         deleteButton:SetWidth(32)
         deleteButton:SetPoint("LEFT", rowContainer.frame, "LEFT", 0, -50)
-        deleteButton:SetText(deleteIcon)
+        deleteButton:SetText(deleteIcon_a)
         deleteButton:SetCallback("OnEnter", function(current)
-          current:SetText("|TInterface\\AddOns\\LogBook\\Images\\delete:24:24|t")
+          current:SetText(deleteIcon)
         end)
         deleteButton:SetCallback("OnLeave", function(current)
-          current:SetText("|TInterface\\AddOns\\LogBook\\Images\\delete_a:24:24|t")
+          current:SetText(deleteIcon_a)
         end)
         deleteButton:SetCallback("OnClick", function(current)
           --local _selected_character = LogBookCritics.db.char.general.critics.filter.select_character

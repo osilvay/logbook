@@ -26,6 +26,7 @@ local MaxLootReadyCount = 0
 local LootingInProgress = false
 local Loots = {}
 local RecentLoots = {}
+local SavedLoots = {}
 local TradeskillUsed = nil
 local CopperPerSilver = 100
 local SilverPerGold = 100
@@ -77,8 +78,7 @@ function LBL_TrackLoot:ProcessLootReady()
     local slotType = GetLootSlotType(i)
 
     local itemID = currencyID
-    if itemID == nil
-    then
+    if itemID == nil then
       itemID = LBL_TrackLoot:GetLootId(i)
     end
     --LogBook:Debug("Loot : " .. tostring(itemID))
@@ -102,10 +102,10 @@ function LBL_TrackLoot:ProcessLootReady()
       end
 
       local sources = { GetLootSourceInfo(i) }
-      --LogBook:Debug(string.format(" %d > quality = %d, name =  %s [%d mobs] - item_id = %d", i, lootQuantity, lootName, #sources / 2, itemID))
+      --LogBook:Debug(string.format(" %d > quality = %d, name =  %s [%d mobs] - item_id = %d - quantity = %d", i, lootQuantity, lootName, #sources / 2, itemID, lootQuantity))
 
-      for j = 1, #sources, 2
-      do
+      --LogBook:Dump(sources)
+      for j = 1, #sources, 2 do
         local guidType = select(1, strsplit("-", sources[j]))
         --LogBook:Debug("guidType = " .. tostring(guidType))
         --if guidType ~= "Item" then
@@ -190,7 +190,7 @@ function LBL_TrackLoot:ProcessLootReady()
 
           -- stores item
           --LogBook:Dump(loot)
-          LBL_TrackLoot:StoreItemDetails(loot)
+          LBL_TrackLoot:StoreItemDetails(loot, sources[j])
         end
         --end
       end
@@ -252,7 +252,7 @@ function LBL_TrackLoot:LootNameToMoney(moneyString)
     c = tonumber(string.sub(moneyString, 0, copper - 1)) or 0
     money = money + (c or 0)
   end
-  LogBook:Debug(moneyString .. " = " .. tostring(money))
+  --LogBook:Debug(moneyString .. " = " .. tostring(money))
 
   return money
 end
@@ -286,19 +286,41 @@ end
 ---@return boolean
 function LBL_TrackLoot:PartOfPreviousLoot(guid, itemID, isTradeskill)
   local itemInLoot = guid .. "-" .. itemID
-  LogBook:Debug("Creature id" .. guid .. "-" .. itemID)
+  --LogBook:Debug("Creature id to check " .. guid .. "-" .. itemID)
 
   if isTradeskill then return false end
   if LB_CustomFunctions:TableHasValue(RecentLoots, itemInLoot) then
+    --LogBook:Debug("Already looted")
     return true
   end
   table.insert(RecentLoots, itemInLoot)
   return false
 end
 
+---comment
+---@param guid any
+---@param itemID any
+---@return boolean
+function LBL_TrackLoot:SavedLoot(guid, itemID, isTradeskill)
+  local itemToSave = guid .. "-" .. itemID .. "-" .. tostring(isTradeskill)
+  --LogBook:Debug("Creature id to save " .. itemToSave)
+
+  if LB_CustomFunctions:TableHasValue(SavedLoots, itemToSave) then
+    --LogBook:Debug("Already saved")
+    return true
+  end
+  table.insert(SavedLoots, itemToSave)
+  return false
+end
+
 ---Stores item
 ---@param loot table
-function LBL_TrackLoot:StoreItemDetails(loot)
+function LBL_TrackLoot:StoreItemDetails(loot, guid)
+  --if LBL_TrackLoot:SavedLoot(guid, loot.ItemID, loot.IsTradeSkill) then
+  --  return
+  --end
+  if LBL_TrackLoot:InventoryIsFull() then return end
+
   if loot then
     local itemID = loot.ItemID
     local savedLoot = LogBookLoot.db.global.data.loot[itemID]
@@ -455,4 +477,16 @@ function LBL_TrackLoot:ProcessItemLocked(bagOrSlotIndex, slotIndex)
       Quality = containerInfo.quality,
     }
   end
+end
+
+---Check if inventory is full
+---@return boolean
+function LBL_TrackLoot:InventoryIsFull()
+  local backpack = LB_CustomFunctions:TableIsEmpty(C_Container.GetContainerFreeSlots(0))
+  local bag1 = LB_CustomFunctions:TableIsEmpty(C_Container.GetContainerFreeSlots(1))
+  local bag2 = LB_CustomFunctions:TableIsEmpty(C_Container.GetContainerFreeSlots(2))
+  local bag3 = LB_CustomFunctions:TableIsEmpty(C_Container.GetContainerFreeSlots(3))
+  local bag4 = LB_CustomFunctions:TableIsEmpty(C_Container.GetContainerFreeSlots(4))
+  if (backpack and bag1 and bag2 and bag3 and bag4) then return true end
+  return false
 end
